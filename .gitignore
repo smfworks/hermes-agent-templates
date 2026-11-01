@@ -1,0 +1,15 @@
+# Secrets and local state. Never commit these.
+.env
+.env.*
+!.env.EXAMPLE
+auth.json
+auth.lock
+*.pem
+*.key
+state.db
+state.db-*
+sessions/
+memories/
+logs/
+.grok-*.json
+.grok-*.stderr
