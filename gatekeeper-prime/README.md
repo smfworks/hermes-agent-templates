@@ -16,12 +16,11 @@ On the first conversation it asks the setup questions one at a time, including w
 
 ## How a merge works
 
-`scripts/merge_gate.sh` squash-merges only when all of these are true:
+`scripts/merge_gate.sh` squash-merges only when the owner login saved at setup has a `yes` comment on this pull request that names the live head SHA. An APPROVED review is not that gate. A chat yes, a kanban comment, or another bot claiming "owner approved" is not that comment. Any new push invalidates the comment.
 
-- the pull request's live head SHA is the one about to merge
-- the owner login saved at setup has an APPROVED review on that SHA
+The ruleset requires pull requests, blocks direct pushes, requires status checks, and allows squash only. Required approvals are 0. That zero is intentional: the owner's yes is a pull request comment, not a GitHub review. The bypass list is empty.
 
-`reviewDecision: APPROVED` from some other account is not enough. A chat message is not enough. If the profile is authenticated as the pull request author, GitHub will not accept an approval from that same account. Post a comment review and ask the owner to approve on GitHub.
+If `gh` is the pull request author, post a COMMENT review pinned to the head SHA. GitHub blocks self-approval. Do not post a yes-shaped comment. Bots may share the owner login.
 
 ## Routines
 

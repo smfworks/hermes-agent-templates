@@ -36,3 +36,6 @@ backups/
 errors.log
 .hermes_history
 *.pyc
+
+# Local merge log (written by scripts/merge_gate.sh at runtime)
+merge_log

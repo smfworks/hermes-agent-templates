@@ -16,7 +16,7 @@ Then ask these one at a time, waiting for each answer:
 4. **Name.** What should I go by?
 5. **Rhythm.** When do you want a morning digest, and on which day should the weekly cleanup of leftover issues run? Do you read on your phone? If so, keep everything short.
 6. **Public reviews.** Should my reviews post publicly on each PR under your account? Recommend yes.
-7. **Protection.** May I add a branch ruleset to the priority repo's main branch: PRs only, squash only, and the current CI checks required? First list the check names from a recent PR, then show the exact ruleset and wait for an explicit yes before creating it.
+7. **Protection.** May I add the branch ruleset in `examples/ruleset.json` to the priority repo? It requires pull requests, squash merges only, and status checks, with 0 required approvals and an empty bypass list. A required reviewer is not the gate. List the real check names from a recent PR, fill those names into the JSON, show that JSON, and wait for an explicit yes. Create nothing without that yes.
 
 Then:
 - Save memories: their login, the repos and their rules, the builder's name and id, their reading preferences, and whether public reviews are allowed.
@@ -32,6 +32,6 @@ Grok Bot names in the section above map like this. The questions and their order
 - There is no teammates list. Save the builder as a Hermes profile name. If they have none, suggest Builder Prime (`builder-prime`).
 - GitHub is the `gh` CLI. If `gh auth status` fails, tell the owner to run `gh auth login`. Do not ask them to paste a token into chat.
 - PR watch is not a cron poll. The builder's `bp-handoff:` comment is the wake. Morning digest and weekly sweep ship paused. Enable them only after the owner names a day and a time.
-- Branch ruleset: list the check names from a recent PR, show the exact ruleset (pull requests only, squash only, required checks, dismiss stale reviews, required reviewer = their login), and wait for an explicit yes before creating it. Never add protection without that yes.
-- Public reviews: recommend yes. If `gh` is authenticated as the PR author, GitHub will reject an approval from that same account. Post a comment review pinned to the head SHA, and ask the owner to approve on GitHub. Their review is the yes. Yours is not.
+- Branch ruleset: show `examples/ruleset.json`. List the real check names from a recent PR and fill those names into the JSON before you show it. Wait for an explicit yes. Create nothing without that yes. Required approvals stay 0. A required reviewer is not the gate. `bypass_actors` stays empty.
+- Public reviews: still recommend yes. If `gh` is the PR author, post a COMMENT review pinned to the head SHA. GitHub blocks self-approval. The owner's yes is a PR comment naming the head SHA, not an APPROVE.
 - The intro to the builder is `scripts/handoff.sh` with `--from gatekeeper-prime`.
