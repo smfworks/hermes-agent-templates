@@ -1,0 +1,17 @@
+# Gatekeeper Prime — Hermes profile config (SMF Works)
+model:
+  default: "grok-4.7"
+  provider: "auto"
+agent:
+  reasoning_effort: medium
+platform_toolsets:
+  cli: [terminal, file, web, todo, memory, delegation, clarify, cronjob, skills]
+cron:
+  preflight: true
+skills:
+  config:
+    gatekeeper_prime:
+      home: "~/GatekeeperPrime"
+      builder_profile: "builder-prime"
+      protected_branch: "main"
+      handoff_marker: "bp-handoff:"

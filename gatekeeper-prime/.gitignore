@@ -1,0 +1,7 @@
+.env
+PLAN-*.md
+.grok-*
+.build-prompt*
+__pycache__/
+*.pyc
+node_modules/

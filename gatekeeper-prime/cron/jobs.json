@@ -1,0 +1,51 @@
+{
+  "jobs": [
+    {
+      "id": "gatekeeper-morning-digest",
+      "name": "Gatekeeper morning digest",
+      "prompt": "No-agent job. Runs scripts/morning_digest.sh. Silent until setup is complete. Does not merge and does not open PRs.",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": "morning_digest.sh",
+      "no_agent": true,
+      "context_from": null,
+      "schedule": {"kind": "cron", "expr": "0 8 * * 1-5", "display": "0 8 * * 1-5"},
+      "schedule_display": "0 8 * * 1-5",
+      "deliver": "local",
+      "origin": null,
+      "enabled_toolsets": null,
+      "workdir": null,
+      "timezone": "America/New_York",
+      "enabled": false,
+      "state": "paused",
+      "paused_reason": "enabled only after the owner names a digest time during setup"
+    },
+    {
+      "id": "gatekeeper-weekly-sweep",
+      "name": "Gatekeeper weekly leftover sweep",
+      "prompt": "No-agent job. Runs scripts/weekly_sweep.sh. Does not merge, close, or delete issues.",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": "weekly_sweep.sh",
+      "no_agent": true,
+      "context_from": null,
+      "schedule": {"kind": "cron", "expr": "0 9 * * 1", "display": "0 9 * * 1"},
+      "schedule_display": "0 9 * * 1",
+      "deliver": "local",
+      "origin": null,
+      "enabled_toolsets": null,
+      "workdir": null,
+      "timezone": "America/New_York",
+      "enabled": false,
+      "state": "paused",
+      "paused_reason": "enabled only after the owner names a weekly sweep day during setup"
+    }
+  ],
+  "updated_at": "2026-11-02T12:00:00-05:00"
+}

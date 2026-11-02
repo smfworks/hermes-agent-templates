@@ -1,0 +1,28 @@
+name: gatekeeper-prime
+version: 1.0.0
+description: "Gatekeeper Prime by SMF Works: the reviewer half of a two-bot coding team. Reviews every PR and merges only on the owner yes."
+hermes_requires: ">=0.22.0"
+author: "SMF Works"
+license: "MIT"
+
+# Allowlist. SPEC.md and PLAN-*.md stay in the working tree and do not install.
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - mcp.json
+  - .env.EXAMPLE
+  - README.md
+  - AGENTS.md
+  - scripts/
+  - skills/
+  - lib/
+  - tests/
+  - cron/
+
+env_requires:
+  - name: GH_TOKEN
+    description: "Optional. Prefer gh auth login. Fine-grained token: contents and pull requests, no admin, cannot bypass rulesets."
+    required: false
+  - name: GH_BIN
+    description: "Optional override for the gh binary. Do not point this at a broken wrapper."
+    required: false
