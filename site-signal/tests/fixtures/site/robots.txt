@@ -1,0 +1,25 @@
+# Fixture robots.txt for the healthy site. Everything is allowed; the named
+# AI-bot groups exist so the AI-readiness scanner sees an explicit policy and
+# does not report the robots-ai-policy minor. There is no Sitemap line on
+# purpose: the scanners then fall back to /sitemap.xml on the current origin,
+# which keeps this file independent of the ephemeral test-server port.
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /

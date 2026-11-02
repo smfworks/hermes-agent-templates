@@ -1,0 +1,32 @@
+{
+  "jobs": [
+    {
+      "id": "site-signal-weekly-rescan",
+      "name": "Site Signal weekly re-scan",
+      "prompt": "No-agent job: runs scripts/weekly_rescan.sh, which scans every owner_verified site in ~/SiteSignal/sites.yaml with all three scanners and prints a short diff only when a score dropped >=3 points, a new critical/serious issue appeared, or a scan failed. Empty output is a silent tick. Cron runs never open or merge PRs (SPEC.md 5.5).",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": "weekly_rescan.sh",
+      "no_agent": true,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 1",
+        "display": "0 8 * * 1"
+      },
+      "schedule_display": "0 8 * * 1",
+      "deliver": "local",
+      "origin": null,
+      "enabled_toolsets": null,
+      "workdir": null,
+      "timezone": "America/New_York",
+      "enabled": false,
+      "state": "paused",
+      "paused_reason": "enabled only after the owner says yes (SPEC 5.5)"
+    }
+  ],
+  "updated_at": "2026-11-01T00:00:00-04:00"
+}

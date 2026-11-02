@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site Signal Fixture — No Structured Data Page</title>
+<meta name="description" content="The healthy fixture page with every JSON-LD block removed, so the structured-data check is the only deduction the AI-readiness scanner can report.">
+<link rel="canonical" href="https://fixture.example/no-schema.html">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="Site Signal Fixture — No Structured Data Page">
+<meta property="og:description" content="The healthy fixture page with every JSON-LD block removed, so the structured-data check is the only deduction the AI-readiness scanner can report.">
+<meta property="og:image" content="https://fixture.example/og.png">
+<meta property="og:url" content="https://fixture.example/no-schema.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:modified_time" content="2026-11-01T08:00:00Z">
+<link rel="alternate" type="application/rss+xml" title="Fixture feed" href="/feed.xml">
+</head>
+<body>
+<header>
+<nav><ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about">About the fixture</a></li>
+<li><a href="/faq">Fixture FAQ</a></li>
+<li><a href="/books/learning-resource.html">Learning resource</a></li>
+<li><a href="/books/plain.html">Plain content page</a></li>
+<li><a href="/thin.html">Thin page</a></li>
+<li><a href="https://example.com/source">External source</a></li>
+</ul></nav>
+</header>
+<main>
+<h1>No structured data</h1>
+<p>This page is identical to the fixture home page except that every JSON-LD block has been removed. It isolates one deduction: the AI-readiness scanner must report exactly the structured-data issue, worth ten points, and nothing else. The grade for this page is therefore ninety, an A.</p>
+<p>Assertions pinned to this page guard two things at once. First, that a missing JSON-LD block is reported as a serious issue rather than a minor one. Second, that removing structured data does not cascade into other checks: the entity check only runs when at least one block parses, so no entity deduction may appear here.</p>
+<p>The page keeps its title, description, canonical link, language attribute, Open Graph tags, twitter card, one heading level one, a main landmark, real links, and a feed reference, so a cascading deduction would be a scanner bug this suite wants to catch.</p>
+<p>Nothing on this page is a claim about any real product. It exists so the SMF Works scanners can be tested without touching the network, and so weight regressions show up as failing assertions rather than silent drift in the rubric.</p>
+<p>If you edit this page, run the offline suite and update the pinned score only when the change is deliberate and reviewed, then record the reason next to the assertion that pins it.</p>
+</main>
+<footer><p>Fixture site for SMF Works scanner tests.</p></footer>
+</body>
+</html>

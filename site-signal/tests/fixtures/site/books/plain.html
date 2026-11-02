@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plain content page — no article schema</title>
+<meta name="description" content="A content page that deliberately omits Article-family JSON-LD, a visible byline, statistics, and outbound citations, so the GEO scanner reports exactly those deductions.">
+<link rel="canonical" href="https://fixture.example/books/plain.html">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="Plain content page — no article schema">
+<meta property="og:description" content="A content page that deliberately omits Article-family JSON-LD, a visible byline, statistics, and outbound citations, so the GEO scanner reports exactly those deductions.">
+<meta property="og:image" content="https://fixture.example/og.png">
+<meta property="og:url" content="https://fixture.example/books/plain.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:modified_time" content="2026-11-01T08:00:00Z">
+<link rel="alternate" type="application/rss+xml" title="Fixture feed" href="/feed.xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","name":"SMF Works","url":"https://fixture.example/","logo":"https://fixture.example/logo.png","sameAs":["https://github.com/smfworks","https://fixture.example/identity"]},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fixture.example/"},{"@type":"ListItem","position":2,"name":"Plain content page","item":"https://fixture.example/books/plain.html"}]}
+]}
+</script>
+</head>
+<body>
+<header>
+<nav><ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about">About the fixture</a></li>
+<li><a href="/faq">Fixture FAQ</a></li>
+<li><a href="/books/learning-resource.html">Learning resource</a></li>
+<li><a href="/thin.html">Thin page</a></li>
+</ul></nav>
+</header>
+<main>
+<h1>Plain content page</h1>
+<p>This page is the deliberate negative fixture for the article checks. It is a content page under the books path, so the GEO scanner treats it as an article candidate, but it carries no Article-family JSON-LD at all. The article-schema check must therefore fire here, and the suite pins that deduction as the headline signal of this page.</p>
+<h2>The expected deductions</h2>
+<p>Because the page also omits a visible byline or modified date, contains no concrete statistics, and links to nothing outside the fixture origin, the GEO scanner reports the missing article schema, the missing byline, the missing statistics, and the missing outbound citations against it. The suite asserts that set of deductions and nothing more, so a scanner that stays quiet here has drifted.</p>
+<p>The omission is deliberate in each case. Real sites should copy nothing from this page: it exists to prove the scanner still deducts when the signals are absent, which guards against a check being silently weakened. A scanner that stopped reporting the article-schema deduction here would have drifted from the rubric, and the suite treats that as a failure of the rubric contract.</p>
+<h2>Signals that stay healthy</h2>
+<p>Everything unrelated to those omissions stays healthy. The page keeps a descriptive title, a meta description inside the accepted length window, a canonical link, a viewport declaration, a declared language, complete Open Graph tags, a twitter card, a modified timestamp in the head, a feed reference, one heading of level one, and a main landmark for extractors.</p>
+<p>The navigation block still carries enough internal links for the internal-links check to pass, and the text here is long enough that the thin-content check stays quiet. The word count clears that threshold on purpose: the facts-stats deduction must come from the absence of statistics, never from the absence of text, so the two checks cannot mask each other in a run.</p>
+<p>When you edit this page, keep every one of those omissions intact. Adding a byline, a statistic, an article type, or an outbound link would silence one of the deductions and break the pinned assertion that documents the negative case for the article checks of the GEO rubric.</p>
+</main>
+<footer><p>Fixture site for SMF Works scanner tests.</p></footer>
+</body>
+</html>

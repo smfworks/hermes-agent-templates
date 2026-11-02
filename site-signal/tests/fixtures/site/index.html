@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site Signal Fixture — Quality Scanning Demo Home</title>
+<meta name="description" content="A deterministic fixture site that exercises every check of the SMF Works Site Signal scanners, offline and without network access.">
+<link rel="canonical" href="https://fixture.example/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="Site Signal Fixture — Quality Scanning Demo Home">
+<meta property="og:description" content="A deterministic fixture site that exercises every check of the SMF Works Site Signal scanners, offline and without network access.">
+<meta property="og:image" content="https://fixture.example/og.png">
+<meta property="og:url" content="https://fixture.example/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:modified_time" content="2026-11-01T08:00:00Z">
+<link rel="alternate" type="application/rss+xml" title="Fixture feed" href="/feed.xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","name":"SMF Works","url":"https://fixture.example/","logo":"https://fixture.example/logo.png","sameAs":["https://github.com/smfworks","https://fixture.example/identity"]},
+ {"@type":"WebSite","name":"Site Signal Fixture","url":"https://fixture.example/"},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fixture.example/"}]},
+ {"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"What does Site Signal scan?","acceptedAnswer":{"@type":"Answer","text":"Five dimensions: SEO, GEO, AEO, AI readiness, and accessibility."}},
+  {"@type":"Question","name":"Why does the fixture exist?","acceptedAnswer":{"@type":"Answer","text":"So scanner tests run offline and deterministically."}},
+  {"@type":"Question","name":"How are the scores computed?","acceptedAnswer":{"@type":"Answer","text":"Each check subtracts a fixed weight from a 100-point start."}}
+ ]}
+]}
+</script>
+</head>
+<body>
+<header>
+<nav><ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about">About the fixture</a></li>
+<li><a href="/faq">Fixture FAQ</a></li>
+<li><a href="/books/learning-resource.html">Learning resource</a></li>
+<li><a href="/books/plain.html">Plain content page</a></li>
+<li><a href="/thin.html">Thin page</a></li>
+<li><a href="https://example.com/source">External source</a></li>
+</ul></nav>
+</header>
+<main>
+<h1>Site Signal fixture home</h1>
+<p><img src="/logo.svg" alt="Site Signal fixture logo"> This page is the complete, healthy reference for the offline scanner tests. It carries every signal the scanners look for: structured metadata, an organization entity, question headings with concise answers, and enough server-rendered prose that no content check can flag it. The scanners read it exactly as a crawler would, without executing any script.</p>
+<h2>What does Site Signal scan?</h2>
+<p>It scans five dimensions of a site you own. SEO, GEO, and AEO are scored by one crawler that samples the home page plus a few key pages. AI readiness is scored from the raw HTML a non-browser agent receives. Accessibility is scored by axe inside a real headless Chromium.</p>
+<h2>Why does the fixture exist?</h2>
+<p>Scanner tests must be deterministic. A live site changes under you, so a fixed copy served from a local directory is the only fair reference. Every assertion in the test suite is derived from this exact markup, and a change here is a deliberate, reviewable act.</p>
+<h2>How are the scores computed?</h2>
+<p>Every check starts from one hundred points and subtracts a fixed weight per distinct failed check: twenty-five for critical, ten for serious, five for moderate, and two for minor in the AI-readiness rubric. The SEO rubric uses twenty-five, twelve, six, and two.</p>
+<h2>Fixture structure</h2>
+<p>The docroot also serves an about page, an FAQ page, two content pages under books, and a thin page. The content pages isolate the article-schema credit: one carries Book and LearningResource JSON-LD, the other deliberately omits it. The thin page exists to trigger the server-rendered-content check in the AI-readiness scanner.</p>
+<p>Nothing on this site is a claim about any real product. It exists so the SMF Works scanners can be tested without touching the network, and so regressions in weights or check lists show up as failing assertions rather than silent drift.</p>
+</main>
+<footer><p>Fixture site for SMF Works scanner tests.</p></footer>
+</body>
+</html>

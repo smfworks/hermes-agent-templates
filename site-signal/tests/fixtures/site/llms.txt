@@ -1,0 +1,19 @@
+# Site Signal fixture
+
+> A deterministic multi-page fixture used by the offline scanner tests of the SMF Works Site Signal distribution. It is served from a local directory and never touches the network.
+
+## Pages
+
+- [Home](/): the healthy reference page every other page is measured against.
+- [About](/about): who maintains the fixture and how it stays deterministic.
+- [Fixture FAQ](/faq): visible questions with concise answers, plus FAQPage schema.
+- [Learning resource](/books/learning-resource.html): a content page carrying LearningResource JSON-LD.
+- [Plain content page](/books/plain.html): a content page that omits article schema on purpose.
+- [Thin page](/thin.html): a page below the AI-readiness word threshold.
+
+## Notes
+
+The sitemap is rendered at test time with the live origin of the temporary
+server, so every URL in it resolves. Editing any fixture page is a reviewed,
+deliberate act: pinned assertions in the test suite fail when weights or check
+lists drift.

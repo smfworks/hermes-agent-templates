@@ -1,0 +1,38 @@
+name: site-signal
+version: 1.0.0
+description: "Site Signal by SMF Works: scans sites you own for SEO, GEO, AEO, AI readiness, and accessibility, ranks issues by impact, and ships fixes as GitHub PRs merged on your say-so."
+hermes_requires: ">=0.22.0"     # verified against installed Hermes v0.22.5 (mikesai1, 2026-11-01)
+author: "SMF Works"
+license: "MIT"
+
+# Explicit allowlist so build-only files (SPEC.md, PLAN-*.md, PREREQ-*.md, session
+# scratch) never land in an installed profile. Without it the installer copies the
+# whole payload (hermes_cli/profile_distribution.py legacy branch).
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - mcp.json
+  - .env.EXAMPLE
+  - README.md
+  - AGENTS.md
+  - sites.yaml.example
+  - cron/
+  - scripts/
+  - skills/
+  - lib/
+  - tests/
+
+# Tell installers which env vars the agent needs. These are checked against
+# the installer's shell and existing .env file so they don't get nagged
+# about keys they already have configured.
+env_requires:
+  - name: GH_TOKEN
+    description: "GitHub token (fine-grained: smfworks repos, contents + pull requests RW, checks R). Optional if `gh auth login` is done."
+    required: false
+  - name: VERCEL_TOKEN
+    description: "Optional: Vercel deploy status / private report hosting"
+    required: false
+  - name: CHROME_PATH
+    description: "Path to Chromium for axe (e.g. ~/.cache/ms-playwright/chromium-*/chrome-linux/chrome or /usr/bin/chromium)"
+    required: false
+    default: ""

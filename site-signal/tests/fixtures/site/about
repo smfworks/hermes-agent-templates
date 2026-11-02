@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>About the Site Signal fixture</title>
+<meta name="description" content="Who maintains the offline scanner fixture, how it is kept deterministic, and why every change to it is a reviewed, deliberate act.">
+<link rel="canonical" href="https://fixture.example/about">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="About the Site Signal fixture">
+<meta property="og:description" content="Who maintains the offline scanner fixture, how it is kept deterministic, and why every change to it is a reviewed, deliberate act.">
+<meta property="og:image" content="https://fixture.example/og.png">
+<meta property="og:url" content="https://fixture.example/about">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:modified_time" content="2026-11-01T08:00:00Z">
+<link rel="alternate" type="application/rss+xml" title="Fixture feed" href="/feed.xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","name":"SMF Works","url":"https://fixture.example/","logo":"https://fixture.example/logo.png","sameAs":["https://github.com/smfworks","https://fixture.example/identity"]},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fixture.example/"},{"@type":"ListItem","position":2,"name":"About","item":"https://fixture.example/about"}]}
+]}
+</script>
+</head>
+<body>
+<header>
+<nav><ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about">About the fixture</a></li>
+<li><a href="/faq">Fixture FAQ</a></li>
+<li><a href="/books/learning-resource.html">Learning resource</a></li>
+<li><a href="/books/plain.html">Plain content page</a></li>
+<li><a href="/thin.html">Thin page</a></li>
+<li><a href="https://example.com/source">External source</a></li>
+</ul></nav>
+</header>
+<main>
+<h1>About the fixture</h1>
+<p>This fixture site is the offline reference for the scanner test suite of the SMF Works Site Signal distribution. It exists because a live website changes under you: copy moves, metadata is adjusted, markup is refactored. A fixed copy served from a local directory is the only fair reference for assertions that pin exact scores, and it lets the whole suite run with no network access at all.</p>
+<h2>Determinism</h2>
+<p>Determinism is the whole point. Every page here is static markup with no scripts that alter content, no external requests, and no dates computed at request time. The sitemap is the one file rendered at test time, because its URLs must carry the port of the temporary server; everything else is committed and reviewed like source code.</p>
+<h2>Ownership and review</h2>
+<p>Editing a fixture page is a deliberate act. When a weight changes in a rubric, the maintainer updates the fixture, re-runs the suite, and records the reason next to the affected assertion. A failing pinned score means either a scanner regression or an unreviewed fixture edit, and both are treated as defects until explained.</p>
+<h2>Pages and their roles</h2>
+<p>The home page exercises the healthy path of every check. The FAQ page carries visible questions with answers inside the accepted word window plus FAQPage schema. The learning resource carries LearningResource JSON-LD with an author and a modified date. The plain page omits article schema, a byline, statistics, and outbound citations on purpose. The thin page sits under the word threshold.</p>
+<p>The suite asserts exact issue sets and scores against these pages. When the scanners change, this fixture is the contract: if a check fires here that the page was not designed to trigger, the scanner has drifted and the change must be justified before the assertion is updated.</p>
+</main>
+<footer><p>Fixture site for SMF Works scanner tests.</p></footer>
+</body>
+</html>

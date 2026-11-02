@@ -1,0 +1,51 @@
+# Site Signal site registry (SMF Works) — EXAMPLE.
+# Copy to ~/SiteSignal/sites.yaml and edit THERE; the real registry lives outside
+# this profile so updates never overwrite it (SPEC.md 6.1).
+# Schema per SPEC.md 5.1. Sites that are unlisted, owner_verified: false, or
+# scan_only: true never get fix PRs (scan-only).
+sites:
+  - domain: smfwisdomforge.com
+    aliases: []
+    repo: smfworks/wisdomforge
+    default_branch: main
+    deploy: vercel            # vercel | other | unknown
+    owner_verified: true
+    verified_by: seed+owner   # seed+owner | repo | wellknown | dns
+    scan:
+      pages: 5                # SEO/GEO/AEO sampler
+      axe_paths: ["/", "/books", "/about"]   # plus auto-discovered links, max 8
+      mobile: false
+    merge: ask                # ask | after_green_ci
+    notes: "Book pages use Book+BlogPosting dual JSON-LD (PR #27)."
+
+  - domain: smfclearinghouse.com
+    aliases: [www.smfclearinghouse.com]   # www and apex serve the same site; canonical on www
+    repo: smfworks/aiclearinghouse-site
+    default_branch: main
+    deploy: vercel
+    owner_verified: true
+    verified_by: seed+owner
+    scan:
+      pages: 5
+      axe_paths: ["/", "/lab", "/about"]    # /lab held the critical select-name finding (Oct 31)
+      mobile: false
+    merge: ask
+    notes: "Oct 31 fix PRs: aiclearinghouse-site#19-#24."
+
+  - domain: smfworks.com
+    aliases: []
+    repo: smfworks/smfworks-site
+    default_branch: main
+    deploy: vercel
+    owner_verified: true
+    verified_by: seed+owner
+    scan_only: true           # SPEC.md 6.3: another Hermes agent ships fixes for smfworks.com; scan-only until Michael assigns fix ownership
+    scan:
+      pages: 5
+      axe_paths: ["/"]        # plus auto-discovered links, max 8
+      mobile: false
+    merge: ask
+    notes: "Scan-only until Michael confirms which agent opens fix PRs here (avoids competing PRs). Oct 31 PR: smfworks-site#12."
+
+# Optional key for owned staging only (off everywhere above): auth: staging
+# Credentials come from .env or an owner-dropped cookie file, never from chat.

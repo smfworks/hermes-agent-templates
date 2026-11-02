@@ -1,0 +1,29 @@
+{# Site Signal fix brief (SPEC.md 5.4 step 3; style per Appendix A.4).
+   Context: domain, repo, branch, base, date, issues[{impact, dimension, id,
+   message, fix, where, effort, reach_n, evidence_lines[]}], constraints[],
+   acceptance[]. Rendered by ship_fix.sh; handed to Grok Build headless. #}
+# Fix brief — {{ repo }} ({{ domain }})
+
+Prepared by Site Signal (SMF Works), {{ date }}. Work in the current checkout
+(branch `{{ branch }}`, base `{{ base }}`). Fix exactly the issues below —
+nothing else. Commit locally with a clear message. Never push, never run
+`git push` or `gh`, never edit `.env` or any secret file.
+
+## Ranked issues (impact order; fix every one)
+
+{% for i in issues %}
+{{ loop.index }}. **[{{ i.impact }} {{ i.dimension }}] `{{ i.id }}`** — {{ i.message }}
+   - Where: {{ i.where }} (reach: {{ i.reach_n }} node(s)/page(s), suggested effort {{ i.effort }})
+   - Desired outcome: {{ i.fix }}
+{% for e in i.evidence_lines %}   - Evidence: {{ e }}
+{% endfor %}
+{% else %}(no issues selected — nothing to do)
+{% endfor %}
+## Constraints (hard)
+
+{% for c in constraints %}- {{ c }}
+{% endfor %}
+## Acceptance
+
+{% for a in acceptance %}- {{ a }}
+{% endfor %}

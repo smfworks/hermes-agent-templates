@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixture FAQ — offline scanner tests</title>
+<meta name="description" content="Visible questions with concise answers about the offline fixture site, mirroring the FAQPage schema block that keeps the faq-schema check quiet.">
+<link rel="canonical" href="https://fixture.example/faq">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="Fixture FAQ — offline scanner tests">
+<meta property="og:description" content="Visible questions with concise answers about the offline fixture site, mirroring the FAQPage schema block that keeps the faq-schema check quiet.">
+<meta property="og:image" content="https://fixture.example/og.png">
+<meta property="og:url" content="https://fixture.example/faq">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:modified_time" content="2026-11-01T08:00:00Z">
+<link rel="alternate" type="application/rss+xml" title="Fixture feed" href="/feed.xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","name":"SMF Works","url":"https://fixture.example/","logo":"https://fixture.example/logo.png","sameAs":["https://github.com/smfworks","https://fixture.example/identity"]},
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://fixture.example/"},{"@type":"ListItem","position":2,"name":"FAQ","item":"https://fixture.example/faq"}]},
+ {"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"Why does the fixture exist?","acceptedAnswer":{"@type":"Answer","text":"It exists so scanner assertions can pin exact scores against a copy that never changes. A live site drifts under you, so the suite serves these files from a temporary local server instead. Every deduction on every page is either designed into the markup or a scanner regression."}},
+  {"@type":"Question","name":"How are the scores computed?","acceptedAnswer":{"@type":"Answer","text":"Each check starts from one hundred points and subtracts a fixed weight per distinct failed check. The AI-readiness rubric deducts twenty-five for critical, ten for serious, five for moderate, and two for minor; the search rubric deducts twenty-five, twelve, six, and two. Grades follow the published thresholds."}},
+  {"@type":"Question","name":"Which pages isolate which checks?","acceptedAnswer":{"@type":"Answer","text":"The learning resource carries LearningResource JSON-LD, so the article-schema check credits it. The plain page omits article schema, a byline, statistics, and citations, so the GEO scanner reports exactly those four deductions. The thin page drops under the word threshold for the AI-readiness scanner."}},
+  {"@type":"Question","name":"Can I edit the fixture?","acceptedAnswer":{"@type":"Answer","text":"Yes, but treat the edit as a reviewed change. Update the fixture, re-run the offline suite, and adjust the pinned assertions only when the modification is deliberate. A change that makes a healthy page fail is a defect in either the fixture or the scanner."}}
+ ]}
+]}
+</script>
+</head>
+<body>
+<header>
+<nav><ul>
+<li><a href="/">Home</a></li>
+<li><a href="/about">About the fixture</a></li>
+<li><a href="/faq">Fixture FAQ</a></li>
+<li><a href="/books/learning-resource.html">Learning resource</a></li>
+<li><a href="/books/plain.html">Plain content page</a></li>
+<li><a href="/thin.html">Thin page</a></li>
+<li><a href="https://example.com/source">External source</a></li>
+</ul></nav>
+</header>
+<main>
+<h1>Fixture FAQ</h1>
+<p>This page mirrors the shape of a real FAQ section: visible questions, each followed by a direct answer short enough to be lifted into a result. The AEO checks reward exactly that pattern, and the FAQPage schema in the head mirrors the same questions so the faq-schema check has nothing to deduct. Every answer stays inside the twenty to eighty word window the scanner accepts, and each heading below ends with a question mark.</p>
+<h2>Why does the fixture exist?</h2>
+<p>It exists so scanner assertions can pin exact scores against a copy that never changes. A live site drifts under you, so the suite serves these files from a temporary local server instead. Every deduction on every page is either designed into the markup or a scanner regression.</p>
+<h2>How are the scores computed?</h2>
+<p>Each check starts from one hundred points and subtracts a fixed weight per distinct failed check. The AI-readiness rubric deducts twenty-five for critical, ten for serious, five for moderate, and two for minor; the search rubric deducts twenty-five, twelve, six, and two. Grades follow the published thresholds.</p>
+<h2>Which pages isolate which checks?</h2>
+<p>The learning resource carries LearningResource JSON-LD, so the article-schema check credits it. The plain page omits article schema, a byline, statistics, and citations, so the GEO scanner reports exactly those four deductions. The thin page drops under the word threshold for the AI-readiness scanner.</p>
+<h2>Can I edit the fixture?</h2>
+<p>Yes, but treat the edit as a reviewed change. Update the fixture, re-run the offline suite, and adjust the pinned assertions only when the modification is deliberate. A change that makes a healthy page fail is a defect in either the fixture or the scanner.</p>
+</main>
+<footer><p>Fixture site for SMF Works scanner tests.</p></footer>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Fixture robots.txt for the deny path: blocks every crawler at the root.
+# Per RFC 9309 the AI-readiness scanner must treat a failed page fetch the
+# same way; here the polite fetcher itself refuses (our UA is disallowed),
+# so the scanner sees no page at all and reports only `page-fetch` critical.
+User-agent: *
+Disallow: /
