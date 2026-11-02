@@ -1,0 +1,10 @@
+# Site Signal — scorecard — {{ ts }}
+
+| Site | SEO | GEO | AEO | Overall | AI readiness | axe (critical/serious/moderate/minor) | Trend |
+|---|---|---|---|---|---|---|---|
+{% for r in rows %}
+| {{ r.domain }} | {{ r.seo }} | {{ r.geo }} | {{ r.aeo }} | {{ r.overall }} | {{ r.ai }} | {{ r.axe }} | {{ r.trend }} |
+{% endfor %}
+
+{% for c in caveats %}_{{ c }}_
+{% endfor %}

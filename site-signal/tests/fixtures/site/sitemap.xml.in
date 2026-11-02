@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Rendered at test time with the live origin of the temporary server;
+     {BASE_URL} is replaced so every listed URL resolves. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>{BASE_URL}/books/learning-resource.html</loc><lastmod>2026-11-01</lastmod></url>
+  <url><loc>{BASE_URL}/books/plain.html</loc><lastmod>2026-11-01</lastmod></url>
+</urlset>

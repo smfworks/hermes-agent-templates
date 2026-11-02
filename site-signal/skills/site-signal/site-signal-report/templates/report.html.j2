@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site Signal — {{ domain }} — {{ ts }}</title>
+<style>
+  /* Self-contained: inline CSS only, no external fonts, scripts or images. */
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0d1220; color: #e8eaf0; font: 15px/1.55 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 48px; }
+  h1 { color: #ffd233; font-size: 22px; margin: 0 0 4px; }
+  h2 { color: #ffd233; font-size: 16px; margin: 32px 0 8px; border-bottom: 1px solid #2a3350; padding-bottom: 4px; }
+  .sub { color: #9aa3bd; font-size: 13px; margin-bottom: 20px; }
+  .tiles { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  .tile { background: #161d33; border: 1px solid #2a3350; border-radius: 8px; padding: 10px 16px; min-width: 110px; }
+  .tile .label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #9aa3bd; }
+  .tile .value { color: #ffd233; font-size: 24px; font-weight: 700; }
+  .tile .grade { color: #ffd233; font-size: 14px; }
+  .tile.small .value { font-size: 16px; color: #e8eaf0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th { text-align: left; color: #ffd233; border-bottom: 1px solid #2a3350; padding: 6px 8px; }
+  td { border-bottom: 1px solid #1d2440; padding: 6px 8px; vertical-align: top; }
+  td.impact-critical { color: #ff6b6b; font-weight: 700; }
+  td.impact-serious { color: #ffab5e; font-weight: 600; }
+  td.impact-moderate { color: #ffe066; }
+  td.impact-minor { color: #9aa3bd; }
+  code { background: #161d33; border: 1px solid #2a3350; border-radius: 4px; padding: 0 4px; font-size: 12.5px; color: #ffd233; }
+  ul { padding-left: 20px; }
+  li { margin: 4px 0; }
+  .caveat { color: #9aa3bd; }
+  .sig { margin-top: 36px; color: #9aa3bd; font-size: 12px; }
+  .sig b { color: #ffd233; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Site Signal</h1>
+  <div class="sub">{{ domain }} — {{ ts }}</div>
+
+  {% if seo %}
+  <div class="tiles">
+    <div class="tile"><div class="label">SEO</div><div class="value">{{ seo.scores.SEO }}</div><div class="grade">{{ seo.grades.SEO }}</div></div>
+    <div class="tile"><div class="label">GEO</div><div class="value">{{ seo.scores.GEO }}</div><div class="grade">{{ seo.grades.GEO }}</div></div>
+    <div class="tile"><div class="label">AEO</div><div class="value">{{ seo.scores.AEO }}</div><div class="grade">{{ seo.grades.AEO }}</div></div>
+    <div class="tile"><div class="label">Overall</div><div class="value">{{ seo.scores.overall }}</div><div class="grade">{{ seo.grades.overall }}</div></div>
+    {% if ai %}<div class="tile"><div class="label">AI readiness</div><div class="value">{{ ai.score }}</div><div class="grade">{{ ai.grade }}</div></div>{% endif %}
+    <div class="tile small"><div class="label">axe nodes</div><div class="value">{{ axe_counts.critical }} critical · {{ axe_counts.serious }} serious · {{ axe_counts.moderate }} moderate · {{ axe_counts.minor }} minor</div><div class="grade">{{ axe_pages }} pages</div></div>
+  </div>
+  {% endif %}
+  <div class="sub">Change since last scan: {{ change }}</div>
+
+  <h2>Fix first</h2>
+  <table>
+    <tr><th>#</th><th>Impact</th><th>Dimension</th><th>Issue</th><th>Where</th><th>Fix</th><th>Effort</th></tr>
+    {% for f in fixes %}
+    <tr>
+      <td>{{ f.n }}</td>
+      <td class="impact-{{ f.impact }}">{{ f.impact }}</td>
+      <td>{{ f.dimension }}</td>
+      <td><code>{{ f.issue }}</code></td>
+      <td>{{ f.where }}</td>
+      <td>{{ f.fix }}</td>
+      <td>{{ f.effort }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Evidence</h2>
+  <ul>
+    {% for e in evidence %}<li>{{ e }}</li>
+    {% else %}<li>No node-level evidence in this run.</li>{% endfor %}
+  </ul>
+
+  <h2>Passing checks</h2>
+  <p>{{ passing | join(' · ') }}</p>
+
+  <h2>Caveats</h2>
+  <ul class="caveat">
+    {% for c in caveats %}<li>{{ c }}</li>{% endfor %}
+  </ul>
+
+  <h2>Shipped</h2>
+  {% if shipped %}
+  <table>
+    <tr><th>PR</th><th>Status</th><th>Before → After</th></tr>
+    {% for s in shipped %}<tr><td>{{ s.pr }}</td><td>{{ s.status }}</td><td>{{ s.before_after }}</td></tr>{% endfor %}
+  </table>
+  {% else %}<p class="sub">None yet — scan only.</p>{% endif %}
+
+  <div class="sig">Site Signal by <b>SMF Works</b> · rubric scores, no ranking or conformance claims · generated offline, no external assets</div>
+</div>
+</body>
+</html>

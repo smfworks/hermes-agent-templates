@@ -1,0 +1,44 @@
+{# Site Signal PR body (SPEC.md 5.4 step 6). Ends with the Site Signal footer.
+   Context: domain, repo, branch, base, pr_title, issues[], before_scores[],
+   verification[], new_facts[], dry_note. Rendered by ship_fix.sh. #}
+## What this fixes
+
+{{ pr_title }} — fixes for {{ domain }} found by the Site Signal audit
+(ranked by impact; evidence below). Opened from branch `{{ branch }}`
+(base `{{ base }}`).
+
+{% for i in issues %}- **[{{ i.impact }} {{ i.dimension }}] `{{ i.id }}`** — {{ i.message }}
+  - Where: {{ i.where }} · Suggested effort: {{ i.effort }}
+  - Fix: {{ i.fix }}
+{% for e in i.evidence_lines %}  - Evidence: {{ e }}
+{% endfor %}
+{% endfor %}{% if before_scores %}
+## Before (this scan)
+
+{% for l in before_scores %}- {{ l }}
+{% endfor %}{% endif %}
+{% if verification %}
+## Local verification
+
+{% for l in verification %}- {{ l }}
+{% endfor %}{% endif %}
+{% if new_facts %}
+## New facts flagged for review (owner: confirm or remove)
+
+The diff adds the following numerals / external URLs; per Site Signal rules no
+statistics, quotes, citations, authors, dates, or `sameAs` profiles are
+introduced without the owner's confirmation. Items listed here came from the
+existing site content or are structural values:
+
+{% for f in new_facts %}- `{{ f }}`
+{% endfor %}{% else %}
+## New facts review
+
+The diff adds no statistics, quotes, citations, authors, publish dates, or
+`sameAs` profiles (checked; publisher branding is "SMF Works").
+{% endif %}{% if dry_note %}
+{{ dry_note }}
+{% endif %}---
+_Opened by Site Signal (SMF Works). Not merged. Squash-merge only after the
+owner approves this PR (or a `merge: after_green_ci` policy is saved for this
+site), CI is green on the head SHA, and the PR is still mergeable._

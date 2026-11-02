@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site Signal Offline Fixture — Clean Page</title>
+<meta name="description" content="A clean single-page fixture for the SMF Works Site Signal offline test suite, carrying every metadata signal the AI-readiness scanner checks.">
+<link rel="canonical" href="https://fixture.example/clean.html">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="Site Signal Offline Fixture — Clean Page">
+<meta property="og:description" content="A clean single-page fixture for the SMF Works Site Signal offline test suite, carrying every metadata signal the AI-readiness scanner checks.">
+<meta property="og:image" content="https://fixture.example/og.png">
+<meta property="og:url" content="https://fixture.example/clean.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:modified_time" content="2026-11-01T08:00:00Z">
+<link rel="alternate" type="application/rss+xml" title="Fixture feed" href="/feed.xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"Organization","name":"SMF Works","url":"https://fixture.example/","logo":"https://fixture.example/logo.png","sameAs":["https://github.com/smfworks","https://fixture.example/identity"]},
+ {"@type":"WebSite","name":"Site Signal Fixture","url":"https://fixture.example/"}
+]}
+</script>
+</head>
+<body>
+<main>
+<h1>Clean fixture page</h1>
+<p>This page exists so the AI-readiness scanner can be tested without touching the network. It carries every signal the rubric asks for, and it does so in plain, static markup that any HTTP client can fetch. The scanner reads the raw HTML the way a crawler does: no JavaScript runs, no fonts load, and nothing is rendered. What matters is what the server sends, and this page sends all of it.</p>
+<p>The head carries a descriptive title inside the length window the scanner accepts, a meta description long enough to be useful and short enough to stay under the limit, a canonical link pointing at the preferred copy of this document, and a viewport declaration for small screens. The document element declares its language, the Open Graph block is complete, a twitter card is present, and a modified timestamp is exposed so freshness checks have something to read. A link to the feed sits in the head for change discovery.</p>
+<p>The body keeps its text inside a main landmark, uses exactly one heading of level one, and never skips a level on the way down. The single image on the page carries alternative text, and every link has a real destination so a crawler can follow it. The structured data block parses cleanly and includes an organization entity with a name, a URL, a logo, and sameAs profiles, plus a website node.</p>
+<p>When the scanner runs against this page it should report no deductions at all: a score of one hundred, the best grade, and a passes list that names every check. Any deduction here is a regression in the scanner itself, and the suite treats it as a failure.</p>
+</main>
+</body>
+</html>

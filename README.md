@@ -16,7 +16,7 @@ Replace `site-signal` with the template you want. The alias gives you a `site-si
 
 | Directory | What it does | Status |
 |---|---|---|
-| `site-signal` | Scans sites you own for SEO, GEO, AEO, AI readiness, and accessibility. Ranks issues by impact and opens fix PRs when you ask. | In progress. Not on `main` yet. |
+| `site-signal` | Scans sites you own for SEO, GEO, AEO, AI readiness, and accessibility. Ranks issues by impact and opens fix PRs when you ask. | Reviewed (Paula, APPROVE). S6/S7 live cycle passed. |
 
 New templates land as a pull request. Do not push to `main`. Do not commit `.env`, tokens, or session data.
 

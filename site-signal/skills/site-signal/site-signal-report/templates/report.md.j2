@@ -1,0 +1,41 @@
+# Site Signal — {{ domain }} — {{ ts }}
+{% if seo %}
+**SEO** {{ seo.scores.SEO }} ({{ seo.grades.SEO }}) · **GEO** {{ seo.scores.GEO }} ({{ seo.grades.GEO }}) · **AEO** {{ seo.scores.AEO }} ({{ seo.grades.AEO }}) · **Overall {{ seo.scores.overall }} ({{ seo.grades.overall }})**
+{% endif %}
+{% if ai %}**AI readiness** {{ ai.score }}/100 ({{ ai.grade }}) · {% endif %}**Accessibility (axe)** {{ axe_counts.critical }} critical · {{ axe_counts.serious }} serious · {{ axe_counts.moderate }} moderate · {{ axe_counts.minor }} minor (nodes, {{ axe_pages }} pages)
+
+_Change since last scan:_ {{ change }}
+
+## Fix first
+
+| # | Impact | Dimension | Issue | Where | Fix | Effort |
+|---|---|---|---|---|---|---|
+{% for f in fixes %}
+| {{ f.n }} | {{ f.impact }} | {{ f.dimension }} | {{ f.issue }} | {{ f.where }} | {{ f.fix }} | {{ f.effort }} |
+{% endfor %}
+
+## Evidence
+
+{% for e in evidence %}- {{ e }}
+{% else %}- No node-level evidence in this run.
+{% endfor %}
+
+## Passing checks
+
+{{ passing | join(' · ') }}
+
+## Caveats
+
+{% for c in caveats %}- {{ c }}
+{% endfor %}
+
+## Shipped
+
+{% if shipped %}
+| PR | Status | Before → After |
+|---|---|---|
+{% for s in shipped %}
+| {{ s.pr }} | {{ s.status }} | {{ s.before_after }} |
+{% endfor %}
+{% else %}_None yet — scan only._
+{% endif %}

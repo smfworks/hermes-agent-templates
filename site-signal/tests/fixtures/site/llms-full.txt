@@ -1,0 +1,35 @@
+# Site Signal fixture — full content dump
+
+This file exists so the AI-readiness scanner finds /llms-full.txt at 200 and
+does not report the llms-full minor. It mirrors the fixture pages in plain
+Markdown, following the llmstxt.org convention of one H1, a summary blockquote,
+and H2 sections of links.
+
+## Home
+
+The fixture home is the healthy reference page: complete metadata, an
+organization entity, question headings with concise answers, and enough
+server-rendered prose that no content check can flag it.
+
+## About
+
+The fixture exists so scanner tests run offline and deterministically. A live
+site changes under you; a fixed copy served from a local directory is the only
+fair reference.
+
+## FAQ
+
+Every question heading on the FAQ page is followed by a direct answer of
+twenty to eighty words, which is exactly the shape the AEO checks look for.
+
+## Content pages
+
+The learning resource carries LearningResource JSON-LD with an author and a
+dateModified; the plain page omits article schema on purpose so the suite can
+assert both the credit and the deduction.
+
+## Thin page
+
+The thin page keeps its server-rendered text under eighty words so the
+AI-readiness scanner reports the ssr-content critical check as its only
+deduction, pinning the B grade boundary at exactly seventy-five.
