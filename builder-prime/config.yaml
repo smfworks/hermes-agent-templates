@@ -1,0 +1,17 @@
+# Builder Prime — Hermes profile config (SMF Works)
+model:
+  default: "grok-4.7"
+  provider: "auto"
+agent:
+  reasoning_effort: medium
+platform_toolsets:
+  cli: [terminal, file, web, todo, memory, delegation, clarify, skills]
+skills:
+  config:
+    builder_prime:
+      home: "~/BuilderPrime"
+      reviewer_profile: "gatekeeper-prime"
+      protected_branch: "main"
+      grok_model: "spark-glm"
+      grok_bin: "grok"
+      handoff_marker: "bp-handoff:"
