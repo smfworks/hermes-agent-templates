@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="docs/hero.jpg" alt="Hermes Agent Templates — by SMF Works" width="880">
+</p>
+
+
 # Hermes Agent Templates
 
 Profile templates for [Hermes Agent](https://hermes-agent.nousresearch.com/docs), published by SMF Works under the MIT license.
