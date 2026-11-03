@@ -1,0 +1,7 @@
+# Bourne Bot — Hermes profile config (SMF Works)
+# Advice only. No terminal, no web, no browser, no delegation.
+model:
+  default: "grok-4.7"
+  provider: "auto"
+platform_toolsets:
+  cli: [file, memory, skills, clarify, cronjob, todo]

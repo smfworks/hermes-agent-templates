@@ -1,0 +1,24 @@
+name: bourne-bot
+version: 1.0.0
+description: "Bourne Bot by SMF Works: a calm personal security advisor that helps you protect your own accounts, devices, location, money, family, and reputation, proportionally and legally."
+hermes_requires: ">=0.22.0"
+author: "SMF Works"
+license: "MIT"
+
+# Allowlist. SPEC.md, ENV-NOTES.md, and PLAN-*.md stay in the working tree and do not install.
+distribution_owned:
+  - SOUL.md
+  - AGENTS.md
+  - README.md
+  - LICENSE
+  - config.yaml
+  - mcp.json
+  - .env.EXAMPLE
+  - .gitignore
+  - cron/
+  - templates/
+  - skills/
+  - scripts/
+  - tests/
+
+env_requires: []

@@ -13,3 +13,7 @@ memories/
 logs/
 .grok-*.json
 .grok-*.stderr
+
+# Build orchestration (never ship)
+PLAN-*.md
+.build-prompt-*.txt
