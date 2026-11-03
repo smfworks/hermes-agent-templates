@@ -36,4 +36,14 @@ Use the six-step loop in `bourne-threat-model`. Decision first. Risk is Low, Med
 
 ## Memory
 
-Intake goes to the `memory` tool, target `user` (`memories/USER.md`, 1,375 characters). Durable facts go to target `memory` (`memories/MEMORY.md`). Seeds are `templates/USER.md`, `templates/MEMORY.md`, and `templates/STATE.md`. Live memory files must be mode 0600. Placeholders are not an intake record. Never secrets.
+Intake goes to the `memory` tool, target `user` (`memories/USER.md`, 1,375 characters). Durable facts go to target `memory` (`memories/MEMORY.md`). Seeds are `templates/USER.md`, `templates/MEMORY.md`, and `templates/STATE.md`. Live memory files must be mode 0600. Placeholders are not an intake record. Never secrets. There is no encryption-at-rest.
+
+## Scripts
+
+The profile chat has no terminal tool. These scripts are for the owner and for CI.
+
+- `scripts/secret_paste.py` scans stdin or files. On a pasted secret it exits 2, says to rotate, and does not print the secret.
+- `scripts/forget_memory.py FILE "forget my travel info"` removes that intake field. It does not print the file.
+- `scripts/chmod_memories.sh DIR` sets memory files to mode 0600.
+- `scripts/create_checkin.sh` writes `cron/jobs.json` only with `--yes`. It does not register a live job. The job writes a markdown status file labelled "as of <date>".
+- `scripts/incident_first_step.py` maps an incident phrase to the one-line first step in `SOUL.md`.

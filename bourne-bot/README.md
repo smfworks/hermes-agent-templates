@@ -30,3 +30,21 @@ The first conversation asks six questions, one at a time, unless something is ha
 - `bourne-threat-model`
 
 No connectors. The profile does not log in to your accounts. Its tools are file, memory, skills, clarify, cronjob, and todo.
+
+## Tests
+
+From this directory:
+
+```bash
+bash tests/smoke.sh
+```
+
+That runs the secret-paste, forget, memory mode, check-in, incident phrase, and file-level refusal checks. It does not call a model. If `grok` is missing, smoke prints that you should install Grok Build or use Cursor, Claude Code, or Codex, then continues. It does not switch to another build CLI.
+
+## Forget an intake field
+
+```bash
+python3 scripts/forget_memory.py memories/USER.md "forget my travel info"
+```
+
+This removes the travel field from that file and does not print the file. Other fields stay. Set live memory files to mode 0600 with `scripts/chmod_memories.sh`. Memory is not encrypted at rest.
