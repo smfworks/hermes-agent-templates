@@ -20,7 +20,11 @@ Do not call `hermes`. Do not call a model. Do not register a live cron job.
 
    Columns: `date,tradition,source,reading,question,replied`
 
+   Quote every field. The tradition `Christian (patristic, contemplative)` must survive a round-trip.
+
    `replied` is `n` until a reply. Same-day second run reprints the logged sitting and must not add a row.
+
+   A missed local day (last reply before yesterday) writes `streak` 0 even on a reprint.
 
    Tradition not used in the last 3 local days. Theme not used this calendar week (Mon–Sun). Themes may repeat in a later week. Ten consecutive days starting on a Monday use seven themes in week one and three in week two, so at least one theme label repeats across the week boundary. There are nine theme labels.
 
@@ -47,6 +51,8 @@ Do not call `hermes`. Do not call a model. Do not register a live cron job.
    Onboarding skip = defaults: 8:00 America/New_York; full rotation; weekly Sunday 18:00.
 
    Writes two jobs into `PATH` with ids `daily-wisdom-sitting` and `daily-wisdom-weekly`.
+   Script fields are `cron_sitting.sh` and `cron_weekly.sh`. Those wrappers ship under `scripts/`.
+   Live Hermes mints 12-hex job ids; match live jobs by `name`.
 
    Must record tz `America/New_York` in `DIR/state.json`. Does not call `hermes`. Does not register a live job.
 
@@ -140,7 +146,8 @@ Inside one Monday–Sunday week, theme values are unique.
 - `notes.md` gains one line that contains both `D` and `TEXT`
 - the sitting row for `D` has `replied` `y`
 - consecutive reply days: streak 1, then 2, and `last_reply_date` is that reply's date
-- a missed calendar day, then a reply: streak is 0 or 1, and `longest` is still at least 2
+- after a reply, a later sitting whose last reply is before yesterday: streak is 0, and `longest` is unchanged
+- a missed calendar day, then a reply: streak is 1, and `longest` is still at least 2
 
 ### Cron jobs file
 

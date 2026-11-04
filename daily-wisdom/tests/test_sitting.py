@@ -235,9 +235,42 @@ def test_a3_same_day_idempotent() -> None:
     print("A3 PASS")
 
 
+def test_csv_quotes_christian_comma() -> None:
+    scripts = str(ROOT / "scripts")
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+    from sitting import read_sittings, write_sittings
+
+    tradition = "Christian (patristic, contemplative)"
+    with tempfile.TemporaryDirectory() as raw:
+        path = Path(raw) / "sittings.csv"
+        write_sittings(
+            path,
+            [
+                {
+                    "date": "2026-11-06",
+                    "tradition": tradition,
+                    "source": "Augustine, *Confessions*, 1.1",
+                    "reading": "Great art Thou, O Lord.\nThou madest us for Thyself.",
+                    "question": "Where did restlessness show up today?",
+                    "replied": "n",
+                }
+            ],
+        )
+        text = path.read_text(encoding="utf-8")
+        assert f'"{tradition}"' in text, text
+        rows = read_sittings(path)
+        assert len(rows) == 1
+        assert rows[0]["tradition"] == tradition
+        assert rows[0]["date"] == "2026-11-06"
+        assert "," in rows[0]["tradition"]
+    print("CSV QUOTE PASS")
+
+
 def main() -> None:
     test_a2_ten_days()
     test_a3_same_day_idempotent()
+    test_csv_quotes_christian_comma()
 
 
 if __name__ == "__main__":

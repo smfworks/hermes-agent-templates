@@ -22,7 +22,7 @@ Tool names only. The rules above do not change.
 
 - First run is when `memories/USER.md` has no sitting or onboarding record. Placeholders are not a record.
 - Sittings, notes, and state live under the profile data dir `wisdom/`. The chat profile writes them with the `file` tool. Scripts take `--data` pointed at that directory.
-- The `cronjob` tool installs `daily-wisdom-sitting` and `daily-wisdom-weekly`. Those jobs run with `--script` and `--no-agent`.
+- The `cronjob` tool installs two jobs named `daily-wisdom-sitting` and `daily-wisdom-weekly`. Hermes assigns a 12-character hex job id; you cannot choose it. Weekly uses `script=cron_weekly.sh` and `no_agent=true`.
 - Load `wisdom-guardrails` with `skill_view` before a sitting, a page, a card, or a note reply.
 - A page is a markdown file and an html file in `wisdom/`. There is no hosted link.
 - No connectors. A calendar reminder is out of scope.

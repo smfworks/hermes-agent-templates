@@ -19,18 +19,18 @@ def default_jobs() -> list[dict]:
     return [
         {
             "id": SITTING_ID,
-            "name": "Daily Wisdom sitting",
+            "name": SITTING_ID,
             "timezone": TZ,
             "schedule": {"expr": "0 8 * * *"},
-            "script": "scripts/sitting.py",
+            "script": "cron_sitting.sh",
             "no_agent": True,
         },
         {
             "id": WEEKLY_ID,
-            "name": "Daily Wisdom weekly page",
+            "name": WEEKLY_ID,
             "timezone": TZ,
             "schedule": {"expr": "0 18 * * 0"},
-            "script": "scripts/weekly.py",
+            "script": "cron_weekly.sh",
             "no_agent": True,
         },
     ]

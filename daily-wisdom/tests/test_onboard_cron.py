@@ -123,6 +123,12 @@ def assert_jobs(path: Path) -> None:
     week_min, week_hour, week_dom, week_mon, week_dow = cron_fields(weekly)
     assert (week_min, week_hour, week_dom, week_mon) == ("0", "18", "*", "*"), weekly
     assert week_dow in {"0", "7"}, weekly
+    assert (ROOT / "scripts" / "cron_sitting.sh").is_file(), "A1: missing cron_sitting.sh"
+    assert (ROOT / "scripts" / "cron_weekly.sh").is_file(), "A1: missing cron_weekly.sh"
+    sitting_script = sitting.get("script")
+    weekly_script = weekly.get("script")
+    assert sitting_script in {"cron_sitting.sh", "scripts/cron_sitting.sh"}, sitting
+    assert weekly_script in {"cron_weekly.sh", "scripts/cron_weekly.sh"}, weekly
 
 
 def assert_state(data: Path) -> None:

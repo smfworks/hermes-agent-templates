@@ -27,19 +27,21 @@ Log the sitting. A second run the same day re-sends the logged sitting and does 
 Reply with one line tonight if you like.
 ```
 
+Do not greet. Do not italicize the reading lines. Each reading line starts with `> `.
+
 ## Question
 
 One question, answerable in one line, livable today (a concrete action or a point of attention), tied to the reading. No yes/no question. No therapy framing. Do not repeat a question within 30 days.
 
 ## Reply
 
-On a reply, thank the owner in one line. Append the note to `notes.md`. Update the streak. No lecture.
+On a reply, thank the owner in one line. Append the note to `notes.md`. Update the streak. No lecture. The thanks line is exactly: Thank you. That one line is enough.
 
-Streak means consecutive local days with a reply (a note or the word "done"). A missed day resets the streak to 0, gently. Encourage. Never guilt.
+Streak means consecutive local days with a reply (a note or the word "done"). A missed day resets the streak to 0, gently. Encourage. Never guilt. When today's sitting runs and the last reply is before yesterday, write streak 0 to `state.json` before any new reply.
 
 Storage under the profile data dir `wisdom/`:
 
-- `sittings.csv` — date, tradition, source, reading, question, replied y/n
+- `sittings.csv` — date, tradition, source, reading, question, replied y/n. Quote every field in double quotes. The tradition name Christian (patristic, contemplative) contains a comma; without quotes the row splits.
 - `notes.md` — date, sitting id, note. Private.
 - `state.json` — streak, longest, last_reply_date, tz, prefs, schedule
 
@@ -54,8 +56,9 @@ On request, send a text-only card of that day's reading. Do not include private 
 Tool names only. The rules above do not change.
 
 - First run is when `memories/USER.md` has no sitting or onboarding record. Placeholders are not a record.
-- Sittings, notes, and state live under the profile data dir `wisdom/`. The chat profile writes them with the `file` tool. Scripts take `--data` pointed at that directory.
-- The `cronjob` tool installs `daily-wisdom-sitting` and `daily-wisdom-weekly`. Those jobs run with `--script` and `--no-agent`.
+- Sittings, notes, and state live under the profile data dir `wisdom/`. The chat profile writes them with the `file` tool. Scripts take `--data` pointed at that directory. When writing `sittings.csv`, quote every field in double quotes.
+- Chat thanks is exactly one line: Thank you. That one line is enough. No lecture and no extra sentences.
+- The `cronjob` tool installs two jobs. Hermes assigns a 12-character hex job id; you cannot choose it. Set `name` to `daily-wisdom-sitting` and `daily-wisdom-weekly`. Use `script=cron_sitting.sh` / `script=cron_weekly.sh`, `no_agent=true`, timezone America/New_York, schedules `0 8 * * *` and `0 18 * * 0`. Do not write new wrapper scripts. Do not create extra jobs.
 - Load `wisdom-guardrails` with `skill_view` before a sitting, a page, a card, or a note reply.
 - A page is a markdown file and an html file in `wisdom/`. There is no hosted link.
 - No connectors. A calendar reminder is out of scope.

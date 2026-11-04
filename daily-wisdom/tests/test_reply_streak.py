@@ -95,6 +95,12 @@ def test_a4_reply_streak_and_gap() -> None:
         assert rows[days[0]]["replied"] == "y"
         assert rows[days[1]]["replied"] == "n"
 
+        missed = run_sitting(data, days[2], env)
+        assert missed.returncode == 0, missed.stderr
+        state = load_state(data)
+        assert state["streak"] == 0, state["streak"]
+        assert state["longest"] >= 1
+
         second = run_reply(data, days[1], note_2, env)
         assert_thanks(second)
         notes = (data / "notes.md").read_text(encoding="utf-8")
@@ -110,6 +116,12 @@ def test_a4_reply_streak_and_gap() -> None:
         assert rows[days[2]]["replied"] == "n"
         assert len(read_sittings(data / "sittings.csv")) == 4
 
+        gap = run_sitting(data, days[3], env)
+        assert gap.returncode == 0, gap.stderr
+        state = load_state(data)
+        assert state["streak"] == 0, state["streak"]
+        assert state["longest"] >= 2
+
         # 2026-12-03 has a sitting and no reply. The next reply is not consecutive.
         third = run_reply(data, days[3], note_4, env)
         assert_thanks(third)
@@ -118,7 +130,7 @@ def test_a4_reply_streak_and_gap() -> None:
         assert_note_line(notes, days[0], note_1)
         state = load_state(data)
         assert state["sentinel"] == "keep-me"
-        assert state["streak"] in (0, 1), state["streak"]
+        assert state["streak"] == 1, state["streak"]
         assert state["longest"] >= 2
         rows = {row["date"]: row for row in read_sittings(data / "sittings.csv")}
         assert rows[days[2]]["replied"] == "n"

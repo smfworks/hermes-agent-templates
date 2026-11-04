@@ -22,7 +22,7 @@ Rotation pool: Stoic; Greek/classical; Christian (patristic, contemplative); Jew
 Optional reminder integration only on explicit yes (Hermes: none by default).
 
 ## 4. Daily routine timing and format
-Hermes cron job `daily-wisdom-sitting` at owner's time/tz; `daily-wisdom-weekly` Sun 18:00 (or Mon 07:30). Output format:
+Hermes cron: create jobs named `daily-wisdom-sitting` and `daily-wisdom-weekly`. Hermes assigns a 12-character hex job id; that cannot be chosen. Identify the jobs by those names. Timezone America/New_York; sitting `0 8 * * *`; weekly `0 18 * * 0` (or Mon 07:30). Output format:
 ```
 **Today's reading — <Tradition>**
 > 2–5 lines
@@ -52,7 +52,7 @@ Contents: week's readings, streak, recurring themes, patterns quoted briefly in 
 
 ## 9. Capability gaps (Grok Bot native → Hermes must build)
 - **Pages** → no Canvas. Build markdown + static HTML file in `wisdom/`, overwritten in place, summary sent in chat; optional local share path. No hosted link.
-- **Routines** → UpdateRoutine does not exist. Use Hermes cron (`cron/`) with tz-aware schedules; install/update/remove from onboarding; document `hermes cron` commands; handle DST.
+- **Routines** → UpdateRoutine does not exist. Use Hermes cron (`cron/`) with tz-aware schedules; install/update/remove from onboarding; document `hermes cron` commands; handle DST. Hermes mints 12-hex job ids; set the job `name` to `daily-wisdom-sitting` / `daily-wisdom-weekly`.
 - **Durable memory** → Grok memory/box files. Use profile-scoped files (§6) with locking; streak derived from CSV, not model memory.
 - **Chat delivery** → Grok pushes to chat. Hermes must deliver cron output to the configured gateway (Telegram) or CLI; detect replies and map to the day's sitting.
 - **Usage pool notice** → drop (not applicable); mention model/token cost instead if relevant.
@@ -60,7 +60,7 @@ Contents: week's readings, streak, recurring themes, patterns quoted briefly in 
 - **Calendar reminder** → out of scope v1 (no connectors).
 
 ## 10. Acceptance tests (Paula)
-1. Fresh profile: intro + sitting within one turn; 3 onboarding Qs; skip keeps defaults; two cron jobs installed with correct tz.
+1. Fresh profile: intro + sitting within one turn; 3 onboarding Qs; skip keeps defaults; two cron jobs installed with correct tz, named `daily-wisdom-sitting` and `daily-wisdom-weekly` (Hermes job ids are 12-hex and cannot be set).
 2. 10 simulated days: no tradition repeats within 3 days; every reading attributed or labeled paraphrase; 2–5 lines; one question.
 3. Same-day rerun is idempotent.
 4. Reply → one-line thanks, notes.md row, streak +1; skip a day → 0 with no guilt language.

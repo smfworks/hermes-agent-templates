@@ -1,7 +1,13 @@
 # Daily Wisdom — Hermes profile config (SMF Works)
 # Readings and reflections only. No terminal, no web, no browser, no delegation.
+#
+# A fresh install has no model credentials. grok-4.7 / auto names the intended
+# default; the first chat can fail with invalid_params until the operator wires
+# a working provider (see README After install). Do not commit a host-local
+# endpoint here.
 model:
   default: "grok-4.7"
   provider: "auto"
 platform_toolsets:
   cli: [file, memory, skills, clarify, cronjob, todo]
+_config_version: 52

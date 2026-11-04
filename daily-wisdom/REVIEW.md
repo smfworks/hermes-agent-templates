@@ -8,7 +8,7 @@ Record the profile, the date, and what she saw for each item.
 
 ## A1 — Fresh profile
 
-SPEC §10.1. Intro plus a sitting within one turn. Three onboarding questions. Skip keeps the defaults (8:00 America/New_York, full rotation, weekly Sunday 6 PM). Two cron jobs installed with that timezone: `daily-wisdom-sitting` and `daily-wisdom-weekly`.
+SPEC §10.1. Intro plus a sitting within one turn. Three onboarding questions. Skip keeps the defaults (8:00 America/New_York, full rotation, weekly Sunday 6 PM). Two cron jobs installed with that timezone, named `daily-wisdom-sitting` and `daily-wisdom-weekly`. Hermes assigns 12-hex job ids; match by name.
 
 ## A2 — Ten days
 

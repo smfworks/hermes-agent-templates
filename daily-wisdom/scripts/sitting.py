@@ -105,6 +105,7 @@ def write_sittings(path: Path, rows: list[dict[str, str]]) -> None:
         fieldnames=COLUMNS,
         lineterminator="\n",
         extrasaction="ignore",
+        quoting=csv.QUOTE_ALL,
     )
     writer.writeheader()
     for row in rows:
@@ -246,15 +247,37 @@ def sitting_text(data: Path, day: date) -> str:
     )
 
 
+def missed_reply(state: dict, day: date) -> bool:
+    """True when the streak should drop to 0: last reply is before yesterday."""
+    last = state.get("last_reply_date")
+    if not isinstance(last, str) or not last.strip():
+        streak = state.get("streak")
+        return isinstance(streak, int) and not isinstance(streak, bool) and streak > 0
+    try:
+        last_day = date.fromisoformat(last)
+    except ValueError:
+        return True
+    return last_day < day - timedelta(days=1)
+
+
 def log_sitting(data: Path, day: date) -> str:
-    """Return stdout. Write csv and state only when this date is new."""
+    """Return stdout. Write csv and state only when this date is new.
+
+    A missed local day (last reply before yesterday) writes streak 0 even on a
+    same-day reprint, so the morning sitting shows 0 before the next reply.
+    """
     day_s = day.isoformat()
     csv_path = data / "sittings.csv"
     rows = read_sittings(csv_path)
-    if any(row["date"] == day_s for row in rows):
-        return sitting_text(data, day)
     state_path = data / "state.json"
     state = load_state(state_path)
+    streak_reset = missed_reply(state, day)
+    if streak_reset:
+        state["streak"] = 0
+    if any(row["date"] == day_s for row in rows):
+        if streak_reset:
+            save_state(state_path, state)
+        return sitting_text(data, day)
     entry = pick(load_readings(), day, rows, state)
     source = format_source(entry)
     lines = list(entry["lines"])
