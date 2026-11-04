@@ -1,0 +1,13 @@
+From: Amazon Orders <auto-confirm@amazon.com>
+To: owner@example.com
+Date: Thu, 01 Oct 2026 16:00:00 -0400
+Subject: Your Amazon.com order confirmation
+Message-ID: <amazon-order-2026-10-01@amazon.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+
+Thank you for your one-time purchase.
+Order: wireless mouse
+Amount: $24.00 USD
+This is not a subscription. One-time purchase only.
+Payment date: 2026-10-01

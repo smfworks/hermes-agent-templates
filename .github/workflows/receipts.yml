@@ -1,0 +1,15 @@
+name: receipts
+
+on:
+  pull_request:
+    paths:
+      - "receipts/**"
+      - ".github/workflows/receipts.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Contract tests
+        run: bash receipts/tests/smoke.sh

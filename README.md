@@ -26,6 +26,7 @@ Replace `site-signal` with the template you want. The alias gives you a `site-si
 | `gatekeeper-prime` | Reviews every pull request and squash-merges only after the owner's GitHub review on that head SHA. | Draft. Same review as Builder Prime. |
 | `bourne-bot` | Personal OPSEC advisor. Four Grok Bot skills, advice only, no terminal or web. | Draft. Verbatim skill port and contract tests on this PR. Awaiting live smoke and owner yes. |
 | `daily-wisdom` | Morning sitting: one short reading, one sentence of context, one question. Four skills, no connectors. | Draft. Contract tests A1–A7 pass on this PR. Awaiting Paula live smoke and owner yes. |
+| `receipts` | Money-back bot. Read-only mail, one report, drafts only, never sends. | Draft. Contract tests A1–A8 on this PR. Awaiting Liam live smoke and owner yes. |
 
 New templates land as a pull request. Do not push to `main`. Do not commit `.env`, tokens, or session data.
 

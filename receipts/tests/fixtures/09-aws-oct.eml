@@ -1,0 +1,17 @@
+From: Amazon Web Services <no-reply@amazon.com>
+To: owner@example.com
+Date: Thu, 15 Oct 2026 00:00:00 +0000
+Subject: AWS invoice for October
+Message-ID: <aws-2026-10-15@amazon.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+
+AWS usage bill.
+Kind: usage
+Plan: pay-as-you-go
+Amount: $70.00 USD
+Cadence: monthly
+Payment date: 2026-10-15
+Line item: EC2 $56.00
+Line item: S3 $14.00
+Service period: 2026-09-15 to 2026-10-15
