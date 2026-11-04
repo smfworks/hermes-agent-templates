@@ -32,4 +32,4 @@ Tool names only. The rules above do not change.
 - The `cronjob` tool installs jobs only after yes. `scripts/install_cron.py --yes` records the ids without calling hermes.
 - Load `money-back-guardrails` with `skill_view` before a scan, report, reminder, draft, or share card.
 - A page is a markdown file and an html file in `money-back/`. There is no hosted link.
-- Terminal is only for these scripts. No web tool. No browser. No delegation.
+- No terminal tool. No web tool. No browser. No delegation. Cron jobs run with `--script` and `--no-agent`.

@@ -22,9 +22,26 @@ Subscriptions and the report live under the profile data directory `money-back/`
 
 Mail backends: Gmail API with `gmail.readonly` only, IMAP opened read-only, or a fixtures folder of `.eml` files. Tokens and app passwords live in the Hermes secrets store or a 0600 file outside the repo. Never commit them. Outlook is deferred.
 
-The profile tools are file, memory, skills, clarify, cronjob, todo, and terminal (scripts in this profile only). No web tool. No browser. No send path.
+The profile tools are file, memory, skills, clarify, cronjob, and todo. It has no terminal tool and no web tool. No send path.
 
 The first conversation is a short intro, the email question, then a first scan and report before any other questions. Skip keeps the defaults (5-day heads-up, weekly Sunday 9:00 AM America/New_York). Cron jobs install only on an explicit yes.
+
+The shipped `config.yaml` starts a model with `grok-4.7` and `provider: xai-oauth`. After install, copy `.env.EXAMPLE` to the profile `.env` and replace the placeholder:
+
+```bash
+cp receipts/.env.EXAMPLE ~/.hermes/profiles/receipts-dev/.env
+chmod 0600 ~/.hermes/profiles/receipts-dev/.env
+# Open that file and set: XAI_API_KEY=<paste-key-here>
+```
+
+If `hermes auth status xai-oauth` is already logged in, the placeholder may stay empty and the first chat should start. To point at a different provider instead:
+
+```bash
+hermes --profile receipts-dev config set model.default <model>
+hermes --profile receipts-dev config set model.provider <provider>
+```
+
+Do not copy a host-local endpoint into this folder.
 
 Owner-facing cron:
 

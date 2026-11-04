@@ -8,7 +8,7 @@ from datetime import date
 from pathlib import Path
 
 from mail_fetch import parse_now
-from store import load_state, read_csv, save_state
+from store import load_state, read_csv, save_state, window_days
 
 
 def in_window(row: dict, now: date, window: int) -> bool:
@@ -33,10 +33,7 @@ def main(argv: list[str] | None = None) -> int:
     data = Path(args.data)
     now = parse_now(args.now)
     state = load_state(data / "state.json")
-    try:
-        window = int(state.get("window") or 5)
-    except (TypeError, ValueError):
-        window = 5
+    window = window_days(state)
     reminded = state.get("reminded")
     if not isinstance(reminded, dict):
         reminded = {}

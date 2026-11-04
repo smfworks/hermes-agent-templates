@@ -24,6 +24,7 @@ COLUMNS = [
     "source_msg_ids",
     "evidence_quote",
     "notes",
+    "sender",
 ]
 
 
@@ -132,11 +133,70 @@ def test_a2_a4() -> None:
         report = (data / "money-back.md").read_text(encoding="utf-8")
         assert "unknown — open receipt" in report
         assert "estimate" in report.casefold()
+        netflix = [r for r in rows if r["service"].casefold() == "netflix"][0]
+        assert "netflix.com" in netflix["sender"].casefold()
     print("A2 A4 PASS")
+
+
+def test_window_from_state() -> None:
+    """Netflix renews 2026-11-08; NOW=2026-11-04; delta=4. Window 3 excludes it; 7 includes it."""
+    with tempfile.TemporaryDirectory() as raw:
+        tmp = Path(raw)
+        data = tmp / "data"
+        data.mkdir()
+        env = make_env(tmp)
+        args = [
+            "--data",
+            str(data),
+            "--inbox",
+            str(FIXTURES),
+            "--backend",
+            "fixtures",
+            "--now",
+            NOW,
+        ]
+
+        (data / "state.json").write_text('{"window": 3}\n', encoding="utf-8")
+        scan3 = run_script("scan.py", args, env)
+        assert scan3.returncode == 0, scan3.stderr
+        findings3 = load_findings(data / "findings.jsonl")
+        netflix_renew3 = [
+            f
+            for f in findings3
+            if f.get("type") == "renewal_window" and f.get("service", "").casefold() == "netflix"
+        ]
+        assert not netflix_renew3, findings3
+        page3 = run_script("page.py", ["--data", str(data), "--now", NOW], env)
+        assert page3.returncode == 0, page3.stderr
+        md3 = (data / "money-back.md").read_text(encoding="utf-8")
+        start = md3.casefold().find("renewing this window")
+        end = md3.casefold().find("trials about to bill")
+        assert start != -1 and end != -1, md3
+        assert "netflix" not in md3[start:end].casefold(), md3[start:end]
+
+        (data / "state.json").write_text('{"window": 7}\n', encoding="utf-8")
+        scan7 = run_script("scan.py", args, env)
+        assert scan7.returncode == 0, scan7.stderr
+        findings7 = load_findings(data / "findings.jsonl")
+        netflix_renew7 = [
+            f
+            for f in findings7
+            if f.get("type") == "renewal_window" and f.get("service", "").casefold() == "netflix"
+        ]
+        assert netflix_renew7, findings7
+        page7 = run_script("page.py", ["--data", str(data), "--now", NOW], env)
+        assert page7.returncode == 0, page7.stderr
+        md7 = (data / "money-back.md").read_text(encoding="utf-8")
+        start = md7.casefold().find("renewing this window")
+        end = md7.casefold().find("trials about to bill")
+        assert start != -1 and end != -1, md7
+        assert "netflix" in md7[start:end].casefold(), md7[start:end]
+    print("WINDOW PASS")
 
 
 def main() -> None:
     test_a2_a4()
+    test_window_from_state()
 
 
 if __name__ == "__main__":

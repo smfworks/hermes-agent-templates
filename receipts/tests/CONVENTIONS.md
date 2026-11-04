@@ -78,10 +78,10 @@ Frozen clock: `--now YYYY-MM-DD`. Tests use `2026-11-04`. First-run lookback is 
 
 ## subscriptions.csv
 
-UTF-8 CSV header, no extra columns:
+UTF-8 CSV header:
 
 ```
-service,plan,amount,currency,cadence,last_charge,next_renewal,renewal_is_estimate,status,kind,source_msg_ids,evidence_quote,notes
+service,plan,amount,currency,cadence,last_charge,next_renewal,renewal_is_estimate,status,kind,source_msg_ids,evidence_quote,notes,sender
 ```
 
 - `amount` is a number string or empty. Missing amount is empty here; the report says `unknown — open receipt`.
@@ -89,6 +89,7 @@ service,plan,amount,currency,cadence,last_charge,next_renewal,renewal_is_estimat
 - `status` is `active`, `trial`, `cancelled`, or `unknown`.
 - `kind` is `fixed` or `usage`.
 - `source_msg_ids` is semicolon-separated Message-IDs, unique, latest receipt wins for the row, ids appended on later receipts of the same key.
+- `sender` is the mail From header. The report source column is sender + last_charge date.
 - Dedupe key = service + plan + cadence. One row per key.
 - One-time purchases and promotions are absent.
 - Rows sorted by service, then plan, then cadence.
@@ -112,7 +113,7 @@ JSON object. Merge, do not drop unknown keys.
 | `setup_step` | `onboard.py` | `intro_done` / `email_done` / `scanned` / `window_done` / `cadence_done` |
 | `backend` | `onboard.py --step email` | `fixtures` / `gmail` / `imap` |
 | `account` | `onboard.py --step email` | address or empty |
-| `window` | `onboard.py --step window` | integer 3, 5, or 7 |
+| `window` | `onboard.py --step window` | integer 3, 5, or 7. `scan.py` and `page.py` read this. Default 5. |
 | `cadence` | `onboard.py --step cadence` | `weekly` / `daily` / `demand` |
 | `tz` | `onboard.py --step cadence` | `America/New_York` by default |
 | `last_scan` | `scan.py` | `YYYY-MM-DD` |

@@ -87,6 +87,19 @@ def test_a5() -> None:
         for needle in BANNED:
             assert needle not in blob, needle
         assert not re.search(r"\bacc_[0-9a-z]+\b", blob)
+
+        table_at = md2.find("| service |")
+        assert table_at != -1, md2
+        table = md2[table_at:]
+        netflix_row = ""
+        for line in table.splitlines():
+            if "netflix" in line.casefold():
+                netflix_row = line
+                break
+        assert netflix_row, table
+        assert "billing@netflix.com" in netflix_row.casefold() or "netflix.com" in netflix_row.casefold()
+        assert "2026-10-08" in netflix_row
+        assert "Amount:" not in netflix_row
     print("A5 PASS")
 
 

@@ -24,6 +24,7 @@ COLUMNS = [
     "source_msg_ids",
     "evidence_quote",
     "notes",
+    "sender",
 ]
 
 
@@ -60,6 +61,20 @@ class FileLock:
             self.path.unlink()
         except FileNotFoundError:
             pass
+
+
+def window_days(state: dict | None = None) -> int:
+    """Heads-up window from state.json: 3, 5 (default), or 7."""
+    if not state:
+        return 5
+    raw = state.get("window", 5)
+    try:
+        value = int(raw)
+    except (TypeError, ValueError):
+        return 5
+    if value in (3, 5, 7):
+        return value
+    return 5
 
 
 def load_state(path: Path) -> dict:

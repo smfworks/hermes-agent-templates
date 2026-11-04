@@ -10,7 +10,7 @@ from datetime import date
 from pathlib import Path
 
 from mail_fetch import parse_now
-from store import read_csv, read_jsonl
+from store import atomic_write, load_state, read_csv, read_jsonl, window_days
 
 FOOTER = "Try Hermes: Receipts — The Money-Back Bot by SMF Works"
 ROOT = Path(__file__).resolve().parent.parent
@@ -85,7 +85,7 @@ def order_candidates(rows: list[dict], findings: list[dict]) -> list[dict]:
     return [item[1] for item in ranked[:3]]
 
 
-def render_md(rows: list[dict], findings: list[dict], now: date) -> str:
+def render_md(rows: list[dict], findings: list[dict], now: date, window: int = 5) -> str:
     fixed = [r for r in rows if r.get("kind") != "usage"]
     usage = [r for r in rows if r.get("kind") == "usage"]
     burn_parts = []
@@ -99,7 +99,6 @@ def render_md(rows: list[dict], findings: list[dict], now: date) -> str:
         burn_total += amt
         extra = " (annual/12)" if row.get("cadence") == "annual" else ""
         burn_parts.append(f"- {row['service']} {row['plan']}: {label}{extra}")
-    window = 5
     renewing = []
     trials = []
     for row in rows:
@@ -169,12 +168,11 @@ def render_md(rows: list[dict], findings: list[dict], now: date) -> str:
         amt = row.get("amount") or "unknown — open receipt"
         if row.get("renewal_is_estimate") == "y":
             amt = f"{amt} (estimate {row.get('next_renewal')})"
-        src = row.get("notes") or ""
-        # source is sender + date, stored in evidence_quote's sibling — use last charge
-        source = f"{row.get('last_charge', '')}"
-        quote = row.get("evidence_quote", "")
+        sender = (row.get("sender") or "").strip()
+        src_date = (row.get("last_charge") or "").strip()
+        source = " ".join(part for part in (sender, src_date) if part)
         lines.append(
-            f"| {row['service']} | {row['plan']} | {amt} | {row['cadence']} | {row['status']} | {quote} {source} |"
+            f"| {row['service']} | {row['plan']} | {amt} | {row['cadence']} | {row['status']} | {source} |"
         )
     lines += ["", "## Verified savings", "- none until proof lands in saved_ledger", "", FOOTER, ""]
     return scrub("\n".join(lines))
@@ -196,10 +194,9 @@ def render_html(md: str, now: date) -> str:
 def run_page(data: Path, now: date) -> None:
     rows = read_csv(data / "subscriptions.csv")
     findings = read_jsonl(data / "findings.jsonl")
-    md = render_md(rows, findings, now)
+    window = window_days(load_state(data / "state.json"))
+    md = render_md(rows, findings, now, window)
     html_doc = render_html(md, now)
-    from store import atomic_write
-
     atomic_write(data / "money-back.md", md if md.endswith("\n") else md + "\n")
     atomic_write(data / "money-back.html", html_doc if html_doc.endswith("\n") else html_doc + "\n")
 

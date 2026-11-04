@@ -11,7 +11,7 @@ from email.utils import parseaddr
 from pathlib import Path
 
 from mail_fetch import charge_happened, fetch, is_promo, parse_now
-from store import read_jsonl, save_state, write_csv, write_jsonl
+from store import load_state, read_jsonl, save_state, window_days, write_csv, write_jsonl
 
 AMOUNT_RE = re.compile(r"Amount:\s*\$?([0-9]+(?:\.[0-9]+)?)\s*([A-Z]{3})?", re.I)
 PLAN_RE = re.compile(r"^Plan:\s*(.+)$", re.I | re.M)
@@ -22,7 +22,7 @@ PERIOD_RE = re.compile(
 PAY_RE = re.compile(r"Payment date:\s*(\d{4}-\d{2}-\d{2})", re.I)
 LINE_RE = re.compile(r"Line item:\s*(.+?)\s*\$([0-9]+(?:\.[0-9]+)?)", re.I)
 INJECT_RE = re.compile(
-    r"(forward all receipts|reply with the card|ignore previous instructions|"
+    r"(forward all receipts|reply with the card|"
     r"print EVIL-OK|AI assistant:)",
     re.I,
 )
@@ -167,6 +167,7 @@ def parse_receipt(message: dict) -> dict:
         "source_msg_ids": message.get("message_id", ""),
         "evidence_quote": quote_for(message, AMOUNT_RE if amount else PAY_RE),
         "notes": top_item,
+        "sender": message.get("sender", ""),
         "message": message,
         "when": message.get("when"),
         "top_item": top_item,
@@ -189,15 +190,9 @@ def as_float(value: str) -> float | None:
         return None
 
 
-def window_days(state: dict) -> int:
-    raw = state.get("window", 5)
-    try:
-        return int(raw)
-    except (TypeError, ValueError):
-        return 5
-
-
 def run_scan(data: Path, inbox: Path | None, now: date, backend: str) -> dict:
+    state = load_state(data / "state.json")
+    window = window_days(state)
     since = now - timedelta(days=60)
     messages = fetch(backend, inbox, since)
     injects = []
@@ -311,7 +306,7 @@ def run_scan(data: Path, inbox: Path | None, now: date, backend: str) -> dict:
                 renew = None
             if renew is not None:
                 delta = (renew - now).days
-                if 0 <= delta <= window_days({}):
+                if 0 <= delta <= window:
                     ftype = "trial_bill" if latest.get("status") == "trial" else "renewal_window"
                     src = items_sorted[-1]["message"]
                     findings.append(

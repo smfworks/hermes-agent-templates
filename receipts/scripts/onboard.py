@@ -56,6 +56,8 @@ def step_scan(data: Path, inbox: Path | None, now, backend: str) -> str:
 
 def step_window(data: Path, skip: bool, value: int | None) -> str:
     window = 5 if skip or value is None else value
+    if window not in (3, 5, 7):
+        window = 5
     save_state(data / "state.json", {"setup_step": "window_done", "window": window})
     return f"Heads-up window: {window} days.\n{CADENCE_Q}\n"
 

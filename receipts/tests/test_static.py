@@ -71,6 +71,12 @@ def test_a8_four_skills_and_license() -> None:
     assert "SMF Works" in license_text, "A8: LICENSE missing SMF Works"
     assert "Saint Michael's Forge" not in license_text, "A8: LICENSE names Saint Michael's Forge"
 
+    for name in ("SOUL.md", "AGENTS.md"):
+        path = ROOT / name
+        assert path.is_file(), f"A8: receipts/{name} is missing"
+        text = path.read_text(encoding="utf-8")
+        assert "ignore previous instructions" not in text.casefold(), f"A8: {name} has injection-scanner phrase"
+
 
 def git_tracked() -> list[str]:
     listed = subprocess.run(
