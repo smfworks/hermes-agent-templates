@@ -1,0 +1,15 @@
+name: daily-wisdom
+
+on:
+  pull_request:
+    paths:
+      - "daily-wisdom/**"
+      - ".github/workflows/daily-wisdom.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Contract tests
+        run: bash daily-wisdom/tests/smoke.sh
