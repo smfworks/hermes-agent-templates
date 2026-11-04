@@ -1,0 +1,280 @@
+[
+  {
+    "tradition": "Stoic",
+    "theme": "attention",
+    "author": "Marcus Aurelius",
+    "work": "Meditations",
+    "section": "2.1",
+    "lines": [
+      "Begin the morning by saying to thyself, I shall meet with the busybody, the ungrateful, arrogant, deceitful, envious, unsocial.",
+      "All these things happen to them by reason of their ignorance of what is good and evil.",
+      "But I who have seen the nature of the good that it is beautiful, and of the bad that it is ugly, and the nature of him who does wrong, that it is akin to me, not only of the same blood or seed, but that it participates in the same intelligence and the same portion of the divinity, I can neither be injured by any of them, for no one can fix on me what is ugly, nor can I be angry with my kinsman, nor hate him."
+    ],
+    "context": "George Long's translation opens the second book with a morning practice of meeting difficult people without hatred.",
+    "question": "Which person are you likely to meet today, and how will you stay cooperative with them?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Greek/classical",
+    "theme": "flourishing",
+    "author": "Aristotle",
+    "work": "Nicomachean Ethics",
+    "section": "I.7",
+    "lines": [
+      "But we must add 'in a complete life'.",
+      "For one swallow does not make a summer, nor does one day; and so too one day, or a short time, does not make a man blessed and happy."
+    ],
+    "context": "In W. D. Ross's translation, a good life is activity kept up over time, not one lucky day.",
+    "question": "What is one activity you can repeat today that would still matter across a whole season?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Christian (patristic, contemplative)",
+    "theme": "faith and reason",
+    "author": "Augustine",
+    "work": "Confessions",
+    "section": "1.1",
+    "lines": [
+      "Great art Thou, O Lord, and greatly to be praised; great is Thy power, and Thy wisdom infinite.",
+      "Thou madest us for Thyself, and our heart is restless, until it repose in Thee."
+    ],
+    "context": "The Confessions begin from praise, then name the restlessness that keeps a person searching.",
+    "question": "Where did restlessness show up today, and what would one quiet return look like before sleep?",
+    "paraphrase": true
+  },
+  {
+    "tradition": "Jewish",
+    "theme": "gratitude",
+    "author": "The Psalmist",
+    "work": "Psalms",
+    "section": "100:1-4",
+    "lines": [
+      "Make a joyful noise unto the LORD, all ye lands.",
+      "Serve the LORD with gladness: come before his presence with singing.",
+      "Know ye that the LORD he is God: it is he that hath made us, and not we ourselves; we are his people, and the sheep of his pasture.",
+      "Enter into his gates with thanksgiving, and into his courts with praise: be thankful unto him, and bless his name."
+    ],
+    "context": "Psalm 100 treats thanks as something done with voice and with feet, not only with a mood.",
+    "question": "Whom will you thank in a sentence before this day ends?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Buddhist",
+    "theme": "contemplation and action",
+    "author": "The Buddha",
+    "work": "Dhammapada",
+    "section": "1",
+    "lines": [
+      "All that we are is the result of what we have thought: it is founded on our thoughts, it is made up of our thoughts.",
+      "If a man speaks or acts with an evil thought, pain follows him, as the wheel follows the foot of the ox that draws the carriage."
+    ],
+    "context": "Max Muller's translation ties what a person says and does to the thought that starts the action.",
+    "question": "Which thought, if you spoke or acted from it today, would you be willing to see follow you?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Islamic/Sufi",
+    "theme": "friendship",
+    "author": "Sa'di",
+    "work": "Gulistan",
+    "section": "1.10",
+    "lines": [
+      "The sons of Adam are limbs of each other,",
+      "Having been created of one essence.",
+      "When the calamity of time afflicts one limb",
+      "The other limbs cannot remain at rest."
+    ],
+    "context": "In the Gulistan, Sa'di pictures the human family as one body, so another person's pain is not a private event.",
+    "question": "Whose trouble met you today, and what is one small way to stay present to it?",
+    "paraphrase": true
+  },
+  {
+    "tradition": "Confucian/Taoist",
+    "theme": "work",
+    "author": "Laozi",
+    "work": "Tao Te Ching",
+    "section": "64",
+    "lines": [
+      "Action should be taken before a thing has made its appearance; order should be secured before disorder has begun.",
+      "The tree which fills the arms grew from the tiniest sprout; the tower of nine storeys rose from a small heap of earth; the journey of a thousand li commenced with a single step."
+    ],
+    "context": "James Legge's chapter treats a large labor as the sum of a beginning that is still small enough to do.",
+    "question": "What single step of today's work can you finish before the task grows larger in your mind?",
+    "paraphrase": true
+  },
+  {
+    "tradition": "Hindu",
+    "theme": "courage",
+    "author": "Vyasa",
+    "work": "Bhagavad Gita",
+    "section": "2",
+    "lines": [
+      "Forbid thyself to feebleness! it mars",
+      "Thy warrior-name! cast off the coward-fit!",
+      "Wake! Be thyself! Arise, Scourge of thy Foes!"
+    ],
+    "context": "In Edwin Arnold's translation, Krishna calls Arjuna back to a duty he is ready to abandon.",
+    "question": "What duty are you tempted to drop today, and what is the first step of staying with it?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "modern essayists",
+    "theme": "death and time",
+    "author": "Henry David Thoreau",
+    "work": "Walden",
+    "section": "Where I Lived, and What I Lived For",
+    "lines": [
+      "I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.",
+      "Simplicity, simplicity, simplicity!"
+    ],
+    "context": "Thoreau went to the pond so he would not reach death with the essential work still untried.",
+    "question": "What nonessential thing can you set down so the rest of today is actually lived?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Stoic",
+    "theme": "work",
+    "author": "Seneca",
+    "work": "Moral Letters to Lucilius",
+    "section": "1",
+    "lines": [
+      "Therefore, Lucilius, do as you write me that you are doing: hold every hour in your grasp.",
+      "Lay hold of to-day's task, and you will not need to depend so much upon to-morrow's.",
+      "While we are postponing, life speeds by.",
+      "Nothing, Lucilius, is ours, except time."
+    ],
+    "context": "Richard Mott Gummere's translation of the first letter treats time as the one thing a person can actually hold.",
+    "question": "What piece of today's task will you take hold of before postponing it?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Greek/classical",
+    "theme": "contemplation and action",
+    "author": "Plato",
+    "work": "Apology",
+    "section": "38a",
+    "lines": [
+      "Daily to discourse about virtue, and of those other things about which you hear me examining myself and others, is the greatest good of man.",
+      "The unexamined life is not worth living."
+    ],
+    "context": "In the Apology, Socrates tells the court that examining a life is the work he will not give up.",
+    "question": "What is one question about how you are living that you can ask before tonight?",
+    "paraphrase": true
+  },
+  {
+    "tradition": "Christian (patristic, contemplative)",
+    "theme": "attention",
+    "author": "Matthew",
+    "work": "The Gospel According to Matthew",
+    "section": "6:34",
+    "lines": [
+      "Take therefore no thought for the morrow: for the morrow shall take thought for the things of itself.",
+      "Sufficient unto the day is the evil thereof."
+    ],
+    "context": "The King James sermon on the mount keeps attention on the day that is actually here.",
+    "question": "What belongs to this day alone, and what worry about tomorrow can wait until then?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Jewish",
+    "theme": "death and time",
+    "author": "Moses",
+    "work": "Psalms",
+    "section": "90:10-12",
+    "lines": [
+      "The days of our years are threescore years and ten; and if by reason of strength they be fourscore years, yet is their strength labour and sorrow; for it is soon cut off, and we fly away.",
+      "So teach us to number our days, that we may apply our hearts unto wisdom."
+    ],
+    "context": "Psalm 90, a prayer of Moses in the King James text, asks for a counted day rather than an endless hurry.",
+    "question": "How will you number this one day so that it serves wisdom rather than hurry?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Buddhist",
+    "theme": "friendship",
+    "author": "The Buddha",
+    "work": "Dhammapada",
+    "section": "3-5",
+    "lines": [
+      "'He abused me, he beat me, he defeated me, he robbed me,'—in those who harbour such thoughts hatred will never cease.",
+      "For hatred does not cease by hatred at any time: hatred ceases by love, this is an old rule."
+    ],
+    "context": "Max Muller's opening chapter says a quarrel keeps going only while the mind keeps rehearsing it.",
+    "question": "Where did a harsh reply want to continue today, and what would answering without hatred look like?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Islamic/Sufi",
+    "theme": "death and time",
+    "author": "Jalal al-Din Rumi",
+    "work": "Masnavi",
+    "section": "Book 1 prologue",
+    "lines": [
+      "Hearken to the reed-flute, how it complains,",
+      "Lamenting its banishment from its home:",
+      "He who abides far away from his home",
+      "Is ever longing for the day he shall return."
+    ],
+    "context": "E. H. Whinfield's translation opens the Masnavi with a cut reed longing for the bed it came from.",
+    "question": "What far-from-home longing can you listen to for a few minutes without trying to fix it?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Confucian/Taoist",
+    "theme": "friendship",
+    "author": "Confucius",
+    "work": "Analects",
+    "section": "1.1",
+    "lines": [
+      "Is it not pleasant to learn with a constant perseverance and application?",
+      "Is it not delightful to have friends coming from distant quarters?",
+      "Is he not a man of complete virtue, who feels no discomposure though men may take no note of him?"
+    ],
+    "context": "James Legge's first saying joins steady study with the pleasure of a friend who has come a long way.",
+    "question": "Who could you make welcome in today's work, even if they come from far off?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Hindu",
+    "theme": "work",
+    "author": "Anonymous",
+    "work": "Isa Upanishad",
+    "section": "1-2",
+    "lines": [
+      "When thou hast surrendered all this, then thou mayest enjoy.",
+      "Do not covet the wealth of any man!",
+      "Though a man may wish to live a hundred years, performing works, it will be thus with him; but not in any other way: work will thus not cling to a man."
+    ],
+    "context": "Max Muller's Isa Upanishad allows a long life of work when the work is not clutched as a possession.",
+    "question": "What work can you do today without clutching at its reward?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "modern essayists",
+    "theme": "courage",
+    "author": "Ralph Waldo Emerson",
+    "work": "Self-Reliance",
+    "lines": [
+      "Trust thyself: every heart vibrates to that iron string.",
+      "A foolish consistency is the hobgoblin of little minds, adored by little statesmen and philosophers and divines."
+    ],
+    "context": "Emerson's essay asks for a next step that is one's own, even when it breaks a tidy pattern.",
+    "question": "Where are you imitating someone else, and what would trusting your own next step look like?",
+    "paraphrase": false
+  },
+  {
+    "tradition": "Stoic",
+    "theme": "flourishing",
+    "author": "Epictetus",
+    "work": "Enchiridion",
+    "section": "1",
+    "lines": [
+      "There are things which are within our power, and there are things which are beyond our power.",
+      "Within our power are opinion, aim, desire, aversion, and, in one word, whatever affairs are our own.",
+      "Beyond our power are body, property, reputation, office, and, in one word, whatever are not properly our own affairs."
+    ],
+    "context": "Thomas Wentworth Higginson's translation starts the manual by dividing what is ours from what is not.",
+    "question": "What happened today that you cannot control, and what view of it is actually yours to choose?",
+    "paraphrase": false
+  }
+]

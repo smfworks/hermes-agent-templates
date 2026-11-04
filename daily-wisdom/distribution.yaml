@@ -1,0 +1,27 @@
+name: daily-wisdom
+version: 1.0.0
+description: "Daily Wisdom by SMF Works: each morning one short reading, one sentence of context, and one question to carry through the day."
+hermes_requires: ">=0.22.0"
+author: "SMF Works"
+license: "MIT"
+
+# Allowlist of shipped files. SPEC.md, ENV-NOTES.md, and PLAN-*.md stay in the
+# working tree and do not install. tests/ is included for install-from-checkout.
+distribution_owned:
+  - SOUL.md
+  - AGENTS.md
+  - README.md
+  - REVIEW.md
+  - LICENSE
+  - config.yaml
+  - mcp.json
+  - .env.EXAMPLE
+  - .gitignore
+  - cron/
+  - templates/
+  - skills/
+  - scripts/
+  - data/
+  - tests/
+
+env_requires: []
