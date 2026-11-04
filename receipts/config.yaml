@@ -1,0 +1,7 @@
+# Receipts — Hermes profile config (SMF Works)
+# Read-only mail, local report, drafts only. No web, no browser, no delegation.
+model:
+  default: "grok-4.7"
+  provider: "auto"
+platform_toolsets:
+  cli: [file, memory, skills, clarify, cronjob, todo, terminal]

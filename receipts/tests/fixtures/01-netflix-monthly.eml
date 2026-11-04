@@ -1,0 +1,18 @@
+From: Netflix Billing <billing@netflix.com>
+To: owner@example.com
+Date: Thu, 08 Oct 2026 12:00:00 -0400
+Subject: Your Netflix receipt
+Message-ID: <netflix-2026-10-08@netflix.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+
+Thanks for your payment.
+Plan: Standard
+Amount: $15.49 USD
+Cadence: monthly
+Service period: 2026-10-08 to 2026-11-08
+Payment date: 2026-10-08
+charged to card ending 4242
+Account ID: acc_99xyz
+Invoice: https://pay.netflix.example/inv/abc
+123 Main Street, Springfield
