@@ -31,6 +31,17 @@ The first conversation is a short intro, today's sitting, then three onboarding 
 - `wisdom-weekly-page`
 - `wisdom-guardrails`
 
+## Scripts
+
+Cron runs these with `--script` and `--no-agent`. They do not call a model. `--data` is the profile `wisdom/` directory. The public-domain corpus is `data/readings.json`.
+
+- `scripts/sitting.py` prints today's sitting and appends `sittings.csv`. Same-day rerun reprints the logged sitting.
+- `scripts/reply.py` thanks in one line, appends `notes.md`, and updates the streak.
+- `scripts/weekly.py` overwrites `what-changed-in-me.md` and `what-changed-in-me.html`.
+- `scripts/quote_card.py` prints that day's reading and does not read notes.
+- `scripts/guard.py` answers a guardrail check for fabricate, rank, crisis, post, or inject.
+- `scripts/install_cron.py --skip` records the default 8:00 America/New_York sitting and the Sunday 18:00 weekly job. It does not register a live job.
+
 ## Tests
 
 From this directory:

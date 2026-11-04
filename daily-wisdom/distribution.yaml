@@ -20,6 +20,8 @@ distribution_owned:
   - cron/
   - templates/
   - skills/
+  - scripts/
+  - data/
   - tests/
 
 env_requires: []

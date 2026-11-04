@@ -41,3 +41,12 @@ The weekly page is `wisdom/what-changed-in-me.md` and `wisdom/what-changed-in-me
 ## Scripts
 
 The profile chat has no terminal tool. Cron jobs `daily-wisdom-sitting` and `daily-wisdom-weekly` run with `--script` and `--no-agent`. They do not call a model. The `cronjob` tool does the install during onboarding. Creating or removing a job is part of that onboarding, not a background edit.
+
+Script entry points, all taking `--data` as the `wisdom/` directory:
+
+- `scripts/sitting.py` chooses the next reading from `data/readings.json`, prints it, and logs `sittings.csv`. A second run the same local date reprints that row.
+- `scripts/reply.py` appends `notes.md` and recomputes streak, longest, and last reply from `sittings.csv`.
+- `scripts/weekly.py` overwrites `what-changed-in-me.md` and `what-changed-in-me.html` for the Monday–Sunday week.
+- `scripts/quote_card.py` prints the reading only.
+- `scripts/guard.py` applies the guardrails before a sitting, a page, a card, or a note reply.
+- `scripts/install_cron.py --skip` records the default timezone, full rotation, and the two job ids. It does not call hermes and does not register a live job.
