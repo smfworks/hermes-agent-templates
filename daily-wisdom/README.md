@@ -24,14 +24,22 @@ No connectors. A calendar reminder is out of scope. The profile tools are file, 
 
 The first conversation is a short intro, today's sitting, then three onboarding questions, one at a time. Skip keeps the default. Onboarding then installs cron jobs named `daily-wisdom-sitting` and `daily-wisdom-weekly` as script jobs (`cron_sitting.sh` / `cron_weekly.sh`, `--no-agent`). Hermes assigns a 12-character hex job id; you cannot choose it. Match the jobs by those names.
 
-The shipped `config.yaml` names `grok-4.7` with `provider: auto`. A fresh profile has no provider credentials, so the first session can fail with `invalid_params`. Before the first chat, the operator must wire a working model:
+The shipped `config.yaml` starts a model with `grok-4.7` and `provider: xai-oauth`. After install, copy `.env.EXAMPLE` to the profile `.env` and replace the placeholder:
+
+```bash
+cp daily-wisdom/.env.EXAMPLE ~/.hermes/profiles/daily-wisdom-dev/.env
+chmod 0600 ~/.hermes/profiles/daily-wisdom-dev/.env
+# Open that file and set: XAI_API_KEY=<paste-key-here>
+```
+
+If `hermes auth status xai-oauth` is already logged in, the placeholder may stay empty and the first chat should start. To point at a different provider instead:
 
 ```bash
 hermes --profile daily-wisdom-dev config set model.default <model>
 hermes --profile daily-wisdom-dev config set model.provider <provider>
 ```
 
-Do not copy a host-local endpoint into this folder. Operator wiring on a throwaway live profile is not what the template ships.
+Do not copy a host-local endpoint into this folder.
 
 ## Skills
 

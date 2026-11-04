@@ -1,13 +1,16 @@
 # Daily Wisdom — Hermes profile config (SMF Works)
 # Readings and reflections only. No terminal, no web, no browser, no delegation.
 #
-# A fresh install has no model credentials. grok-4.7 / auto names the intended
-# default; the first chat can fail with invalid_params until the operator wires
-# a working provider (see README After install). Do not commit a host-local
-# endpoint here.
+# Documented default that starts a model on a fresh install:
+#   model: grok-4.7
+#   provider: xai-oauth
+# Do not commit a host-local endpoint here.
+# After install, copy .env.EXAMPLE to the profile .env and replace the
+# placeholder (README After install). If `hermes auth status xai-oauth` is
+# already logged in on this host, the placeholder may stay empty.
 model:
   default: "grok-4.7"
-  provider: "auto"
+  provider: "xai-oauth"
 platform_toolsets:
   cli: [file, memory, skills, clarify, cronjob, todo]
 _config_version: 52
