@@ -1,0 +1,26 @@
+{
+  "posts_in_window": 45,
+  "posts_per_day": {
+    "2026-10-29": 1,
+    "2026-11-02": 17,
+    "2026-11-03": 14,
+    "2026-11-04": 12,
+    "2026-11-05": 1
+  },
+  "share_replies": 8,
+  "share_quotes": 6,
+  "share_originals": 31,
+  "emoji_only": 4,
+  "link_only": 5,
+  "hook_number_or_name": 32,
+  "median_likes": 10,
+  "max_likes": 100,
+  "views_present": true,
+  "most_active_hours": [
+    15
+  ],
+  "best_post_id": "best1",
+  "worst_habit": "link_only",
+  "worst_habit_count": 5,
+  "worst_habit_vs_median": -10
+}

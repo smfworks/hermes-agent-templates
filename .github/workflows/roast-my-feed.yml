@@ -1,0 +1,19 @@
+name: roast-my-feed
+
+on:
+  pull_request:
+    paths:
+      - "roast-my-feed/**"
+      - ".github/workflows/roast-my-feed.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pil
+      - name: Contract tests
+        run: bash roast-my-feed/tests/smoke.sh
