@@ -1,0 +1,45 @@
+{
+  "title": "How honeybees share a feeding site",
+  "slug": "bee-dance",
+  "facts": [
+    {
+      "text": "Honeybees run a waggle dance to share direction and distance to food",
+      "source": 1,
+      "example": "A returning forager figure-eights on the comb."
+    },
+    {
+      "text": "The angle of the waggle run maps to the sun, not to north",
+      "source": 1
+    },
+    {
+      "text": "A longer waggle run means a farther site",
+      "source": 1
+    },
+    {
+      "text": "A forager figure-eights on the comb while nestmates follow",
+      "source": 2
+    },
+    {
+      "text": "The dance is how a colony points many bees at one patch",
+      "source": 2
+    },
+    {
+      "text": "Bees have a secret contract with a hidden agency",
+      "source": null
+    }
+  ],
+  "sources": [
+    {
+      "n": 1,
+      "url": "https://example.test/bees",
+      "title": "Bee dance notes",
+      "fetched": "2026-11-05"
+    },
+    {
+      "n": 2,
+      "url": "https://example.test/bees.pdf",
+      "title": "Comb notes",
+      "fetched": "2026-11-05"
+    }
+  ]
+}
