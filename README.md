@@ -27,6 +27,7 @@ Replace `site-signal` with the template you want. The alias gives you a `site-si
 | `bourne-bot` | Personal OPSEC advisor. Four Grok Bot skills, advice only, no terminal or web. | Draft. Verbatim skill port and contract tests on this PR. Awaiting live smoke and owner yes. |
 | `daily-wisdom` | Morning sitting: one short reading, one sentence of context, one question. Four skills, no connectors. | Draft. Contract tests A1–A7 pass on this PR. Awaiting Paula live smoke and owner yes. |
 | `receipts` | Money-back bot. Read-only mail, one report, drafts only, never sends. | Draft. Contract tests A1–A8 on this PR. Awaiting Liam live smoke and owner yes. |
+| `roast-my-feed` | Wrapped-style audit of a public X handle. Witty, never cruel, every number real. | Draft. Contract tests A1–A7 on this PR. Awaiting Paula live smoke and owner yes. |
 | `explain-it-like-a-movie` | 60-second sourced explainer that plays like a trailer. Script, captions, then a 9:16 video. | Draft. Contract tests on this PR. Awaiting Liam live smoke and owner yes. |
 
 New templates land as a pull request. Do not push to `main`. Do not commit `.env`, tokens, or session data.

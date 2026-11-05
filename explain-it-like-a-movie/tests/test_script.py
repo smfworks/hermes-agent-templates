@@ -108,7 +108,8 @@ def test_url_and_pdf_and_unsourced() -> None:
     assert "hidden agency" not in blob
     for line in script["lines"]:
         assert line.get("cite"), line
-        assert f"[{line['cite']}]" or True
+        marker = f"[{line['cite']}]"
+        assert marker == f"[{int(line['cite'])}]", line
         assert int(line["cite"]) in {1, 2}
     assert "Made with AI" in script["captions"]["x"]
     assert "Made with AI" in script["captions"]["tiktok"]
