@@ -1,0 +1,18 @@
+# Explain It Like a Movie — Hermes profile config (SMF Works)
+# Fetch a source, write a sourced script, render a 60s 9:16 explainer.
+# Web is required to fetch a URL. Terminal is required to run render.py
+# (slides, speech, ffmpeg). No browser. No delegation. No cron in v1.
+#
+# Documented default that starts a model on a fresh install:
+#   model: grok-4.7
+#   provider: xai-oauth
+# Do not commit a host-local endpoint here.
+# After install, copy .env.EXAMPLE to the profile .env and replace the
+# placeholder (README After install). If `hermes auth status xai-oauth` is
+# already logged in on this host, the placeholder may stay empty.
+model:
+  default: "grok-4.7"
+  provider: "xai-oauth"
+platform_toolsets:
+  cli: [file, memory, skills, clarify, todo, web, terminal]
+_config_version: 52
