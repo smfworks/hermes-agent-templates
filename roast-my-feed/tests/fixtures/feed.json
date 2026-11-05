@@ -1,0 +1,533 @@
+{
+  "username": "fixtureuser",
+  "protected": false,
+  "suspended": false,
+  "posts": [
+    {
+      "id": "best1",
+      "text": "7 hooks in the first line\nsecond line is detail",
+      "created_at": "2026-11-02T14:00:00Z",
+      "public_metrics": {
+        "likes": 100,
+        "impressions": 5000
+      },
+      "conversation_id": "best1"
+    },
+    {
+      "id": "link1",
+      "text": "https://example.com/a",
+      "created_at": "2026-11-02T14:01:00Z",
+      "public_metrics": {
+        "likes": 0
+      },
+      "conversation_id": "link1"
+    },
+    {
+      "id": "link2",
+      "text": "https://example.com/b",
+      "created_at": "2026-11-02T14:02:00Z",
+      "public_metrics": {
+        "likes": 0
+      },
+      "conversation_id": "link2"
+    },
+    {
+      "id": "link3",
+      "text": "https://example.com/c",
+      "created_at": "2026-11-02T14:03:00Z",
+      "public_metrics": {
+        "likes": 0
+      },
+      "conversation_id": "link3"
+    },
+    {
+      "id": "link4",
+      "text": "https://example.com/d",
+      "created_at": "2026-11-02T16:00:00Z",
+      "public_metrics": {
+        "likes": 0
+      },
+      "conversation_id": "link4"
+    },
+    {
+      "id": "link5",
+      "text": "https://example.com/e",
+      "created_at": "2026-11-02T16:01:00Z",
+      "public_metrics": {
+        "likes": 0
+      },
+      "conversation_id": "link5"
+    },
+    {
+      "id": "emoji1",
+      "text": "🔥",
+      "created_at": "2026-11-02T20:00:00Z",
+      "public_metrics": {
+        "likes": 5
+      },
+      "conversation_id": "emoji1"
+    },
+    {
+      "id": "emoji2",
+      "text": "🎉",
+      "created_at": "2026-11-02T20:01:00Z",
+      "public_metrics": {
+        "likes": 5
+      },
+      "conversation_id": "emoji2"
+    },
+    {
+      "id": "emoji3",
+      "text": "✨",
+      "created_at": "2026-11-02T20:02:00Z",
+      "public_metrics": {
+        "likes": 5
+      },
+      "conversation_id": "emoji3"
+    },
+    {
+      "id": "plain1",
+      "text": "hello from the timeline",
+      "created_at": "2026-11-02T20:03:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "plain1"
+    },
+    {
+      "id": "plain2",
+      "text": "just a short note",
+      "created_at": "2026-11-02T20:04:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "plain2"
+    },
+    {
+      "id": "plain3",
+      "text": "posting without a hook",
+      "created_at": "2026-11-02T20:05:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "plain3"
+    },
+    {
+      "id": "reply1",
+      "text": "4 reply note 1",
+      "created_at": "2026-11-03T02:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "thread",
+      "referenced_tweets": [
+        {
+          "type": "replied_to"
+        }
+      ]
+    },
+    {
+      "id": "reply2",
+      "text": "4 reply note 2",
+      "created_at": "2026-11-03T02:01:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "thread",
+      "referenced_tweets": [
+        {
+          "type": "replied_to"
+        }
+      ]
+    },
+    {
+      "id": "reply3",
+      "text": "4 reply note 3",
+      "created_at": "2026-11-03T02:02:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "thread",
+      "referenced_tweets": [
+        {
+          "type": "replied_to"
+        }
+      ]
+    },
+    {
+      "id": "reply4",
+      "text": "4 reply note 4",
+      "created_at": "2026-11-03T14:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "thread",
+      "referenced_tweets": [
+        {
+          "type": "replied_to"
+        }
+      ]
+    },
+    {
+      "id": "reply5",
+      "text": "4 reply note 5",
+      "created_at": "2026-11-03T14:01:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "thread",
+      "referenced_tweets": [
+        {
+          "type": "replied_to"
+        }
+      ]
+    },
+    {
+      "id": "reply6",
+      "text": "4 reply note 6",
+      "created_at": "2026-11-03T14:02:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "thread",
+      "referenced_tweets": [
+        {
+          "type": "replied_to"
+        }
+      ]
+    },
+    {
+      "id": "reply7",
+      "text": "4 reply note 7",
+      "created_at": "2026-11-03T16:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "thread",
+      "referenced_tweets": [
+        {
+          "type": "replied_to"
+        }
+      ]
+    },
+    {
+      "id": "reply8",
+      "text": "4 reply note 8",
+      "created_at": "2026-11-03T16:01:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "thread",
+      "referenced_tweets": [
+        {
+          "type": "replied_to"
+        }
+      ]
+    },
+    {
+      "id": "quote1",
+      "text": "8 quote note 1",
+      "created_at": "2026-11-03T20:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "quote1",
+      "referenced_tweets": [
+        {
+          "type": "quoted"
+        }
+      ]
+    },
+    {
+      "id": "quote2",
+      "text": "8 quote note 2",
+      "created_at": "2026-11-03T20:01:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "quote2",
+      "referenced_tweets": [
+        {
+          "type": "quoted"
+        }
+      ]
+    },
+    {
+      "id": "quote3",
+      "text": "8 quote note 3",
+      "created_at": "2026-11-03T20:02:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "quote3",
+      "referenced_tweets": [
+        {
+          "type": "quoted"
+        }
+      ]
+    },
+    {
+      "id": "quote4",
+      "text": "8 quote note 4",
+      "created_at": "2026-11-03T20:03:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "quote4",
+      "referenced_tweets": [
+        {
+          "type": "quoted"
+        }
+      ]
+    },
+    {
+      "id": "quote5",
+      "text": "8 quote note 5",
+      "created_at": "2026-11-03T20:04:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "quote5",
+      "referenced_tweets": [
+        {
+          "type": "quoted"
+        }
+      ]
+    },
+    {
+      "id": "quote6",
+      "text": "8 quote note 6",
+      "created_at": "2026-11-03T20:05:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "quote6",
+      "referenced_tweets": [
+        {
+          "type": "quoted"
+        }
+      ]
+    },
+    {
+      "id": "orig1",
+      "text": "12 original note 1",
+      "created_at": "2026-11-04T02:00:00Z",
+      "public_metrics": {
+        "likes": 20,
+        "impressions": 100
+      },
+      "conversation_id": "orig1"
+    },
+    {
+      "id": "orig2",
+      "text": "12 original note 2",
+      "created_at": "2026-11-04T02:01:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig2"
+    },
+    {
+      "id": "orig3",
+      "text": "12 original note 3",
+      "created_at": "2026-11-04T02:02:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig3"
+    },
+    {
+      "id": "orig4",
+      "text": "12 original note 4",
+      "created_at": "2026-11-04T14:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig4"
+    },
+    {
+      "id": "orig5",
+      "text": "12 original note 5",
+      "created_at": "2026-11-04T14:01:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig5"
+    },
+    {
+      "id": "orig6",
+      "text": "12 original note 6",
+      "created_at": "2026-11-04T14:02:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig6"
+    },
+    {
+      "id": "orig7",
+      "text": "12 original note 7",
+      "created_at": "2026-11-04T16:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig7"
+    },
+    {
+      "id": "orig8",
+      "text": "12 original note 8",
+      "created_at": "2026-11-04T20:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig8"
+    },
+    {
+      "id": "orig9",
+      "text": "12 original note 9",
+      "created_at": "2026-11-04T20:01:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig9"
+    },
+    {
+      "id": "orig10",
+      "text": "12 original note 10",
+      "created_at": "2026-11-04T20:02:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig10"
+    },
+    {
+      "id": "orig11",
+      "text": "12 original note 11",
+      "created_at": "2026-11-04T20:03:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig11"
+    },
+    {
+      "id": "orig12",
+      "text": "12 original note 12",
+      "created_at": "2026-11-04T20:04:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig12"
+    },
+    {
+      "id": "orig13",
+      "text": "12 original note 13",
+      "created_at": "2026-11-04T20:05:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig13"
+    },
+    {
+      "id": "orig14",
+      "text": "12 original note 14",
+      "created_at": "2026-11-05T02:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig14"
+    },
+    {
+      "id": "orig15",
+      "text": "12 original note 15",
+      "created_at": "2026-11-05T02:01:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "orig15"
+    },
+    {
+      "id": "edge_start",
+      "text": "6 window start note",
+      "created_at": "2026-10-29T12:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "edge_start"
+    },
+    {
+      "id": "edge_now",
+      "text": "2 window end note",
+      "created_at": "2026-11-05T12:00:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "edge_now"
+    },
+    {
+      "id": "emoji4",
+      "text": "🔥 https://example.com/z",
+      "created_at": "2026-11-02T20:40:00Z",
+      "public_metrics": {
+        "likes": 5
+      },
+      "conversation_id": "emoji4"
+    },
+    {
+      "id": "notlink1",
+      "text": "see https://example.com/a",
+      "created_at": "2026-11-02T20:41:00Z",
+      "public_metrics": {
+        "likes": 10
+      },
+      "conversation_id": "notlink1"
+    },
+    {
+      "id": "rt1",
+      "text": "1 retweet that must not count",
+      "created_at": "2026-11-03T20:30:00Z",
+      "public_metrics": {
+        "likes": 999,
+        "impressions": 99999
+      },
+      "conversation_id": "rt1",
+      "referenced_tweets": [
+        {
+          "type": "retweeted"
+        }
+      ]
+    },
+    {
+      "id": "rt2",
+      "text": "1 second retweet that must not count",
+      "created_at": "2026-11-03T20:31:00Z",
+      "public_metrics": {
+        "likes": 999,
+        "impressions": 99999
+      },
+      "conversation_id": "rt2",
+      "referenced_tweets": [
+        {
+          "type": "retweeted"
+        }
+      ]
+    },
+    {
+      "id": "old1",
+      "text": "9 old post outside the window",
+      "created_at": "2026-10-01T15:00:00Z",
+      "public_metrics": {
+        "likes": 50,
+        "impressions": 100
+      },
+      "conversation_id": "old1"
+    },
+    {
+      "id": "future1",
+      "text": "9 future post outside the window",
+      "created_at": "2026-11-06T12:00:00Z",
+      "public_metrics": {
+        "likes": 80
+      },
+      "conversation_id": "future1"
+    }
+  ]
+}
