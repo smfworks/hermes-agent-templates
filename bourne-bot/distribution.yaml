@@ -5,7 +5,7 @@ hermes_requires: ">=0.22.0"
 author: "SMF Works"
 license: "MIT"
 
-# Allowlist. SPEC.md, ENV-NOTES.md, and PLAN-*.md stay in the working tree and do not install.
+# Allowlist. SPEC.md and PLAN-*.md stay in the working tree and do not install.
 distribution_owned:
   - SOUL.md
   - AGENTS.md

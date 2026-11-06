@@ -1,0 +1,16 @@
+name: hygiene
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: YAML parser
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+      - name: JSON, YAML, skill headers, and secret/host scan
+        run: python3 .github/scripts/hygiene.py

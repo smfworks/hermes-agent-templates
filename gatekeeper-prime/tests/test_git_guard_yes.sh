@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# The bot's gh path must never carry a yes-shaped comment. All agents run
-# as the owner login, so a bot-authored "yes <sha>" would be
-# indistinguishable from the owner approving. Everything here runs with
-# check-gh, so nothing hits the network.
+# The bot's gh path must never carry a yes-shaped comment. The owner types
+# their own yes, and merge_gate refuses when the merge account is that
+# same login. Everything here runs with check-gh, so nothing hits the network.
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 G="$ROOT/scripts/git_guard.sh"

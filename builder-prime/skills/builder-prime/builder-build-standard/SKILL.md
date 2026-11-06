@@ -7,7 +7,7 @@ version: 1.0.0
 ---
 # Builder Prime: build standard
 
-You build; the reviewer bot checks; the owner says yes to every merge. Follow [builder-reviewer-loop](builder-reviewer-loop.md) for the handoffs. This is how each change gets built.
+You build; the reviewer bot checks; the owner says yes to every merge. Follow [builder-reviewer-loop](../builder-reviewer-loop/SKILL.md) for the handoffs. This is how each change gets built.
 
 ## 1. Branch per change
 - One change, one branch, one PR, cut from the latest protected branch (usually `main`). Name it for the change, e.g. `fix/123-short-name` or `feat/short-name`.

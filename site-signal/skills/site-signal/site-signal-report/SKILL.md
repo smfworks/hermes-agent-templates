@@ -1,3 +1,16 @@
+---
+name: site-signal-report
+description: Rank scan results by impact and render the Site Signal report.
+version: 1.0.0
+author: SMF Works
+license: MIT
+platforms: [linux]
+metadata:
+  hermes:
+    tags: [site-signal, report]
+    related_skills: [site-signal-guardrails, site-signal-ship-fixes]
+---
+
 # When to use
 
 After any scan (baseline, re-scan, or single dimension) to merge the scanner

@@ -1,51 +1,35 @@
-# Site Signal site registry (SMF Works) — EXAMPLE.
-# Copy to ~/SiteSignal/sites.yaml and edit THERE; the real registry lives outside
+# Site Signal site registry — EXAMPLE.
+# Copy to ~/SiteSignal/sites.yaml and edit THERE. The real registry lives outside
 # this profile so updates never overwrite it (SPEC.md 6.1).
-# Schema per SPEC.md 5.1. Sites that are unlisted, owner_verified: false, or
-# scan_only: true never get fix PRs (scan-only).
+# A fresh copy does not mark any domain owner_verified, and it does not auto-merge.
+# Set owner_verified: true only after verify_ownership.sh exits 0 for repo,
+# wellknown, or dns AND you confirm that domain yourself.
+# Leave merge: ask unless you add merge_consent by hand. The agent must not
+# write merge: after_green_ci or merge_consent.
 sites:
-  - domain: smfwisdomforge.com
-    aliases: []
-    repo: smfworks/wisdomforge
+  - domain: example.com
+    aliases: [www.example.com]
+    repo: OWNER/REPO
     default_branch: main
-    deploy: vercel            # vercel | other | unknown
-    owner_verified: true
-    verified_by: seed+owner   # seed+owner | repo | wellknown | dns
+    deploy: unknown           # vercel | other | unknown
+    owner_verified: false
+    verified_by: ""           # repo | wellknown | dns, after you confirm
     scan:
       pages: 5                # SEO/GEO/AEO sampler
-      axe_paths: ["/", "/books", "/about"]   # plus auto-discovered links, max 8
-      mobile: false
-    merge: ask                # ask | after_green_ci
-    notes: "Book pages use Book+BlogPosting dual JSON-LD (PR #27)."
-
-  - domain: smfclearinghouse.com
-    aliases: [www.smfclearinghouse.com]   # www and apex serve the same site; canonical on www
-    repo: smfworks/aiclearinghouse-site
-    default_branch: main
-    deploy: vercel
-    owner_verified: true
-    verified_by: seed+owner
-    scan:
-      pages: 5
-      axe_paths: ["/", "/lab", "/about"]    # /lab held the critical select-name finding (Oct 31)
-      mobile: false
-    merge: ask
-    notes: "Oct 31 fix PRs: aiclearinghouse-site#19-#24."
-
-  - domain: smfworks.com
-    aliases: []
-    repo: smfworks/smfworks-site
-    default_branch: main
-    deploy: vercel
-    owner_verified: true
-    verified_by: seed+owner
-    scan_only: true           # SPEC.md 6.3: another Hermes agent ships fixes for smfworks.com; scan-only until Michael assigns fix ownership
-    scan:
-      pages: 5
       axe_paths: ["/"]        # plus auto-discovered links, max 8
       mobile: false
-    merge: ask
-    notes: "Scan-only until Michael confirms which agent opens fix PRs here (avoids competing PRs). Oct 31 PR: smfworks-site#12."
+    merge: ask                # ask | after_green_ci (after_green_ci needs merge_consent)
+    notes: "Replace example.com and OWNER/REPO with a site you control."
 
-# Optional key for owned staging only (off everywhere above): auth: staging
+# Standing auto-merge is off in this example. To allow it, you (not the agent)
+# add a block that names the domain, who set it, and when:
+#
+#   merge: after_green_ci
+#   merge_consent:
+#     domain: example.com
+#     phrase: "always merge green PRs for example.com"
+#     set_by: your-name
+#     set_at: "2026-01-01T00:00:00Z"
+#
+# Optional key for owned staging only: auth: staging
 # Credentials come from .env or an owner-dropped cookie file, never from chat.

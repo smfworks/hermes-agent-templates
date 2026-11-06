@@ -11,11 +11,9 @@
 #
 # Exit codes: 0 verified; 1 not verified (fail closed); 2 usage/environment error.
 # Never prints secrets; the deny-terms list is unrelated here. GH_BIN overrides the
-# gh binary (the ~/.local/bin/gh mise wrapper deadlocks on this host); the default
-# is the working binary recorded in PREREQ-RESULTS.md.
+# gh binary. The default is `gh` on PATH.
 set -euo pipefail
 
-GH_BIN_DEFAULT="$HOME/.local/share/mise/installs/gh/2.103.3/gh_2.103.3_linux_amd64/bin/gh"
 UA="SMFWorks-SiteSignal/1.0 (+https://smfworks.com)"
 METHOD="" DOMAIN="" REPO="" TOKEN="" TIMEOUT=20
 
@@ -23,14 +21,12 @@ die() { echo "verify_ownership: $*" >&2; exit "${2:-2}"; }
 log() { echo "verify_ownership: $*"; }
 
 resolve_gh() {
-  local gh="${GH_BIN:-$GH_BIN_DEFAULT}"
-  if [[ ! -x "$gh" ]]; then
-    # Fall back to the newest mise-installed gh (version-bump resilience).
-    local cand
-    cand=$(ls -1 "$HOME"/.local/share/mise/installs/gh/*/*/bin/gh 2>/dev/null | sort -V | tail -1 || true)
-    [[ -n "$cand" ]] && gh="$cand"
+  local gh="${GH_BIN:-gh}"
+  if [[ "$gh" == */* ]]; then
+    [[ -x "$gh" ]] || die "GH_BIN is not executable" 2
+  else
+    command -v "$gh" >/dev/null 2>&1 || die "gh not found on PATH; install GitHub CLI or set GH_BIN" 2
   fi
-  [[ -x "$gh" ]] || die "no working gh binary; set GH_BIN (bare \`gh\` is a broken mise wrapper here)" 2
   printf '%s' "$gh"
 }
 
@@ -60,27 +56,13 @@ DOMAIN="$(normalize_domain "$DOMAIN")"
 
 case "$METHOD" in
   seed+owner)
-    # SPEC.md 5.1 step 3a: domains observed under owner work in Oct 2026.
-    # Membership alone is NOT verification — the agent must record the owner's
-    # chat confirmation before writing verified_by: seed+owner.
-    case "$DOMAIN" in
-      smfwisdomforge.com)
-        log "in seed list: $DOMAIN -> smfworks/wisdomforge"
-        log "agent must record the owner's chat confirmation, then save verified_by: seed+owner"
-        exit 0 ;;
-      smfclearinghouse.com|www.smfclearinghouse.com)
-        log "in seed list: $DOMAIN -> smfworks/aiclearinghouse-site (www and apex serve the same site)"
-        log "agent must record the owner's chat confirmation, then save verified_by: seed+owner"
-        exit 0 ;;
-      smfworks.com)
-        log "in seed list: $DOMAIN -> smfworks/smfworks-site"
-        log "agent must record the owner's chat confirmation, then save verified_by: seed+owner"
-        log "note: smfworks.com is scan_only until Michael assigns fix ownership (SPEC.md 6.3)"
-        exit 0 ;;
-      *)
-        log "NOT in seed list — fail closed (try --method repo|wellknown|dns)"
-        exit 1 ;;
-    esac ;;
+    # The public script ships an empty seed list. No domain is pre-verified.
+    # A fresh install must not inherit ownership of sites the user does not own.
+    # Use repo, wellknown, or dns, then record the owner's own confirmation
+    # before writing owner_verified: true. seed+owner alone never exits 0.
+    log "NOT verified: the public seed list is empty — $DOMAIN is not pre-approved"
+    log "fail closed. Use --method repo, wellknown, or dns, and record the owner's confirmation before owner_verified: true"
+    exit 1 ;;
 
   repo)
     [[ -n "$REPO" ]] || die "--repo OWNER/NAME is required for --method repo" 2

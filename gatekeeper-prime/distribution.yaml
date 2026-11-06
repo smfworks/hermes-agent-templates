@@ -13,6 +13,7 @@ distribution_owned:
   - .env.EXAMPLE
   - README.md
   - AGENTS.md
+  - LICENSE
   - examples/
   - scripts/
   - skills/

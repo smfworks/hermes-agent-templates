@@ -1,3 +1,16 @@
+---
+name: site-signal-axe-scan
+description: Scan an owned site for accessibility issues with axe-core in headless Chromium.
+version: 1.0.0
+author: SMF Works
+license: MIT
+platforms: [linux]
+metadata:
+  hermes:
+    tags: [site-signal, accessibility, axe]
+    related_skills: [site-signal-guardrails, site-signal-report]
+---
+
 # When to use
 
 Measuring accessibility (the axe dimension) for an owned site — full audit,

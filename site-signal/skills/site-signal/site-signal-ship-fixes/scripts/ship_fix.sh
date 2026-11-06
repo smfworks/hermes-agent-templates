@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Site Signal ship-a-fix loop (SPEC.md 5.4) — end to end:
-#   worktree -> fix brief -> Grok Build headless (spark-glm) -> repo tests/build
+#   worktree -> fix brief -> Grok Build headless -> repo tests/build
 #   -> deny_terms_check.sh -> push branch -> gh pr create (DRAFT) -> checks wait
-#   -> merge gated on the owner's recorded approval or sites.yaml merge:
-#   after_green_ci -> gh pr merge --squash --match-head-commit -> wait_deploy.sh
-#   -> re-scan live -> update the Shipped table -> cleanup.
+#   -> merge gated on the owner's recorded approval, or on a human
+#   merge_consent that names this domain -> gh pr merge --squash
+#   --match-head-commit -> wait_deploy.sh -> re-scan live -> update the
+#   Shipped table -> cleanup.
 #
 # Usage (ship):
 #   ship_fix.sh --repo OWNER/NAME --domain DOMAIN [--run-dir DIR] [--report FILE]
@@ -24,10 +25,9 @@
 # name the repo (ship) / repo + PR number (merge) — a bare "go" is refused.
 # Every push/merge appends a record to $RUN_DIR/approval-<repo>.md first.
 #
-# gh resolution: GH_BIN env override wins; default is the working binary recorded
-# in PREREQ-RESULTS.md (the ~/.local/bin/gh mise wrapper deadlocks on this host).
-# Grok Build: GROK_BIN/GROK_MODEL env override config.yaml (spark-glm = GLM 5.3
-# on this host; use glm-5.3 only where a Z.ai connector is configured).
+# gh resolution: GH_BIN env override wins; otherwise `gh` on PATH.
+# Grok Build: GROK_BIN/GROK_MODEL env override config.yaml. The default model
+# is grok-4.7. A local alias is optional and only works where it is defined.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -42,7 +42,7 @@ TOP="" WITH_MODERATE=0 ISSUES_SEL="" BRIEF_IN="" TITLE="" TOPIC="" SHORTID=""
 APPROVED="" SKIP_GROK=0 NO_WAIT=0 SKIP_TESTS=0 SKIP_RESCAN=0
 TEST_CMD="" BUILD_CMD="" MAX_TURNS=60 VERIFY_PATH="" VERIFY_CONTAINS=""
 SS_HOME="${SITE_SIGNAL_HOME:-$HOME/SiteSignal}"
-GH_BIN="${GH_BIN:-$HOME/.local/share/mise/installs/gh/2.103.3/gh_2.103.3_linux_amd64/bin/gh}"
+GH_BIN="${GH_BIN:-gh}"
 GROK_BIN="${GROK_BIN:-}"
 GROK_MODEL="${GROK_MODEL:-}"
 DENY_TERMS_FILE="${SITE_SIGNAL_DENY_TERMS:-$HOME/.config/grok-fleet/deny-terms.txt}"
@@ -116,17 +116,17 @@ PYEOF
     # otherwise does config.yaml fill the value in.
     [[ -n "${CFG_HOME:-}" && -z "${SITE_SIGNAL_HOME:-}" ]] && SS_HOME="$CFG_HOME"
     [[ -n "${CFG_DENY_TERMS_FILE:-}" && -z "${SITE_SIGNAL_DENY_TERMS:-}" ]] && DENY_TERMS_FILE="$CFG_DENY_TERMS_FILE"
-    : "${GROK_MODEL:=${CFG_GROK_MODEL:-spark-glm}}"
-    : "${GROK_BIN:=${CFG_GROK_BIN:-$HOME/.grok/bin/grok}}"
+    : "${GROK_MODEL:=${CFG_GROK_MODEL:-grok-4.7}}"
+    : "${GROK_BIN:=${CFG_GROK_BIN:-grok}}"
     pick_python
   fi
 fi
-: "${GROK_MODEL:=spark-glm}"; : "${GROK_BIN:=$HOME/.grok/bin/grok}"
-if [[ ! -x "$GH_BIN" ]]; then
-  cand="$(ls -1 "$HOME"/.local/share/mise/installs/gh/*/*/bin/gh 2>/dev/null | sort -V | tail -1 || true)"
-  [[ -n "$cand" ]] && GH_BIN="$cand"
+: "${GROK_MODEL:=grok-4.7}"; : "${GROK_BIN:=grok}"
+if [[ "$GH_BIN" == */* ]]; then
+  [[ -x "$GH_BIN" ]] || die "GH_BIN is not executable"
+else
+  command -v "$GH_BIN" >/dev/null 2>&1 || die "gh not found on PATH; install GitHub CLI or set GH_BIN"
 fi
-[[ -x "$GH_BIN" ]] || die "no working gh binary found; set GH_BIN (bare \`gh\` is a broken mise wrapper here)"
 
 # ---------- run dir --------------------------------------------------------
 if [[ -z "$RUN_DIR" ]]; then
@@ -170,6 +170,23 @@ print("SS_REPO=" + q(erepo or repo))
 print("SS_BASE=" + q(entry.get("default_branch", "main")))
 print("SS_DEPLOY=" + q(entry.get("deploy", "unknown")))
 print("SS_MERGE_POLICY=" + q(entry.get("merge", "ask")))
+consent = entry.get("merge_consent") if isinstance(entry.get("merge_consent"), dict) else {}
+phrase = str(consent.get("phrase") or "").strip()
+set_by = str(consent.get("set_by") or "").strip()
+set_at = str(consent.get("set_at") or "").strip()
+consent_domain = str(consent.get("domain") or "").strip()
+expected = "always merge green PRs for " + domain
+consent_ok = (
+    entry.get("merge") == "after_green_ci"
+    and consent_domain.lower() == domain.lower()
+    and phrase.casefold() == expected.casefold()
+    and bool(set_by)
+    and len(set_at) >= 10
+    and set_at[0:4].isdigit()
+)
+print("SS_MERGE_CONSENT=" + q("yes" if consent_ok else "no"))
+print("SS_MERGE_SET_BY=" + q(set_by))
+print("SS_MERGE_SET_AT=" + q(set_at))
 print("SS_PAGES=" + q(scan.get("pages", 5)))
 print("SS_AXE_PATHS=" + q(" ".join(scan.get("axe_paths") or ["/"])))
 print("SS_SCAN_ONLY=" + q(bool(entry.get("scan_only"))))
@@ -187,6 +204,7 @@ if echo "$site_out" | grep -q "REFUSED=1"; then
 fi
 eval "$(echo "$site_out" | grep -E '^(SS_[A-Z_]+)=')" || true
 SS_BASE="${SS_BASE:-main}"; SS_DEPLOY="${SS_DEPLOY:-unknown}"; SS_MERGE_POLICY="${SS_MERGE_POLICY:-ask}"
+SS_MERGE_CONSENT="${SS_MERGE_CONSENT:-no}"; SS_MERGE_SET_BY="${SS_MERGE_SET_BY:-}"; SS_MERGE_SET_AT="${SS_MERGE_SET_AT:-}"
 SS_PAGES="${SS_PAGES:-5}"; SS_AXE_PATHS="${SS_AXE_PATHS:-/}"; SS_SCAN_ONLY="${SS_SCAN_ONLY:-False}"
 REPO_DIR="$SS_HOME/repos/$REPO"
 WT="$SS_HOME/wt/$REPO-$SHORTID"
@@ -198,6 +216,9 @@ record_approval() { # $1 = what is about to run
   local ts; ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   { echo "## $ts — $MODE"
     echo "- owner instruction (--approved-by-owner): ${APPROVED:-<none>}"
+    if [[ "$SS_MERGE_CONSENT" == "yes" ]]; then
+      echo "- merge consent names $DOMAIN; set_by: $SS_MERGE_SET_BY; set_at: $SS_MERGE_SET_AT"
+    fi
     echo "- repo: $REPO  domain: $DOMAIN  ${MERGE_PR:+PR: #$MERGE_PR  }branch: $BRANCH"
     echo "- run: $RUN_DIR"
     echo "- about to: $1"
@@ -456,11 +477,14 @@ PYEOF
     would "git -C $WT push -u origin $BRANCH        <-- dry run STOPS HERE: no push, no PR, no remote changes"
     would "gh pr create --repo $REPO --base $SS_BASE --head $BRANCH --draft --title \"$PR_TITLE\" --body-file $RUN_DIR/pr-body-${REPO#*/}.md"
     would "gh pr checks <n> --repo $REPO --watch --fail-fast  (unless --no-wait)"
-    if [[ "$SS_MERGE_POLICY" == "after_green_ci" ]]; then
-      would "merge (policy after_green_ci): gh pr ready <n>; gh pr merge <n> --repo $REPO --squash --match-head-commit <head sha> --subject \"$PR_TITLE (#<n>)\" --delete-branch"
+    if [[ "$SS_MERGE_CONSENT" == "yes" ]]; then
+      would "merge (after_green_ci confirmed by $SS_MERGE_SET_BY at $SS_MERGE_SET_AT for $DOMAIN): gh pr ready <n>; gh pr merge <n> --repo $REPO --squash --match-head-commit <head sha> --subject \"$PR_TITLE (#<n>)\" --delete-branch"
       would "wait_deploy.sh $REPO <merge sha> $DOMAIN; re-scan; update Shipped table"
     else
       would "STOP: policy is '$SS_MERGE_POLICY' — print the merge command and wait for the owner's approval naming the PR"
+      if [[ "$SS_MERGE_POLICY" == "after_green_ci" ]]; then
+        would "after_green_ci ignored: no human confirmation naming $DOMAIN (merge_consent phrase, set_by, set_at)"
+      fi
     fi
     echo "DRY RUN complete: no push, no PR, no remote changes. Worktree removed."
     echo "---------------------------------------------------------------"
@@ -577,10 +601,10 @@ PYEOF
   fi
 
   # --- merge gate ----------------------------------------------------------------
-  if [[ "$SS_MERGE_POLICY" == "after_green_ci" ]] || { [[ -n "$APPROVED" ]] && approval_names_pr; }; then
+  if [[ "$SS_MERGE_CONSENT" == "yes" ]] || { [[ -n "$APPROVED" ]] && approval_names_pr; }; then
     MODE="merge"
-    if [[ "$SS_MERGE_POLICY" == "after_green_ci" ]]; then
-      log "policy after_green_ci saved for $DOMAIN — merging #$PR_NUM"
+    if [[ "$SS_MERGE_CONSENT" == "yes" ]]; then
+      log "merge consent for $DOMAIN set by $SS_MERGE_SET_BY at $SS_MERGE_SET_AT — merging #$PR_NUM"
     else
       log "owner approval names this PR — merging #$PR_NUM"
     fi
@@ -597,9 +621,14 @@ fi
 # ===========================================================================
 if [[ "$MODE" == "merge" ]]; then
   log "merge phase: PR #$MERGE_PR in $REPO ($DOMAIN)"
-  if [[ "$SS_MERGE_POLICY" != "after_green_ci" ]]; then
+  if [[ "$SS_MERGE_CONSENT" != "yes" ]]; then
+    if [[ "$SS_MERGE_POLICY" == "after_green_ci" ]]; then
+      log "merge: after_green_ci is set for $DOMAIN but merge_consent does not name this domain with set_by and set_at — not auto-merging"
+    fi
     approval_names_pr \
-      || die "refusing to merge: --approved-by-owner must name the repo and PR (#$MERGE_PR, e.g. 'merge ${REPO#*/}#$MERGE_PR'); a bare 'go' does not match"
+      || die "refusing to merge: --approved-by-owner must name the repo and PR (#$MERGE_PR, e.g. 'merge ${REPO#*/}#$MERGE_PR'); a bare 'go' does not match. after_green_ci auto-merges only when merge_consent names $DOMAIN, who set it, and when"
+  else
+    log "honoring merge consent for $DOMAIN (set_by $SS_MERGE_SET_BY at $SS_MERGE_SET_AT)"
   fi
   if [[ "$DRY_RUN" -eq 1 ]]; then
     would "gh pr view $MERGE_PR --repo $REPO --json state,isDraft,mergeable,headRefOid,title,statusCheckRollup"
@@ -622,8 +651,7 @@ if [[ "$MODE" == "merge" ]]; then
   # Sandbox repos have no branch protection, so the merge itself must refuse a
   # red or pending PR (review F2, card t_940c5bd3). --match-head-commit below
   # already pins the merge to the inspected head; statusCheckRollup is that
-  # same head's check state, fetched in the single pr view above (no extra gh
-  # API call — see PREREQ-NOTES.md on gh api hangs on this host).
+  # same head's check state, fetched in the single pr view above.
   ci_out="$(ci_gate "$VIEW")" || true
   case "$ci_out" in
     GREEN) log "CI green on #$MERGE_PR — merge gate satisfied (SPEC 3.3 rule 3(a))" ;;

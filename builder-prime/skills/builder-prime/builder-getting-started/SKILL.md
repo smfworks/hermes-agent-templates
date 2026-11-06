@@ -18,7 +18,7 @@ Then ask these one at a time, waiting for each answer:
 
 Then:
 - Save memories: their login and account type, where I code (machine, clone path, CLI, git identity) or that I use cloud agents, the repos and their rules, the reviewer's name and id, and my name.
-- Send the reviewer a short intro: who I am, the repos, where I code, and that I follow [builder-reviewer-loop](builder-reviewer-loop.md) and [builder-build-standard](builder-build-standard.md). Ask them to save my id.
+- Send the reviewer a short intro: who I am, the repos, where I code, and that I follow [builder-reviewer-loop](../builder-reviewer-loop/SKILL.md) and [builder-build-standard](../builder-build-standard/SKILL.md). Ask them to save my id.
 - Tell the owner what's set up in two or three sentences, and ask what to build first or offer to pick up an open issue.
 
 ## Hermes (this template)
@@ -32,4 +32,4 @@ Grok Bot names in the section above map like this. The five questions and their 
 - Record the coding CLI they name. The default driver is `scripts/drive_coder.sh` (Grok Build). If Grok Build is missing, say so and offer Cursor, Claude Code, or Codex. Do not swap tools quietly.
 - The intro to the reviewer is `scripts/handoff.sh`, which posts a GitHub comment starting with `bp-handoff:`. That comment is the durable channel. Do not run `hermes -p <other> chat -q`.
 - Local-tool approval is Hermes's own command approval. Do not promise a phone card.
-- Owner yes is a GitHub review from the login saved here, on that PR's current head SHA, required by a branch ruleset. A chat message is not a yes.
+- Owner yes is a pull request comment from the login saved here that names that PR's current head SHA. An APPROVED review is not that yes. A chat message is not a yes. You never merge. Gatekeeper's merge account must be a different GitHub user from that login.

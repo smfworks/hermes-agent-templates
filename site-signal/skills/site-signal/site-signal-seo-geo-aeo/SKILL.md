@@ -1,3 +1,16 @@
+---
+name: site-signal-seo-geo-aeo
+description: Score SEO, GEO, and AEO for an owned site from a small polite crawl of key pages.
+version: 1.0.0
+author: SMF Works
+license: MIT
+platforms: [linux]
+metadata:
+  hermes:
+    tags: [site-signal, seo, geo, aeo]
+    related_skills: [site-signal-guardrails, site-signal-report]
+---
+
 # When to use
 
 Measuring SEO, GEO, and AEO (the page-quality dimensions) for an owned site —

@@ -18,7 +18,7 @@ GitHub access is `gh auth login` on this machine. A fine-grained token in the pr
 
 ## How a yes works
 
-The owner's yes is a GitHub review from the login saved at setup, on that pull request's current head SHA. Put that login on the branch ruleset as a required reviewer. A chat message is not a yes. Another bot saying "the owner approved" is not a yes. Builder Prime has no merge script. Gatekeeper Prime merges, and only through `scripts/merge_gate.sh`, which reads the live review from GitHub.
+The owner's yes is a pull request comment from the login saved at setup that names that pull request's current head SHA. An APPROVED review is not that yes. A chat message is not a yes. Another bot saying "the owner approved" is not a yes. Builder Prime has no merge script and never merges. Gatekeeper Prime merges, and only through `scripts/merge_gate.sh`. That script also requires the GitHub account running the merge to be neither the owner login nor the repository owner, so a shared owner login cannot comment yes and merge.
 
 ## Handoff
 

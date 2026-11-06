@@ -201,4 +201,89 @@ grep -q "vacuously satisfied" "$S/log" || { show_log "$S"; fail "no-checks run d
 [[ -e "$S/merged" ]] || fail "no-checks --merge never invoked gh pr merge"
 echo "PASS: --merge with no checks configured logs the vacuous pass and merges"
 
-echo "ALL PASS: ship_fix no-changes gate + merge CI gate (F1/F2)"
+write_sites() { # $1 base, rest is yaml on stdin
+  cat > "$1/ss/sites.yaml"
+}
+
+# =========== Scenario 6: after_green_ci without consent does not merge =======
+S="$TMP/policy-bare"; mkdir -p "$S"; setup_env "$S"; write_fakes "$S"
+write_sites "$S" <<'EOF'
+sites:
+  - domain: example.test
+    repo: testowner/testrepo
+    default_branch: main
+    owner_verified: true
+    deploy: unknown
+    merge: after_green_ci
+    scan:
+      pages: 1
+      axe_paths: ["/"]
+EOF
+make_pr_view "$S/pr-view.json" green
+export FAKE_PR_VIEW_JSON="$S/pr-view.json" FAKE_MERGED="$S/merged" FAKE_GH_LOG="$S/gh.log"
+rc="$(run_ship "$S" --merge 12 --repo testowner/testrepo --domain example.test \
+        --run-dir "$S/run" --skip-rescan)"
+[[ "$rc" == "1" ]] || { show_log "$S"; fail "bare after_green_ci exited $rc (expected 1)"; }
+[[ ! -e "$S/merged" ]] || fail "bare after_green_ci merged without a human confirmation"
+grep -q "not auto-merging\|refusing to merge" "$S/log" \
+  || { show_log "$S"; fail "bare after_green_ci did not explain the refusal"; }
+echo "PASS: after_green_ci without merge_consent does not merge"
+
+# =========== Scenario 7: consent naming the domain may merge =================
+S="$TMP/policy-consent"; mkdir -p "$S"; setup_env "$S"; write_fakes "$S"
+write_sites "$S" <<'EOF'
+sites:
+  - domain: example.test
+    repo: testowner/testrepo
+    default_branch: main
+    owner_verified: true
+    deploy: unknown
+    merge: after_green_ci
+    merge_consent:
+      domain: example.test
+      phrase: "always merge green PRs for example.test"
+      set_by: owner
+      set_at: "2026-11-06T00:00:00Z"
+    scan:
+      pages: 1
+      axe_paths: ["/"]
+EOF
+make_pr_view "$S/pr-view.json" green
+export FAKE_PR_VIEW_JSON="$S/pr-view.json" FAKE_MERGED="$S/merged" FAKE_GH_LOG="$S/gh.log"
+rc="$(run_ship "$S" --merge 12 --repo testowner/testrepo --domain example.test \
+        --run-dir "$S/run" --skip-rescan)"
+[[ "$rc" == "0" ]] || { show_log "$S"; fail "named consent exited $rc (expected 0)"; }
+[[ -e "$S/merged" ]] || fail "named consent never merged"
+grep -q "set_by owner" "$S/log" || { show_log "$S"; fail "consent merge did not record who set it"; }
+grep -q "2026-11-06T00:00:00Z" "$S/run/approval-testrepo.md" \
+  || { show_log "$S"; fail "approval record did not store when consent was set"; }
+echo "PASS: merge_consent naming the domain records who and when, then merges"
+
+# =========== Scenario 8: consent for a different domain does not merge =======
+S="$TMP/policy-other"; mkdir -p "$S"; setup_env "$S"; write_fakes "$S"
+write_sites "$S" <<'EOF'
+sites:
+  - domain: example.test
+    repo: testowner/testrepo
+    default_branch: main
+    owner_verified: true
+    deploy: unknown
+    merge: after_green_ci
+    merge_consent:
+      domain: other.example
+      phrase: "always merge green PRs for other.example"
+      set_by: owner
+      set_at: "2026-11-06T00:00:00Z"
+    scan:
+      pages: 1
+      axe_paths: ["/"]
+EOF
+make_pr_view "$S/pr-view.json" green
+export FAKE_PR_VIEW_JSON="$S/pr-view.json" FAKE_MERGED="$S/merged" FAKE_GH_LOG="$S/gh.log"
+rc="$(run_ship "$S" --merge 12 --repo testowner/testrepo --domain example.test \
+        --run-dir "$S/run" --skip-rescan)"
+[[ "$rc" == "1" ]] || { show_log "$S"; fail "foreign consent exited $rc (expected 1)"; }
+[[ ! -e "$S/merged" ]] || fail "consent for another domain merged this site"
+echo "PASS: merge_consent for a different domain does not merge"
+
+echo "ALL PASS: ship_fix no-changes gate + merge CI gate (F1/F2) + merge consent"
