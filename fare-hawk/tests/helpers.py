@@ -518,7 +518,9 @@ def assert_drop_block(
 
 def fare_blocks(stdout: str) -> list[str]:
     parts = stdout.split("Fare Hawk:")
-    return ["Fare Hawk:" + part.strip() for part in parts[1:]]
+    # Keep the space after the colon. str.strip() would delete it and the
+    # drop-line assertion could not match a spec-shaped alert.
+    return ["Fare Hawk:" + part.strip("\r\n") for part in parts[1:]]
 
 
 def lodging_area(fixture: dict, roles: dict[str, dict]) -> str | None:
