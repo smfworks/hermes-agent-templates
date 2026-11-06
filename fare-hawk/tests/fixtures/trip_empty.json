@@ -1,0 +1,10 @@
+{
+  "destination": "Emptyville",
+  "origin": "BOS",
+  "destination_code": "EMP",
+  "comparison_currency": "USD",
+  "flights": [],
+  "lodging": [],
+  "days": [],
+  "limitation": "No verified fares, availability, or venue hours in this fixture."
+}

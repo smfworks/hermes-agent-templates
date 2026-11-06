@@ -1,0 +1,30 @@
+{
+  "route": "BOS-LIS",
+  "party": "2 adults",
+  "details": "TP 216, 2026-12-10 to 2026-12-17",
+  "source": "Fixture Air",
+  "link": "https://fixtures.example/bos-lis",
+  "currency": "USD",
+  "baseline": "1000.00",
+  "cabin": "economy",
+  "room": "standard",
+  "product_key": "BOS-LIS|2026-12-10|2026-12-17|economy|standard",
+  "departure": "2026-12-10",
+  "observations": [
+    {
+      "status": "ok",
+      "currency": "USD",
+      "cabin": "economy",
+      "room": "standard",
+      "product_key": "BOS-LIS|2026-12-10|2026-12-17|economy|standard",
+      "nonstop": false,
+      "new_nonstop": false,
+      "sellout": false,
+      "sellout_verified": false,
+      "fees_complete": true,
+      "notes": "",
+      "price": "950.00",
+      "seen_at": "2026-11-06T15:00:00Z"
+    }
+  ]
+}

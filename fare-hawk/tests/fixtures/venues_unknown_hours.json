@@ -1,0 +1,29 @@
+{
+  "destination": "Lisbon",
+  "origin": "BOS",
+  "destination_code": "LIS",
+  "comparison_currency": "USD",
+  "flights": [],
+  "lodging": [],
+  "days": [
+    {
+      "date": "2026-12-10",
+      "pace": "light",
+      "neighborhood": "Santa Catarina",
+      "anchors": [
+        "Miradouro de Santa Catarina"
+      ],
+      "meal": "coffee",
+      "rain": "nearby cafe",
+      "signature": false,
+      "hours": null
+    }
+  ],
+  "venues": [
+    {
+      "name": "Miradouro de Santa Catarina",
+      "hours": null,
+      "neighborhood": "Santa Catarina"
+    }
+  ]
+}

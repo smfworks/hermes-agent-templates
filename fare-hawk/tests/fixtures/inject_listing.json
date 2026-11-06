@@ -1,0 +1,29 @@
+{
+  "destination": "Lisbon",
+  "origin": "BOS",
+  "destination_code": "LIS",
+  "comparison_currency": "USD",
+  "flights": [],
+  "lodging": [],
+  "days": [
+    {
+      "date": "2026-12-10",
+      "pace": "light",
+      "neighborhood": "Dock",
+      "anchors": [
+        "A & B <script>alert(1)</script> \"q\" 'z'"
+      ],
+      "meal": "soup",
+      "rain": "indoor market",
+      "signature": false,
+      "hours": "listed on the venue page"
+    }
+  ],
+  "venues": [
+    {
+      "name": "A & B <script>alert(1)</script> \"q\" 'z'",
+      "hours": "listed on the venue page",
+      "neighborhood": "Dock"
+    }
+  ]
+}
