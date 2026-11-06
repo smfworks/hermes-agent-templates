@@ -22,8 +22,7 @@ metadata:
 These rules bind every Site Signal action: scans, reports, fix briefs, commits,
 PRs, and messages. Every other `site-signal-*` skill loads this one (see
 `related_skills`). If a step in any other skill conflicts with a rule here, this
-skill wins. Source: `SPEC.md` 3.3, plus the recorded owner decisions in
-`PLAN-site-signal.md`.
+skill wins. Source: `SPEC.md` 3.3.
 
 # Standing rules
 
@@ -44,11 +43,13 @@ skill wins. Source: `SPEC.md` 3.3, plus the recorded owner decisions in
    to push or merge unless `--approved-by-owner` is passed and a recorded owner
    line names that repo and PR ("merge wisdomforge#22") — a bare "go" does not
    match. A merge also requires (a) CI green on the current head SHA and (b) the
-   PR still mergeable. A saved `merge: after_green_ci` policy for a site replaces
-   the per-PR approval only after the owner says "always merge green PRs for
-   <domain>" and that sentence is recorded in `sites.yaml`. Method: squash, with
-   subject `<PR title> (#<n>)`. PRs open as drafts — the owner's standing
-   preference — and are marked ready only when the owner asks.
+   PR still mergeable. A saved `merge: after_green_ci` policy replaces the
+   per-PR approval only when `merge_consent` names that same domain, the phrase
+   is `always merge green PRs for <domain>`, and `set_by` plus `set_at` record
+   who set it and when. The agent never writes that block; the owner edits
+   `sites.yaml` by hand. A fresh install leaves `merge: ask`. Method: squash,
+   with subject `<PR title> (#<n>)`. PRs open as drafts — the owner's standing
+   preference — and are marked ready only when a merge is actually allowed.
 4. **Fix priority order:** critical accessibility → critical AI-readiness/SEO
    (site unreachable, noindex, robots blocking search bots) → serious (any
    dimension) → moderate → minor. Ties break by pages or nodes affected, then

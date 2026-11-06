@@ -10,7 +10,11 @@
 #   2. the owner login's own yes comment names that exact head SHA
 #      (merge_decision.owner_yes_comment). A push after the yes
 #      invalidates it; another bot's approval words do not count.
-#   3. the yes-comment id goes into the merge log ($GK_MERGE_LOG,
+#      An APPROVED review is not a substitute for that comment.
+#   3. the GitHub account running this script (`gh api user`) is neither
+#      the owner login nor the repository owner (actor_may_merge). A
+#      shared owner login cannot post the yes and merge.
+#   4. the yes-comment id goes into the merge log ($GK_MERGE_LOG,
 #      default $HERE/merge_log), then squash-merge with
 #      --match-head-commit so GitHub refuses a moved head server-side.
 set -euo pipefail
@@ -60,12 +64,14 @@ BRANCH_RULES=$(gh_json "[]" api "repos/$REPO/rules/branches/$PROTECTED")
 PROTECTION=$(gh_json "{}" api "repos/$REPO/branches/$PROTECTED/protection")
 CHECK_RUNS=$(gh_json "[]" api "repos/$REPO/commits/$SHA/check-runs?per_page=100" --jq '.check_runs')
 STATUSES=$(gh_json "[]" api "repos/$REPO/commits/$SHA/status?per_page=100" --jq '.statuses')
+ACTOR=$(gh_json "" api user --jq .login)
+REPO_OWNER="${REPO%%/*}"
 
-export VIEW OWNER BRANCH_RULES PROTECTION CHECK_RUNS STATUSES HERE
+export VIEW OWNER BRANCH_RULES PROTECTION CHECK_RUNS STATUSES ACTOR REPO_OWNER HERE
 decision=$(python3 - <<'PY'
 import json, os, sys
 sys.path.insert(0, os.path.join(os.environ["HERE"], "lib"))
-from merge_decision import checks_green, owner_yes_comment, required_contexts
+from merge_decision import actor_may_merge, checks_green, owner_yes_comment, required_contexts
 
 view = json.loads(os.environ["VIEW"])
 sha = view.get("headRefOid") or ""
@@ -80,6 +86,12 @@ if not green:
 ok, why, cid = owner_yes_comment(view, os.environ["OWNER"])
 if not ok:
     print("\t".join(["no", "yes", why, sha, "", ""]))
+    raise SystemExit(0)
+
+distinct, actor_why = actor_may_merge(
+    os.environ.get("ACTOR") or "", os.environ["OWNER"], os.environ.get("REPO_OWNER") or "")
+if not distinct:
+    print("\t".join(["no", "actor", actor_why, sha, "", ""]))
     raise SystemExit(0)
 
 print("\t".join(["yes", "ready", why, sha, "" if cid is None else str(cid), checks_why]))

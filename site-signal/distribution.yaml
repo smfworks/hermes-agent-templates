@@ -1,7 +1,7 @@
 name: site-signal
 version: 1.0.0
 description: "Site Signal by SMF Works: scans sites you own for SEO, GEO, AEO, AI readiness, and accessibility, ranks issues by impact, and ships fixes as GitHub PRs merged on your say-so."
-hermes_requires: ">=0.22.0"     # verified against installed Hermes v0.22.5 (mikesai1, 2026-11-01)
+hermes_requires: ">=0.22.0"
 author: "SMF Works"
 license: "MIT"
 
@@ -15,6 +15,8 @@ distribution_owned:
   - .env.EXAMPLE
   - README.md
   - AGENTS.md
+  - LICENSE
+  - SPEC.md
   - sites.yaml.example
   - cron/
   - scripts/
@@ -27,7 +29,7 @@ distribution_owned:
 # about keys they already have configured.
 env_requires:
   - name: GH_TOKEN
-    description: "GitHub token (fine-grained: smfworks repos, contents + pull requests RW, checks R). Optional if `gh auth login` is done."
+    description: "GitHub token with contents and pull requests on the repos this profile should edit, plus checks read. Optional if `gh auth login` is already done."
     required: false
   - name: VERCEL_TOKEN
     description: "Optional: Vercel deploy status / private report hosting"

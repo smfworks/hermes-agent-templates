@@ -139,10 +139,28 @@ def test_no_key_slides() -> None:
         assert (out / "movie.mp4").is_file()
 
 
+def render_tools_ready() -> bool:
+    import shutil
+
+    if not shutil.which("ffmpeg") or not shutil.which("ffprobe"):
+        print("A1/A4 SKIP render: ffmpeg is missing")
+        return False
+    if not (shutil.which("espeak-ng") or shutil.which("espeak") or shutil.which("piper")):
+        print("A1/A4 SKIP render: TTS (espeak-ng, espeak, or piper) is missing")
+        return False
+    try:
+        import PIL  # noqa: F401
+    except ImportError:
+        print("A1/A4 SKIP render: Pillow is missing")
+        return False
+    return True
+
+
 def main() -> None:
     test_backend_selection()
-    test_key_not_logged_on_fallback_render()
-    test_no_key_slides()
+    if render_tools_ready():
+        test_key_not_logged_on_fallback_render()
+        test_no_key_slides()
     print("A1/A4 PASS")
 
 

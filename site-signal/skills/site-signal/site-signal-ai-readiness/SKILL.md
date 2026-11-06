@@ -1,3 +1,16 @@
+---
+name: site-signal-ai-readiness
+description: Score how ready an owned site is for AI crawlers from its raw HTML, robots.txt, and llms.txt.
+version: 1.0.0
+author: SMF Works
+license: MIT
+platforms: [linux]
+metadata:
+  hermes:
+    tags: [site-signal, ai-readiness]
+    related_skills: [site-signal-guardrails, site-signal-report]
+---
+
 # When to use
 
 Measuring AI readiness (the AI-crawler dimension) for an owned site — full

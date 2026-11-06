@@ -7,6 +7,10 @@ refuses by itself. A chat line, the PR body, or another bot saying
 "owner approved" is not a yes — only the owner login's own comment
 counts. The old review-based gate (`owner_approved`) is gone.
 
+The account that runs the merge must not be that owner login and must not
+be the repository owner (`actor_may_merge`). A bot signed in as the owner
+cannot comment yes and merge.
+
 The view comes from `gh pr view --json state,headRefOid,comments`
 (GraphQL — the REST pull response has no headRefOid). Comments arrive
 oldest first; the latest qualifying yes wins.
@@ -49,6 +53,28 @@ def _comment_id(comment):
         if stripped:
             return stripped
     return None
+
+
+def actor_may_merge(actor_login: str, owner_login: str, repo_owner: str = "") -> tuple[bool, str]:
+    """May this GitHub account run the merge?
+
+    The account that executes the merge (`gh api user`) must be a different
+    login from the owner whose yes comment counts, and from the repository
+    owner. A shared owner login can post `yes <head SHA>` and then merge;
+    that path is closed. An empty actor fails closed.
+    """
+    actor = (actor_login or "").strip()
+    owner = (owner_login or "").strip()
+    repo = (repo_owner or "").strip()
+    if not owner:
+        return False, "no owner login recorded at setup"
+    if not actor:
+        return False, "could not read the GitHub account running the merge"
+    if actor.lower() == owner.lower():
+        return False, "the GitHub account running the merge is the owner login; a shared login cannot approve and merge"
+    if repo and actor.lower() == repo.lower():
+        return False, "the GitHub account running the merge is the repository owner; a shared login cannot approve and merge"
+    return True, "merge account differs from the owner login and the repository owner"
 
 
 def owner_yes_comment(view: dict, owner_login: str, yes_regex: str = None) -> tuple[bool, str, object]:

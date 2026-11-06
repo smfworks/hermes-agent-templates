@@ -12,11 +12,9 @@
 #
 # Exit codes: 0 deployed and artifact verified; 1 artifact check failed;
 # 2 deploy not observed within --timeout (nothing verified — check manually).
-# GH_BIN overrides the gh binary (the ~/.local/bin/gh mise wrapper deadlocks on
-# this host); the default is the working binary recorded in PREREQ-RESULTS.md.
+# GH_BIN overrides the gh binary. The default is `gh` on PATH.
 set -uo pipefail
 
-GH_BIN_DEFAULT="$HOME/.local/share/mise/installs/gh/2.103.3/gh_2.103.3_linux_amd64/bin/gh"
 UA="SMFWorks-SiteSignal/1.0 (+https://smfworks.com)"
 
 REPO="" SHA="" DOMAIN="" PATH_="/" EXPECT_STATUS=200 EXPECT_CONTAINS=""
@@ -26,13 +24,12 @@ die() { echo "wait_deploy: $*" >&2; exit "${2:-2}"; }
 log() { echo "wait_deploy: $*"; }
 
 resolve_gh() {
-  local gh="${GH_BIN:-$GH_BIN_DEFAULT}"
-  if [[ ! -x "$gh" ]]; then
-    local cand
-    cand=$(ls -1 "$HOME"/.local/share/mise/installs/gh/*/*/bin/gh 2>/dev/null | sort -V | tail -1 || true)
-    [[ -n "$cand" ]] && gh="$cand"
+  local gh="${GH_BIN:-gh}"
+  if [[ "$gh" == */* ]]; then
+    [[ -x "$gh" ]] || die "GH_BIN is not executable" 2
+  else
+    command -v "$gh" >/dev/null 2>&1 || die "gh not found on PATH; install GitHub CLI or set GH_BIN" 2
   fi
-  [[ -x "$gh" ]] || die "no working gh binary; set GH_BIN (bare \`gh\` is a broken mise wrapper here)" 2
   printf '%s' "$gh"
 }
 

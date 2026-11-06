@@ -16,11 +16,15 @@ On the first conversation it asks the setup questions one at a time, including w
 
 ## How a merge works
 
-`scripts/merge_gate.sh` squash-merges only when the owner login saved at setup has a `yes` comment on this pull request that names the live head SHA. An APPROVED review is not that gate. A chat yes, a kanban comment, or another bot claiming "owner approved" is not that comment. Any new push invalidates the comment.
+`scripts/merge_gate.sh` squash-merges only when all three of these are true:
+
+1. Every required check on the live head SHA is green.
+2. The owner login saved at setup has a `yes` comment on this pull request that names that exact head SHA. An APPROVED review is not that gate. A chat yes, a kanban comment, or another bot claiming "owner approved" is not that comment. Any new push invalidates the comment.
+3. The GitHub account running the merge (`gh api user`) is neither that owner login nor the repository owner. A shared owner login cannot post the yes and merge.
 
 The ruleset requires pull requests, blocks direct pushes, requires status checks, and allows squash only. Required approvals are 0. That zero is intentional: the owner's yes is a pull request comment, not a GitHub review. The bypass list is empty.
 
-If `gh` is the pull request author, post a COMMENT review pinned to the head SHA. GitHub blocks self-approval. Do not post a yes-shaped comment. Bots may share the owner login.
+If `gh` is the pull request author, post a COMMENT review pinned to the head SHA. GitHub blocks self-approval. Do not post a yes-shaped comment. The account that merges must be a different GitHub user from the owner.
 
 ## Routines
 

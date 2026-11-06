@@ -5,13 +5,12 @@ hermes_requires: ">=0.22.0"
 author: "SMF Works"
 license: "MIT"
 
-# Allowlist of shipped files. SPEC.md, ENV-NOTES.md, and PLAN-*.md stay in the
-# working tree and do not install. tests/ is included for install-from-checkout.
+# Allowlist of shipped files. SPEC.md and PLAN-*.md stay in the working tree
+# and do not install. tests/ is included for install-from-checkout.
 distribution_owned:
   - SOUL.md
   - AGENTS.md
   - README.md
-  - REVIEW.md
   - LICENSE
   - config.yaml
   - mcp.json

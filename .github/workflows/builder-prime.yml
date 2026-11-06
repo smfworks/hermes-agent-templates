@@ -1,0 +1,15 @@
+name: builder-prime
+
+on:
+  pull_request:
+    paths:
+      - "builder-prime/**"
+      - ".github/workflows/builder-prime.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Offline gates
+        run: bash builder-prime/tests/smoke.sh

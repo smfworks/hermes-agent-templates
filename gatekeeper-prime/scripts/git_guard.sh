@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Floor under both profiles. Refuses merge, push to the protected branch,
-# a silent force-push, and yes-shaped comments posted by a bot (bots share
-# the owner login, so a bot must never post the owner's yes). Branch
-# protection is still the real lock.
+# a silent force-push, and yes-shaped comments posted by a bot. The owner
+# types their own yes. The merge account must be a different GitHub user.
+# Branch protection is still the real lock.
 set -euo pipefail
 
 PROTECTED="${PROTECTED_BRANCH:-main}"
@@ -53,9 +53,9 @@ print("protected" if hit else "ok")
 PY
 }
 
-# A yes naming the head SHA is the owner's own signature. Every agent
-# runs as the owner login, so a bot posting one would be indistinguishable
-# from the owner approving. Inspect the body the bot is about to send and
+# A yes naming the head SHA is the owner's own signature. The account
+# that merges must be a different GitHub user, and a bot must still never
+# post that comment. Inspect the body the bot is about to send and
 # refuse yes-shaped ones: body starts with a yes ($GK_YES_REGEX,
 # case-insensitive) AND contains a 40-hex SHA. handoff's bp-handoff bodies
 # name SHAs but never start with a yes, so they pass. Prints "yes" or
@@ -208,12 +208,12 @@ case "$cmd" in
     ;;
   check-gh|gh)
     if [[ "${1:-}" == "pr" && "${2:-}" == "merge" ]]; then
-      die "refusing gh pr merge. Builder never merges. Gatekeeper merges only through scripts/merge_gate.sh after the owner's GitHub review on this head SHA."
+      die "refusing gh pr merge. Builder never merges. Gatekeeper merges only through scripts/merge_gate.sh after the owner's yes comment on this head SHA, from a GitHub account that is not the owner."
     fi
     if [[ "${1:-}" == "api" ]]; then
       blob="$*"
       if [[ "$blob" == *"/merge"* || "$blob" == *"/merges"* ]]; then
-        die "refusing GitHub merge API. Use scripts/merge_gate.sh on the reviewer profile, and only after the owner's review on this SHA."
+        die "refusing GitHub merge API. Use scripts/merge_gate.sh on the reviewer profile, and only after the owner's yes comment on this SHA from a different GitHub account."
       fi
     fi
     # A comment body can arrive on stdin (--input -, --body-file -,
@@ -225,7 +225,7 @@ case "$cmd" in
     fi
     verdict=$(GK_STDIN_BODY="$STDIN_SAVED" comment_classify "$@")
     if [[ "$verdict" == "yes" ]]; then
-      die "refusing yes-shaped comment. Bots run as the owner login, so a bot must never post a yes; the owner types their own yes on the PR."
+      die "refusing yes-shaped comment. A bot must never post a yes; the owner types their own yes on the PR, and the merge account must not be that owner login."
     fi
     if [[ "$cmd" == "check-gh" ]]; then
       echo "git_guard: gh check ok"

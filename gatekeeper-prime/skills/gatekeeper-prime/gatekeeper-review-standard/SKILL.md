@@ -7,7 +7,7 @@ version: 1.0.0
 ---
 # Gatekeeper review standard
 
-Follow [builder-reviewer-loop](builder-reviewer-loop.md). Look up the GitHub connector's tool schemas fresh each time.
+Follow [builder-reviewer-loop](../builder-reviewer-loop/SKILL.md). Look up the GitHub connector's tool schemas fresh each time.
 
 ## Gather
 1. PR metadata: author and their association (owner, collaborator, outside contributor, bot), draft state, base and head branch, **full head SHA**, and mergeable state.

@@ -2,7 +2,7 @@
 # Toolset key resolved for Hermes v0.22.5 (SPEC.md 8.4 #3): the per-platform
 # `platform_toolsets:` map is the current form; the flat `toolsets:` list is legacy.
 model:
-  default: "grok-4.7"        # fleet default on mikesai1 per memory. Operator may choose another runtime model.
+  default: "grok-4.7"        # public default. Operator may choose another runtime model.
   provider: "auto"
 agent:
   reasoning_effort: medium
@@ -19,6 +19,6 @@ skills:
       default_pages: 5
       rate_limit_rps: 1
       user_agent: "SMFWorks-SiteSignal/1.0 (+https://smfworks.com)"
-      grok_model: "spark-glm"   # GLM 5.3 on this host ([model.spark-glm] in ~/.grok/config.toml, PREREQ-NOTES.md); use "glm-5.3" where a Z.ai connector is configured
-      grok_bin: "~/.grok/bin/grok"
+      grok_model: "grok-4.7"   # optional. A machine-local alias works only where that alias is defined.
+      grok_bin: "grok"         # optional. Set GROK_BIN when the Grok Build binary is not on PATH.
       timezone: "America/New_York"

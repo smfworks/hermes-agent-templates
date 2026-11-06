@@ -3,8 +3,7 @@
 All scanner HTTP traffic goes through polite_get() so every run has the same
 crawl etiquette:
 
-- Identifies as the unified user agent "SMFWorks-SiteSignal/1.0 (+https://smfworks.com)"
-  (the scanners' per-skill UA strings were unified to this one; PREREQ-NOTES.md).
+- Identifies as the unified user agent "SMFWorks-SiteSignal/1.0 (+https://smfworks.com)".
 - Honors robots.txt for that UA. robots.txt itself is always fetched. A 200 is
   parsed for our UA (falling back to the * group); 404 allows all; 401/403
   disallow everything. An unreachable/5xx robots.txt cannot contain an explicit

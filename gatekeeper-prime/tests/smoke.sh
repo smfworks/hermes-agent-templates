@@ -12,4 +12,7 @@ fi
 if [[ -f "$ROOT/tests/test_merge_gate_api_fallback.sh" ]]; then
   bash "$ROOT/tests/test_merge_gate_api_fallback.sh"
 fi
+if [[ -f "$ROOT/tests/test_merge_gate_actor.sh" ]]; then
+  bash "$ROOT/tests/test_merge_gate_actor.sh"
+fi
 echo "smoke offline: PASS"

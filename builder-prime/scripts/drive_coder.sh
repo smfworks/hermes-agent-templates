@@ -4,7 +4,7 @@
 set -euo pipefail
 CWD=""
 PROMPT=""
-MODEL="${GROK_MODEL:-spark-glm}"
+MODEL="${GROK_MODEL:-grok-4.7}"
 GROK_BIN="${GROK_BIN:-grok}"
 MAX_TURNS="${MAX_TURNS:-40}"
 while [[ $# -gt 0 ]]; do
