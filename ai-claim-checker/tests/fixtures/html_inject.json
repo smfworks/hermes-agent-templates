@@ -1,0 +1,35 @@
+{
+  "title": "Acme, \"quoted\", and a newline\nin the title",
+  "run_id": "run-html",
+  "input": {"kind": "url", "value": "https://example.com/odd", "owner_supplied": false},
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Price is $3.00, \"promo\", and a line\nbreak",
+      "value": "3.00",
+      "headline": true,
+      "settings": {"price_unit": "usd_per_1m_input", "region": "US"},
+      "primary_source_id": "s-html"
+    }
+  ],
+  "not_checkable": [],
+  "sources": [
+    {
+      "id": "s-html",
+      "title": "Acme, \"quoted\", and a newline\nin the title",
+      "url": "javascript:alert(1)",
+      "role": "vendor",
+      "author": "Vendor Labs",
+      "affiliation": "vendor",
+      "published": null,
+      "retrieved_at": "2026-11-06",
+      "excerpt": "<script>alert(1)</script><iframe src='https://evil.example'></iframe>",
+      "settings": {"price_unit": "usd_per_1m_input", "region": "US"},
+      "supports": true,
+      "value": "3.00",
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-html"
+    }
+  ]
+}

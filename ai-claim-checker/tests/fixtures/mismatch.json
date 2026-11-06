@@ -1,0 +1,74 @@
+{
+  "title": "Subset and harness mismatch",
+  "run_id": "run-mismatch",
+  "input": {"kind": "text", "value": "Model X 90.2 SWE-bench Verified pass@1 vs Model Y 88.0", "owner_supplied": false},
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Model X 90.2 beats Model Y 88.0 on SWE-bench Verified pass@1",
+      "value": "90.2 vs 88.0",
+      "headline": true,
+      "settings": {
+        "benchmark": "SWE-bench Verified",
+        "subset": "verified",
+        "pass": "pass@1",
+        "tools": false,
+        "harness": "official",
+        "model_revision": "model-x-2026-10"
+      },
+      "primary_source_id": "s-vendor",
+      "independent_source_ids": ["s-ind-mismatch"]
+    }
+  ],
+  "not_checkable": [],
+  "sources": [
+    {
+      "id": "s-vendor",
+      "title": "Vendor card",
+      "url": "https://example.com/card",
+      "role": "vendor",
+      "author": "Vendor Labs",
+      "affiliation": "vendor",
+      "published": "2026-10-12",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "90.2 vs 88.0 pass@1 verified official",
+      "settings": {
+        "benchmark": "SWE-bench Verified",
+        "subset": "verified",
+        "pass": "pass@1",
+        "tools": false,
+        "harness": "official",
+        "model_revision": "model-x-2026-10"
+      },
+      "supports": true,
+      "value": "90.2 vs 88.0",
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-mismatch"
+    },
+    {
+      "id": "s-ind-mismatch",
+      "title": "EvalCorp different subset",
+      "url": "https://evalcorp.example/swe-full-passk",
+      "role": "independent",
+      "author": "EvalCorp",
+      "affiliation": "independent",
+      "published": "2026-10-22",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "On SWE-bench Full pass@8 with tools, Model Y 91.0 beats Model X 70.0",
+      "settings": {
+        "benchmark": "SWE-bench",
+        "subset": "full",
+        "pass": "pass@8",
+        "tools": true,
+        "harness": "tools-agent",
+        "model_revision": "model-x-2026-10"
+      },
+      "supports": false,
+      "value": "70.0 vs 91.0",
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-mismatch"
+    }
+  ]
+}

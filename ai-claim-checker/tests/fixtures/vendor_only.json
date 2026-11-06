@@ -1,0 +1,75 @@
+{
+  "title": "Model X speed claim",
+  "run_id": "run-vendor-only",
+  "input": {"kind": "url", "value": "https://example.com/launch", "owner_supplied": false},
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Model X is 2x faster than Model Y on the vendor coding bench",
+      "value": "2x",
+      "headline": true,
+      "settings": {
+        "benchmark": "VendorCodingBench",
+        "subset": "full",
+        "pass": "pass@1",
+        "tools": false,
+        "harness": "vendor",
+        "model_revision": "model-x-2026-10"
+      },
+      "primary_source_id": "s-vendor",
+      "independent_source_ids": ["s-relay"]
+    }
+  ],
+  "not_checkable": [],
+  "sources": [
+    {
+      "id": "s-vendor",
+      "title": "Vendor launch blog",
+      "url": "https://example.com/launch",
+      "role": "vendor",
+      "author": "Vendor Labs",
+      "affiliation": "vendor",
+      "published": "2026-10-12",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "2x faster than Model Y on VendorCodingBench",
+      "settings": {
+        "benchmark": "VendorCodingBench",
+        "subset": "full",
+        "pass": "pass@1",
+        "tools": false,
+        "harness": "vendor",
+        "model_revision": "model-x-2026-10"
+      },
+      "supports": true,
+      "value": "2x",
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-vendor-only"
+    },
+    {
+      "id": "s-relay",
+      "title": "Sponsored roundup copies vendor numbers",
+      "url": "https://roundup.example/sponsored",
+      "role": "relay",
+      "author": "Roundup Media",
+      "affiliation": "sponsor",
+      "published": "2026-10-13",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "Vendor says 2x faster",
+      "settings": {
+        "benchmark": "VendorCodingBench",
+        "subset": "full",
+        "pass": "pass@1",
+        "tools": false,
+        "harness": "vendor",
+        "model_revision": "model-x-2026-10"
+      },
+      "supports": true,
+      "value": "2x",
+      "copies_vendor": true,
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-vendor-only"
+    }
+  ]
+}
