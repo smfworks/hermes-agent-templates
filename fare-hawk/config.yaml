@@ -1,0 +1,18 @@
+# Fare Hawk by SMF Works. Read-only planning and watch. Owner books.
+# Chat tools are file, memory, skills, clarify, cronjob, todo, and web.
+# No browser. No delegation.
+#
+# Documented default that starts a model on a fresh install:
+#   model: grok-4.7
+#   provider: xai-oauth
+# Do not commit a host-local endpoint here.
+# After install, copy .env.EXAMPLE to the profile .env and replace the
+# placeholder (README After install). If `hermes auth status xai-oauth` is
+# already logged in on this host, the placeholder may stay empty.
+# Optional travel-provider keys are not required for fixture mode.
+model:
+  default: "grok-4.7"
+  provider: "xai-oauth"
+platform_toolsets:
+  cli: [file, memory, skills, clarify, cronjob, todo, web]
+_config_version: 52
