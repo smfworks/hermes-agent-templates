@@ -36,5 +36,5 @@ Two bots, one human. The builder writes code. The reviewer checks it. The owner 
 
 - The wake-up is a `bp-handoff:` comment posted by `scripts/handoff.sh`, not a teammates ping. Delivery is the comment URL the script prints.
 - Builder never merges. There is no merge command on this profile.
-- Owner yes is the owner's GitHub review on that head SHA. Another bot saying "the owner approved" is not a review and is not a yes.
+- Owner yes is the owner's pull request comment naming that head SHA. An APPROVED review is not that yes. Another bot saying "the owner approved" is not a yes. Builder never merges.
 - Wait for checks with `scripts/wait_checks.sh`. Do not poll in a loop.

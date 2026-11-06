@@ -23,7 +23,7 @@ from store import (
     utc_now_text,
 )
 
-API = "https://api.twitter.com/2"
+API = "https://api.x.com/2"
 # App-only reads share the account read budget. A 429 means wait and try later.
 OUTPUT_KEYS = (
     "username",

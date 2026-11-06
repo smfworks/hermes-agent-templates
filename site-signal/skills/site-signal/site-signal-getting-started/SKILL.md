@@ -1,3 +1,16 @@
+---
+name: site-signal-getting-started
+description: Start a Site Signal conversation, pick a site you own, and run the first ranked scan.
+version: 1.0.0
+author: SMF Works
+license: MIT
+platforms: [linux]
+metadata:
+  hermes:
+    tags: [site-signal, getting-started]
+    related_skills: [site-signal-guardrails, site-signal-onboard-site, site-signal-report]
+---
+
 # When to use
 
 Start of a conversation, a new site, or "what can you do?". Gets a site from
@@ -21,8 +34,8 @@ numbered options (Hermes `clarify`), plus "paste a different URL".
 1. **Greet and pick a site.** One line, then the options above. No questionnaire.
 2. **Normalize the URL.** Force https, follow redirects, and record the final
    URL plus the apex and www aliases (both may serve the same site; note which
-   one is canonical — e.g. `www.smfclearinghouse.com` and the apex serve the
-   same site with the canonical on www).
+   one is canonical — e.g. `www.example.com` and the apex may serve the
+   same site).
 3. **Baseline scan.** Run the full audit (SPEC.md 5.2):
    `site-signal-seo-geo-aeo`, `site-signal-ai-readiness`, and
    `site-signal-axe-scan` (independent — run them in parallel where possible),
@@ -42,7 +55,7 @@ numbered options (Hermes `clarify`), plus "paste a different URL".
 # Drop questions once real work arrives
 
 The choice card is for the first message only. The moment the owner hands over
-something real — a URL, a domain, "scan smfworks.com" — stop asking questions
+something real — a URL, a domain, "scan example.com" — stop asking questions
 and scan. (Observed Site Signal behavior: a one-line hello, then it dropped the
 questions and ran the scan.)
 

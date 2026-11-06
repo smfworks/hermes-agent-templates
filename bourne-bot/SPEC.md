@@ -5,7 +5,7 @@ Prepared by Charlie for Liam (architecture lead) and Paula (build support). Date
 
 ## 0. Sources and caveats
 - **Share link** https://x.ai/bot/Y8zQlQDtzwGFBrKVWlqCa: checked 2026-11-03; it shows "Bourne Bot by Michael". The public page description reads: "A personal security (OPSEC) advisor that helps you protect your own identity, devices, accounts, communications, location, finances, family, and reputation. Calm, precise, defensive and legal only." That **differs** from the catalog description Michael gave ("A calm, no-nonsense personal security advisor… walks you through incidents when something goes wrong"). Same scope; the Hermes README can use either.
-- **Live teammate** Bourne Bot (agent c2c739ad-b62f-4367-9707-7da6d662ae97). Profile.json has no description. Store has no routines or transcripts. The 4 skills are copied **verbatim** in Appendix A from the box workflows folder.
+- **Live teammate** Bourne Bot. The four skills in this template are the public skill text. This repository does not ship a profile export or a private store.
 - **Prior art (important):** github.com/smfworks/hermes-opsec-agent (head 5d9d519, 2026-10-05, MIT) is already a Hermes Bourne profile distribution:
   - SOUL.md, AGENTS.md, distribution.yaml, and templates USER/MEMORY/STATE
   - skills: opsec-intake, footprint-review, account-device-hygiene, incident-containment, bourne-guardrails v1.1.0
@@ -77,14 +77,14 @@ A defensive personal OPSEC advisor for the owner's OWN accounts, devices, locati
 ## 6. Capability gaps — architect Hermes-native solutions
 1. **Secret handling:** Grok Bot has a vault and redaction. Hermes needs input-side detection of pasted passwords, seed phrases, API keys, recovery codes, card or account numbers. It must stop the turn, refuse to store, tell the owner to rotate, and scrub gateway logs, session history and memory files.
 2. **Sensitive memory:** the profile data (family, travel, incidents) is itself sensitive. It needs file permissions (0600), optional encryption at rest (key storage is their call), a "forget" command, no sync to public repos, and `.gitignore` for user data.
-3. **Incident urgency:** a live-incident trigger must preempt intake and any long thinking, and give the first step in one line fast on the slow local model. Consider a lightweight trigger-phrase router (the repo already has `check-trigger-phrases.sh`) and a model choice for latency.
+3. **Incident urgency:** a live-incident trigger must preempt intake and any long thinking, and give the first step in one line fast. This template maps phrases with `scripts/incident_first_step.py`, which the owner runs. There is no separate trigger-phrase shell script.
 4. **Guardrail robustness on local models:** GLM-class models are weaker at refusal and override resistance than the Grok Bot runtime. It needs a red-team test set (jailbreak, roleplay, "for a novel", claimed police, injected-content) run in CI.
 5. **Prompt-injection hygiene:** pasted emails, pages and files must be treated as data, with a wrapper or label convention.
 6. **Pages:** the check-in status Page has no Hermes equivalent. Use a dated Markdown status file and a gateway summary.
 7. **Routines:** create the check-in cron only on a yes, plus pause/edit by chat.
 8. **Hotline and emergency info freshness:** DV hotlines, police and credit-bureau steps vary by country and go stale. Make it locale-aware and source-dated, and never invent numbers.
 9. **Skill-set divergence:** DECIDED: strict four-skill parity. Remove the repo's stalkerware and DV extras; fold footprint-review and account-device-hygiene into the four skills or drop them.
-10. **Log and transcript retention:** Hermes session logs on mikesai1 may persist incident details. It needs a retention/redaction policy and must keep $HERMES_HOME out of backups pushed anywhere.
+10. **Log and transcript retention:** Hermes session logs may persist incident details. Keep a retention and redaction policy, and keep the profile home out of backups that get pushed anywhere.
 11. **No web/connectors by default:** if Hermes tools allow web or terminal, restrict the profile toolset to the minimum (no terminal and no browsing of others' data) so it can't be pushed into offensive actions.
 12. **Public-install safety:** the general public install needs a clear README disclaimer (not law enforcement, not legal advice, call emergency services for danger) and an MIT LICENSE naming SMF Works only.
 

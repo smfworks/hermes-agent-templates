@@ -157,4 +157,24 @@ green, gwhy = mod.checks_green(
     [{"context": "ci", "state": "success"}])
 assert not green and "failure" in gwhy, gwhy
 
+# The merge account must be a different login from the owner and from
+# the repository owner. A shared login cannot approve and merge.
+ok, why = mod.actor_may_merge("gatekeeper-bot", "smfworks", "smfworks")
+assert ok, why
+
+ok, why = mod.actor_may_merge("smfworks", "smfworks", "acme")
+assert not ok and "shared login" in why, why
+
+ok, why = mod.actor_may_merge("SMFWORKS", "smfworks", "acme")
+assert not ok and "owner login" in why, why
+
+ok, why = mod.actor_may_merge("acme", "alice", "acme")
+assert not ok and "repository owner" in why, why
+
+ok, why = mod.actor_may_merge("", "alice", "acme")
+assert not ok and "could not read" in why, why
+
+ok, why = mod.actor_may_merge("gatekeeper-bot", "  ", "acme")
+assert not ok and "no owner login" in why, why
+
 print("merge_decision: PASS")

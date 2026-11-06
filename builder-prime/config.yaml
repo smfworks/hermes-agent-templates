@@ -12,6 +12,6 @@ skills:
       home: "~/BuilderPrime"
       reviewer_profile: "gatekeeper-prime"
       protected_branch: "main"
-      grok_model: "spark-glm"
+      grok_model: "grok-4.7"   # optional. A machine-local alias works only where that alias is defined.
       grok_bin: "grok"
       handoff_marker: "bp-handoff:"

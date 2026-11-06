@@ -29,7 +29,15 @@ The first conversation asks six questions, one at a time, unless something is ha
 - `bourne-incident-response`
 - `bourne-threat-model`
 
-No connectors. The profile does not log in to your accounts. Its tools are file, memory, skills, clarify, cronjob, and todo.
+No connectors. The profile does not log in to your accounts. Its tools are file, memory, skills, clarify, cronjob, and todo. It has no terminal tool, so it does not run the scripts below. You run them.
+
+## Scripts the owner runs
+
+- `python3 scripts/incident_first_step.py` prints the one-line first step for an incident phrase.
+- `python3 scripts/secret_paste.py` scans a paste and does not print a secret it finds.
+- `python3 scripts/forget_memory.py` removes one intake field.
+- `bash scripts/chmod_memories.sh` sets memory files to mode 0600.
+- `bash scripts/create_checkin.sh --yes` writes `cron/jobs.json` only. It does not register a live job.
 
 ## Tests
 

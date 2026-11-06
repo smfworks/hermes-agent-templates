@@ -17,3 +17,8 @@ logs/
 # Build orchestration (never ship)
 PLAN-*.md
 .build-prompt-*.txt
+
+# Bytecode and installed tool deps. Never ship a local cache.
+__pycache__/
+*.pyc
+node_modules/

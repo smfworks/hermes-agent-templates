@@ -10,7 +10,7 @@
 #     on a critical/serious axe rule), or
 #   - a scan step failed.
 # Empty stdout = silent tick. The first scan of a site is silent (no prior
-# baseline to diff against; PLAN-site-signal.md: no invented deltas).
+# baseline to diff against; SPEC.md: no invented deltas).
 #
 # Cron runs NEVER open or merge PRs and never push anywhere (SPEC.md 5.5);
 # the only writes are under $SS_HOME. Hard configuration errors print one
@@ -81,35 +81,14 @@ for f in "$SEO_PY" "$AI_PY" "$AXE_JS" "$RANK_PY" "$RENDER_PY"; do
   [[ -f "$f" ]] || fail "missing $f — is the site-signal profile installed?"
 done
 
-# gh resolution — same convention as ship_fix.sh/wait_deploy.sh (GH_BIN env
-# override, then the working binary recorded in PREREQ-RESULTS.md, then the
-# newest mise install). Weekly runs never invoke gh: cron opens and merges no
-# PRs (SPEC.md 5.5); resolving it here keeps any operator-added verification
-# off the broken bare `gh` mise wrapper on this host.
-GH_BIN="${GH_BIN:-$HOME/.local/share/mise/installs/gh/2.103.3/gh_2.103.3_linux_amd64/bin/gh}"
-if [[ ! -x "$GH_BIN" ]]; then
-  cand="$(ls -1 "$HOME"/.local/share/mise/installs/gh/*/*/bin/gh 2>/dev/null | sort -V | tail -1 || true)"
-  [[ -n "$cand" ]] && GH_BIN="$cand"
-fi
+# gh is optional here. Weekly runs never invoke it: cron opens and merges no
+# PRs (SPEC.md 5.5). Default is `gh` on PATH when an operator override is unset.
+GH_BIN="${GH_BIN:-gh}"
 export GH_BIN
 
-# node for the axe scanner: PATH first, then the mise installs (cron's env may
-# lack the mise shims).
+# node and npm for the axe scanner come from PATH. Missing tools skip axe.
 NODE_BIN="${NODE_BIN:-$(command -v node 2>/dev/null || true)}"
-if [[ -z "$NODE_BIN" ]]; then
-  cand="$(ls -1 "$HOME"/.local/share/mise/installs/node/*/bin/node 2>/dev/null | sort -V | tail -1 || true)"
-  [[ -n "$cand" ]] && NODE_BIN="$cand"
-fi
-
-# npm for the axe scanner's node_modules (puppeteer-core, axe-core): the deps
-# are gitignored and not shipped in the profile, so they must be restored with
-# `npm ci` in the axe scripts dir (PREREQ-NOTES.md). npm lives next to node in
-# the mise installs (cron's env may lack the mise shims).
-NPM_BIN=""
-if [[ -n "$NODE_BIN" && -x "$(dirname "$NODE_BIN")/npm" ]]; then
-  NPM_BIN="$(dirname "$NODE_BIN")/npm"
-fi
-[[ -n "$NPM_BIN" ]] || NPM_BIN="$(command -v npm 2>/dev/null || true)"
+NPM_BIN="$(command -v npm 2>/dev/null || true)"
 
 ensure_axe_deps() { # $1 = log file — npm ci once if the axe scripts dir has no node_modules
   local axe_dir; axe_dir="$(dirname "$AXE_JS")"

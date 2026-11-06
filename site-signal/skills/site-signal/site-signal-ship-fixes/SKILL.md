@@ -1,19 +1,31 @@
+---
+name: site-signal-ship-fixes
+description: Open draft fix pull requests for an owned site and merge only after the owner's approval.
+version: 1.0.0
+author: SMF Works
+license: MIT
+platforms: [linux]
+metadata:
+  hermes:
+    tags: [site-signal, pull-requests]
+    related_skills: [site-signal-guardrails, site-signal-report, site-signal-onboard-site]
+---
+
 # When to use
 
-When the owner asks to ship fixes for a verified site ("Make fixes", "ship the
-top serious on wisdomforge") or to merge an open Site Signal PR ("merge
-wisdomforge#22"). One PR per repo per pass, from a fresh worktree, merged only
-on the owner's recorded approval. Everything here runs through
-`scripts/ship_fix.sh` — the guardrails (ownership gate, draft PRs, squash-only,
-approval naming) live in the script, not in improvisation.
+When the owner asks to ship fixes for a verified site ("ship the top serious
+on example.com") or to merge an open Site Signal PR ("merge REPO#22"). One PR
+per repo per pass, from a fresh worktree, merged only on the owner's recorded
+approval. Everything here runs through `scripts/ship_fix.sh` — the guardrails
+(ownership gate, draft PRs, squash-only, approval naming) live in the script,
+not in improvisation.
 
 # Before you ship
 
 - `report.json` exists for the domain (`site-signal-report` ran on this run).
 - The domain is in `~/SiteSignal/sites.yaml` with `owner_verified: true` and no
-  `scan_only: true`. `ship_fix.sh` refuses everything else (smfworks.com is
-  scan-only until Michael assigns fix ownership).
-- The owner named the target: "ship the top serious on wisdomforge" qualifies;
+  `scan_only: true`. `ship_fix.sh` refuses everything else.
+- The owner named the target: "ship the top serious on example.com" qualifies;
   a bare "go" does not. Relay it verbatim as `--approved-by-owner`.
 - Dry-run first when the plan is new: `--dry-run` creates a throwaway worktree,
   renders the fix brief, prints every command it WOULD run, stops before the
@@ -23,9 +35,9 @@ approval naming) live in the script, not in improvisation.
 
 ```bash
 skills/site-signal/site-signal-ship-fixes/scripts/ship_fix.sh \
-  --repo smfworks/wisdomforge --domain smfwisdomforge.com \
-  --run-dir ~/SiteSignal/reports/smfwisdomforge.com/<run> \
-  --approved-by-owner "ship the top serious on wisdomforge"
+  --repo OWNER/REPO --domain example.com \
+  --run-dir ~/SiteSignal/reports/example.com/<run> \
+  --approved-by-owner "ship the top serious on example.com"
 ```
 
 Selection defaults to all critical + serious issues in the ranked report;
@@ -43,11 +55,13 @@ rendered one. The script then:
    quotes, citations, authors, dates, or sameAs; no prose rewrites beyond a
    1–2-sentence lead or a 40–60-word answer restating existing content; keep
    the layout), and acceptance (repo tests + build pass).
-3. Runs Grok Build headless with the brief, writing `$RUN/grok-<repo>.json` —
-   on this host that is `-m spark-glm` (GLM 5.3); the run is pinned to
-   "commit locally only; never push; never gh; never touch .env". Hermes (this
-   script) does the push and PR. For 1–2 line fixes you may skip Grok Build
-   (`--skip-grok`) and edit via your own patch tooling before the script runs.
+3. Runs Grok Build headless with the brief, writing `$RUN/grok-<repo>.json`.
+   The default model is `grok-4.7` (`GROK_MODEL` or `config.yaml` can name
+   another model the owner's Grok Build install provides). The run is pinned
+   to "commit locally only; never push; never gh; never touch .env". Hermes
+   (this script) does the push and PR. For 1–2 line fixes you may skip Grok
+   Build (`--skip-grok`) and edit via your own patch tooling before the script
+   runs.
 4. Runs the repo's tests and build (`npm test --if-present`, `npm run build`
    by default; override with `--test-cmd`/`--build-cmd`). Failure stops the
    ship with nothing pushed.
@@ -60,24 +74,25 @@ rendered one. The script then:
    preference) with the issues, evidence, before scores, and verification log,
    then waits for checks (`gh pr checks --watch --fail-fast`, ≤20 min).
 
-On green checks: if `merge: after_green_ci` is saved for the site, or the
-approval line names the PR, it merges immediately; otherwise it prints the
-merge command and waits for the owner. A failed check leaves the PR open for
-inspection (exit 8) — report it, do not force anything.
+On green checks: merge immediately only when `merge_consent` names this domain
+(`always merge green PRs for <domain>`, plus `set_by` and `set_at`) or the
+approval line names the PR. A bare `merge: after_green_ci` does not merge.
+Otherwise print the merge command and wait for the owner. A failed check
+leaves the PR open for inspection (exit 8) — report it, do not force anything.
 
 # Merge phase (5.4 step 7) — only after the owner names the PR
 
 ```bash
 skills/site-signal/site-signal-ship-fixes/scripts/ship_fix.sh \
-  --merge 22 --repo smfworks/wisdomforge --domain smfwisdomforge.com \
-  --run-dir ~/SiteSignal/reports/smfwisdomforge.com/<run> \
-  --approved-by-owner "merge wisdomforge#22"
+  --merge 22 --repo OWNER/REPO --domain example.com \
+  --run-dir ~/SiteSignal/reports/example.com/<run> \
+  --approved-by-owner "merge REPO#22"
 ```
 
-The approval must contain the repo (full or short) and `#22` — "merge wisdomforge
-22" or "merge the wisdomforge PR" do not match; a bare "go" is refused. The
-policy `merge: after_green_ci` replaces the per-PR approval only when the owner
-said "always merge green PRs for <domain>" and that is recorded in sites.yaml.
+The approval must contain the repo (full or short) and `#22`. A bare "go" is
+refused. `merge: after_green_ci` replaces the per-PR approval only when the
+owner, not the agent, has written `merge_consent` naming that domain, who set
+it, and when. The phrase must be `always merge green PRs for <domain>`.
 The script verifies the PR is OPEN and MERGEABLE, marks it ready if draft,
 squash-merges with `--match-head-commit <head sha>` (subject `<PR title>
 (#<n>)`), and deletes the branch. Squash only — never merge commits, never
@@ -116,12 +131,14 @@ after runs plus the approval records (`$RUN/approval-<repo>.md`).
 
 - Push a default branch, force-push, or rewrite history; the coding model never
   pushes and never runs `gh`.
-- Merge without an approval line naming the PR (or a saved `after_green_ci`
-  policy), on non-green CI, on a non-mergeable PR, or with a moved head SHA.
+- Merge without an approval line naming the PR, unless `merge_consent` names
+  this domain with `set_by` and `set_at`. Do not merge on non-green CI, on a
+  non-mergeable PR, or with a moved head SHA.
+- Write `merge: after_green_ci` or `merge_consent` yourself. Show the owner
+  the block in `sites.yaml.example` and let them edit the registry.
 - Open PRs for unlisted, unverified, or `scan_only` domains — the script refuses;
   do not work around it.
 - Let the deny-terms check pass with a missing list (fail closed) or print the
   list when reporting a block.
 - Add dependencies in a fix PR without listing them for the owner.
-- Touch other agents' repos: smfworks.com fixes stay with whoever Michael
-  assigns; Site Signal keeps it scan-only until then.
+- Open fix PRs for a domain the owner marked `scan_only: true`.

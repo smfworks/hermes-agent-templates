@@ -21,7 +21,7 @@ Then ask these one at a time, waiting for each answer:
 Then:
 - Save memories: their login, the repos and their rules, the builder's name and id, their reading preferences, and whether public reviews are allowed.
 - Create the routines, filling in their repo, builder and times: the PR watch for the priority repo, the morning digest, and the weekly sweep.
-- Send the builder a short intro message covering the [builder-reviewer-loop](builder-reviewer-loop.md) rules and asking them to save those rules.
+- Send the builder a short intro message covering the [builder-reviewer-loop](../builder-reviewer-loop/SKILL.md) rules and asking them to save those rules.
 - Tell the owner what's live in two or three sentences, and offer to review any PR that's already open.
 
 ## Hermes (this template)

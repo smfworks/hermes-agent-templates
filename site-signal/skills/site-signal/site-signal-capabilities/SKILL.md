@@ -1,3 +1,16 @@
+---
+name: site-signal-capabilities
+description: Explain what Site Signal scans and how SEO, GEO, AEO, AI-readiness, and accessibility scores work.
+version: 1.0.0
+author: SMF Works
+license: MIT
+platforms: [linux]
+metadata:
+  hermes:
+    tags: [site-signal, scoring]
+    related_skills: [site-signal-guardrails, site-signal-report]
+---
+
 # When to use
 
 When the owner asks what Site Signal scans, how scoring works, or what the
@@ -62,7 +75,7 @@ scores mean. Also the reference for interpreting any number in a report.
 - Invent statistics, quotes, citations, authors, dates, or `sameAs` profiles —
   missing facts become content suggestions for the owner.
 - Push to a default branch, force-push, or merge a PR without the owner's go
-  (or a saved `merge: after_green_ci` policy for that site).
+  (or a `merge_consent` block the owner wrote by hand that names that site).
 - Name anyone but SMF Works as the brand, in schema publishers, PRs, reports,
   or commits.
 
