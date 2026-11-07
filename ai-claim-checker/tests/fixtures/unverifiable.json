@@ -1,0 +1,35 @@
+{
+  "title": "Unreadable eval PDF",
+  "run_id": "run-unverifiable",
+  "input": {"kind": "url", "value": "https://example.com/scan.pdf", "owner_supplied": false},
+  "unreadable_input": "scan.pdf had no selectable text",
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Model X is the best coding model",
+      "value": null,
+      "headline": true,
+      "missing": "no methodology, subset, or score table",
+      "primary_source_id": "s-scan"
+    }
+  ],
+  "not_checkable": ["best coding model is an opinion"],
+  "sources": [
+    {
+      "id": "s-scan",
+      "title": "Scanned one-pager",
+      "url": "https://example.com/scan.pdf",
+      "role": "vendor",
+      "author": "Vendor Labs",
+      "affiliation": "vendor",
+      "published": null,
+      "retrieved_at": "2026-11-06",
+      "excerpt": "",
+      "unreadable": true,
+      "methodology_missing": true,
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-unverifiable"
+    }
+  ]
+}

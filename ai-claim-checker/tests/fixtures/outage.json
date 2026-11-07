@@ -1,0 +1,32 @@
+{
+  "title": "Evaluator outage",
+  "run_id": "run-outage",
+  "input": {"kind": "url", "value": "https://evalcorp.example/down", "owner_supplied": false},
+  "claims": [
+    {
+      "id": "c1",
+      "text": "EvalCorp lists Model X at 90.2",
+      "value": "90.2",
+      "headline": true,
+      "settings": {"benchmark": "SWE-bench Verified", "pass": "pass@1"},
+      "primary_source_id": "s-down"
+    }
+  ],
+  "not_checkable": [],
+  "sources": [
+    {
+      "id": "s-down",
+      "title": "EvalCorp table",
+      "url": "https://evalcorp.example/down",
+      "role": "independent",
+      "author": "EvalCorp",
+      "affiliation": "independent",
+      "published": "2026-10-20",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "",
+      "reachable": false,
+      "read_this_run": true,
+      "run_id": "run-outage"
+    }
+  ]
+}

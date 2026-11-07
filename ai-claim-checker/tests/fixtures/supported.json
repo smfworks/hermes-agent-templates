@@ -1,0 +1,74 @@
+{
+  "title": "Model X SWE-bench Verified score",
+  "run_id": "run-supported",
+  "input": {"kind": "text", "value": "Model X scores 90.2 on SWE-bench Verified pass@1.", "owner_supplied": false},
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Model X scores 90.2 on SWE-bench Verified pass@1",
+      "value": "90.2",
+      "headline": true,
+      "settings": {
+        "benchmark": "SWE-bench Verified",
+        "subset": "verified",
+        "pass": "pass@1",
+        "tools": false,
+        "harness": "official",
+        "model_revision": "model-x-2026-10"
+      },
+      "primary_source_id": "s-vendor",
+      "independent_source_ids": ["s-ind"]
+    }
+  ],
+  "not_checkable": [],
+  "sources": [
+    {
+      "id": "s-vendor",
+      "title": "Model X model card",
+      "url": "https://example.com/model-x/card",
+      "role": "vendor",
+      "author": "Vendor Labs",
+      "affiliation": "vendor",
+      "published": "2026-10-12",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "SWE-bench Verified pass@1: 90.2 (official harness, no tools)",
+      "settings": {
+        "benchmark": "SWE-bench Verified",
+        "subset": "verified",
+        "pass": "pass@1",
+        "tools": false,
+        "harness": "official",
+        "model_revision": "model-x-2026-10"
+      },
+      "supports": true,
+      "value": "90.2",
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-supported"
+    },
+    {
+      "id": "s-ind",
+      "title": "EvalCorp SWE-bench Verified table",
+      "url": "https://evalcorp.example/swe-verified",
+      "role": "independent",
+      "author": "EvalCorp",
+      "affiliation": "independent",
+      "published": "2026-10-20",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "Model X 90.2 pass@1 on SWE-bench Verified, official harness",
+      "settings": {
+        "benchmark": "SWE-bench Verified",
+        "subset": "verified",
+        "pass": "pass@1",
+        "tools": false,
+        "harness": "official",
+        "model_revision": "model-x-2026-10"
+      },
+      "supports": true,
+      "value": "90.2",
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-supported"
+    }
+  ]
+}

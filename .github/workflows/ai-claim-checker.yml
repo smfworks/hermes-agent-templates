@@ -1,0 +1,15 @@
+name: ai-claim-checker
+
+on:
+  pull_request:
+    paths:
+      - "ai-claim-checker/**"
+      - ".github/workflows/ai-claim-checker.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Contract tests
+        run: bash ai-claim-checker/tests/smoke.sh

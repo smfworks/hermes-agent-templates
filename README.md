@@ -29,6 +29,7 @@ Replace `site-signal` with the template you want. The alias gives you a `site-si
 | `receipts` | Money-back bot. Read-only mail, one report, drafts only, never sends. | On main. Contract tests run in CI. |
 | `roast-my-feed` | Wrapped-style audit of a public X handle. Witty, never cruel, every number real. | On main. Contract tests run in CI. |
 | `explain-it-like-a-movie` | 60-second sourced explainer that plays like a trailer. Script, captions, then a 9:16 video. | On main. Contract tests run in CI. Video render skips when ffmpeg or TTS is missing. |
+| `ai-claim-checker` | Dated, sourced card for an AI launch, benchmark, or price claim. Four verdicts only. | Draft. Contract tests on this PR. Awaiting Liam live smoke and owner yes. |
 
 New templates land as a pull request. Do not push to `main`. Do not commit `.env`, tokens, or session data.
 

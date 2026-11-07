@@ -1,0 +1,39 @@
+{
+  "title": "Owner-pasted launch text",
+  "run_id": "run-owner",
+  "input": {
+    "kind": "text",
+    "value": "Pasted by the owner: Model X context 128k.",
+    "owner_supplied": true
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Model X context window is 128k",
+      "value": "128k",
+      "headline": true,
+      "settings": {"context": "128k"},
+      "primary_source_id": "s-vendor"
+    }
+  ],
+  "not_checkable": [],
+  "sources": [
+    {
+      "id": "s-vendor",
+      "title": "Model card",
+      "url": "https://example.com/card",
+      "role": "vendor",
+      "author": "Vendor Labs",
+      "affiliation": "vendor",
+      "published": "2026-10-12",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "128k context",
+      "settings": {"context": "128k"},
+      "supports": true,
+      "value": "128k",
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-owner"
+    }
+  ]
+}
