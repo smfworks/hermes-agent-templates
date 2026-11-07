@@ -1,0 +1,15 @@
+name: fare-hawk
+
+on:
+  pull_request:
+    paths:
+      - "fare-hawk/**"
+      - ".github/workflows/fare-hawk.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Contract tests
+        run: bash fare-hawk/tests/smoke.sh
