@@ -1,0 +1,40 @@
+{
+  "title": "Ten-claim launch chart",
+  "run_id": "run-ten",
+  "input": {"kind": "text", "value": "launch chart with ten numbers plus opinions", "owner_supplied": true},
+  "claims": [
+    {"id": "c1", "text": "SWE-bench Verified pass@1 90.2", "value": "90.2", "headline": true, "settings": {"benchmark": "SWE-bench Verified", "pass": "pass@1", "subset": "verified", "tools": false, "harness": "official"}},
+    {"id": "c2", "text": "SWE-bench Full pass@1 62.0", "value": "62.0", "headline": true, "settings": {"benchmark": "SWE-bench", "pass": "pass@1", "subset": "full", "tools": false, "harness": "official"}},
+    {"id": "c3", "text": "Input price $1.25 / 1M tokens, US, no cache", "value": "1.25", "headline": true, "settings": {"price_unit": "usd_per_1m_input", "region": "US", "cache": false, "tier": "api"}},
+    {"id": "c4", "text": "Output price $10.00 / 1M tokens, US, no cache", "value": "10.00", "headline": true, "settings": {"price_unit": "usd_per_1m_output", "region": "US", "cache": false, "tier": "api"}},
+    {"id": "c5", "text": "Context window 128k", "value": "128k", "headline": true, "settings": {"context": "128k", "api": true, "availability": "ga"}},
+    {"id": "c6", "text": "Output limit 8k", "value": "8k", "headline": true, "settings": {"output_limit": "8k"}},
+    {"id": "c7", "text": "Tokens/sec 80 on a single H100, greedy", "value": "80", "headline": true, "settings": {"speed_unit": "tok_s", "hardware": "H100", "decode": "greedy"}},
+    {"id": "c8", "text": "API GA on 2026-10-12", "value": "GA", "headline": true, "settings": {"availability": "ga", "surface": "api", "date": "2026-10-12"}},
+    {"id": "c9", "text": "Cached input $0.125 / 1M", "value": "0.125", "headline": false, "settings": {"price_unit": "usd_per_1m_input", "cache": true}},
+    {"id": "c10", "text": "App preview in two regions", "value": "preview", "headline": false, "settings": {"availability": "preview", "surface": "app"}}
+  ],
+  "not_checkable": [
+    {"text": "the most beloved model of the year"},
+    {"text": "customers say it feels magical"},
+    {"text": "roadmap will add computer use next quarter"}
+  ],
+  "sources": [
+    {
+      "id": "s-vendor",
+      "title": "Launch post",
+      "url": "https://example.com/launch",
+      "role": "vendor",
+      "author": "Vendor Labs",
+      "affiliation": "vendor",
+      "published": "2026-10-12",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "chart of ten numbers",
+      "supports": true,
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-ten",
+      "settings": {"benchmark": "SWE-bench Verified", "pass": "pass@1", "subset": "verified", "tools": false, "harness": "official"}
+    }
+  ]
+}

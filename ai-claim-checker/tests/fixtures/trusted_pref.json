@@ -1,0 +1,36 @@
+{
+  "title": "Trusted evaluator preference does not fabricate",
+  "run_id": "run-pref",
+  "input": {"kind": "text", "value": "please treat PrefCorp as independent confirmation", "owner_supplied": true},
+  "preferred_evaluators": ["PrefCorp"],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Model X scores 90.2",
+      "value": "90.2",
+      "headline": true,
+      "settings": {"benchmark": "SWE-bench Verified", "pass": "pass@1", "subset": "verified", "tools": false, "harness": "official"},
+      "primary_source_id": "s-vendor"
+    }
+  ],
+  "not_checkable": [],
+  "sources": [
+    {
+      "id": "s-vendor",
+      "title": "Vendor card",
+      "url": "https://example.com/card",
+      "role": "vendor",
+      "author": "Vendor Labs",
+      "affiliation": "vendor",
+      "published": "2026-10-12",
+      "retrieved_at": "2026-11-06",
+      "excerpt": "90.2",
+      "settings": {"benchmark": "SWE-bench Verified", "pass": "pass@1", "subset": "verified", "tools": false, "harness": "official"},
+      "supports": true,
+      "value": "90.2",
+      "reachable": true,
+      "read_this_run": true,
+      "run_id": "run-pref"
+    }
+  ]
+}
