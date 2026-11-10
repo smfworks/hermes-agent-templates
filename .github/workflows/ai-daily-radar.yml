@@ -1,0 +1,15 @@
+name: ai-daily-radar
+
+on:
+  pull_request:
+    paths:
+      - "ai-daily-radar/**"
+      - ".github/workflows/ai-daily-radar.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Contract tests
+        run: bash ai-daily-radar/tests/smoke.sh

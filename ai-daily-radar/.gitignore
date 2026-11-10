@@ -1,0 +1,9 @@
+.env
+sessions/
+memories/
+logs/
+state.db*
+__pycache__/
+*.pyc
+briefs/
+wraps/
