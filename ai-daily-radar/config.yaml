@@ -1,0 +1,18 @@
+# AI Daily Radar — Hermes profile config (SMF Works)
+# Morning AI brief tuned to the owner's stack. Web is required to search
+# and fetch public pages. Cron is opt-in after an explicit yes. Scripts
+# run from cron --script --no-agent, not from a shell tool.
+#
+# Documented default that starts a model on a fresh install:
+#   model: grok-4.7
+#   provider: xai-oauth
+# Do not commit a host-local endpoint here.
+# After install, copy .env.EXAMPLE to the profile .env and replace the
+# placeholder (README After install). If `hermes auth status xai-oauth` is
+# already logged in on this host, the placeholder may stay empty.
+model:
+  default: "grok-4.7"
+  provider: "xai-oauth"
+platform_toolsets:
+  cli: [file, memory, skills, clarify, cronjob, todo, web]
+_config_version: 52
