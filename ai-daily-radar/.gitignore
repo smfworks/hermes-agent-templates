@@ -5,6 +5,5 @@ logs/
 state.db*
 __pycache__/
 *.pyc
-trips/
 briefs/
 wraps/
