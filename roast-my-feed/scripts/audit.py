@@ -23,6 +23,7 @@ from store import (
     read_jsonl,
     save_state,
     shift_days,
+    contained_handle,
     strip_handle,
     utc_now_text,
 )
@@ -249,7 +250,11 @@ def build_html(fields: dict[str, str]) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    handle = strip_handle(args.handle)
+    try:
+        handle = contained_handle(strip_handle(args.handle))
+    except ValueError as e:
+        sys.stderr.write(f"audit: {e}\n")
+        return 2
     now = args.now or utc_now_text()
     outcome = fetch(args, handle, now, shift_days(now, -7))
     if outcome.get("status") != "ok":

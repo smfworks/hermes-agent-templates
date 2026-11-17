@@ -8,6 +8,7 @@ import os
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from pathlib import PurePosixPath
 from urllib.parse import urlparse
 
 PROTECTED_MESSAGE = "I can't read that account."
@@ -142,3 +143,16 @@ def strip_handle(raw: str) -> str:
             if segments:
                 return segments[0]
     return text.strip()
+
+
+def contained_handle(handle: str) -> str:
+    """hsf_38898d94 / hsf_05a2c2e3: the handle names a directory under data/roast/.
+    A separator-bearing value ('../x', 'a/b', 'a\\b') escapes that dir — audit.py
+    writes roast.md/roast.html there and card.py writes card.png. Refuse with the
+    same ValueError callers already handle for a missing profile; message points
+    at the profile URL, never echoing the rejected value into a path."""
+    if os.sep in handle or "/" in handle or "\\" in handle or handle in (".", "..") or ".." in handle.split(os.sep):
+        raise ValueError("profile not found: check the handle and try again (https://x.com/<handle>)")
+    if handle != PurePosixPath(handle).name:
+        raise ValueError("profile not found: check the handle and try again (https://x.com/<handle>)")
+    return handle
