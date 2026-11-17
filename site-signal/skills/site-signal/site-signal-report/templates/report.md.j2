@@ -11,12 +11,12 @@ _Change since last scan:_ {{ change }}
 | # | Impact | Dimension | Issue | Where | Fix | Effort |
 |---|---|---|---|---|---|---|
 {% for f in fixes %}
-| {{ f.n }} | {{ f.impact }} | {{ f.dimension }} | {{ f.issue }} | {{ f.where }} | {{ f.fix }} | {{ f.effort }} |
+| {{ f.n }} | {{ f.impact }} | {{ f.dimension }} | {{ f.issue | md_safe }} | {{ f.where | md_safe }} | {{ f.fix | md_safe }} | {{ f.effort | md_safe }} |
 {% endfor %}
 
 ## Evidence
 
-{% for e in evidence %}- {{ e }}
+{% for e in evidence %}- {{ e | md_safe }}
 {% else %}- No node-level evidence in this run.
 {% endfor %}
 
