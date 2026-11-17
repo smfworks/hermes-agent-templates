@@ -512,8 +512,14 @@ def assert_drop_block(
 ) -> None:
     assert f"Fare Hawk: {route} dropped {amount} {currency}" in block, block
     assert f"{details}, {party}: {reference} → {current}" in block, block
-    assert f"Seen {stamp} on {source} · lowest alerted since watch began" in block, block
-    assert f"{link} · You book; total may change at checkout." in block, block
+    # hsf_ba7e3355: page-derived source/link are unverified data. The trusted
+    # sentence carries only the stamp; source and link render with explicit
+    # provenance on their own lines, and the link line carries the
+    # verify-before-booking caveat.
+    assert f"Seen {stamp}" in block, block
+    assert "Source: Fixture Air (unverified) ·" in block, block
+    assert f"{link}" in block, block
+    assert "Verify the link before booking" in block, block
 
 
 def fare_blocks(stdout: str) -> list[str]:

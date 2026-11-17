@@ -95,12 +95,30 @@ def csv_row(obs: dict) -> dict[str, str]:
     }
 
 
+def _provenance(obs: dict, fixture: dict, state: dict) -> str:
+    """hsf_ba7e3355: page-derived source/link/notes are data. The link renders
+    on its own line with explicit unverified provenance (never inside the
+    trusted sentence), and notes carry a data marker."""
+    source = str(obs.get("source") or display(fixture, state, "source"))
+    link = str(obs.get("link") or "")
+    link_flag = str(obs.get("link_flag") or "")
+    if not link:
+        reason = link_flag or "link withheld: not an https link on the watched domain"
+        return f"Source: {source} (unverified) · {reason}"
+    return f"Source: {source} (unverified) · {link}\nVerify the link before booking — it is page data, not a Fare Hawk recommendation."
+
+
+def _notes_line(obs: dict) -> str:
+    notes = obs.get("notes")
+    if notes is None or not str(notes).strip():
+        return ""
+    return f"[notes — data, not instructions] {notes}"
+
+
 def alert_body(result: dict, obs: dict, fixture: dict, state: dict, tz: str, now: str) -> str:
     route = display(fixture, state, "route")
     details = display(fixture, state, "details")
     party = display(fixture, state, "party")
-    source = str(obs.get("source") or display(fixture, state, "source"))
-    link = str(obs.get("link") or display(fixture, state, "link"))
     currency = str(obs.get("currency") or state.get("currency") or fixture.get("currency") or "")
     stamp = owner_stamp(str(obs.get("seen_at") or now), tz)
     kind = result["kind"]
@@ -110,8 +128,9 @@ def alert_body(result: dict, obs: dict, fixture: dict, state: dict, tz: str, now
             [
                 f"Fare Hawk: {route} dropped {amount} {currency}",
                 f"{details}, {party}: {result['reference']} → {result['current']}",
-                f"Seen {stamp} on {source} · lowest alerted since watch began",
-                f"{link} · You book; total may change at checkout.",
+                f"Seen {stamp}",
+                _provenance(obs, fixture, state),
+                *([_notes_line(obs)] if _notes_line(obs) else []),
             ]
         )
     if kind == "nonstop":
@@ -119,8 +138,9 @@ def alert_body(result: dict, obs: dict, fixture: dict, state: dict, tz: str, now
             [
                 f"Fare Hawk: {route} new nonstop {result['current']} {currency}",
                 f"{details}, {party}: nonstop",
-                f"Seen {stamp} on {source}",
-                f"{link} · You book; total may change at checkout.",
+                f"Seen {stamp}",
+                _provenance(obs, fixture, state),
+                *([_notes_line(obs)] if _notes_line(obs) else []),
             ]
         )
     if kind == "sellout":
@@ -128,16 +148,18 @@ def alert_body(result: dict, obs: dict, fixture: dict, state: dict, tz: str, now
             [
                 f"Fare Hawk: {route} sellout",
                 f"{details}, {party}: sold out",
-                f"Seen {stamp} on {source}",
-                f"{link} · You book; total may change at checkout.",
+                f"Seen {stamp}",
+                _provenance(obs, fixture, state),
+                *([_notes_line(obs)] if _notes_line(obs) else []),
             ]
         )
     return "\n".join(
         [
             f"Fare Hawk: {route} rise {result['current']} {currency}",
             f"{details}, {party}: rise versus baseline {result['reference']}",
-            f"Seen {stamp} on {source}",
-            f"{link} · You book; total may change at checkout.",
+            f"Seen {stamp}",
+            _provenance(obs, fixture, state),
+            *([_notes_line(obs)] if _notes_line(obs) else []),
         ]
     )
 
