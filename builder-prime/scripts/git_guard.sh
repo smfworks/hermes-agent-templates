@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Floor under both profiles. Refuses merge, push to the protected branch,
-# a silent force-push, and yes-shaped comments posted by a bot. The owner
-# types their own yes. The merge account must be a different GitHub user.
-# Branch protection is still the real lock.
+# a silent force-push, ref-expanding push modes, GitHub merge-API calls
+# (REST and graphql mutations), and yes-shaped comments posted by a bot.
+# The owner types their own yes. The merge account must be a different
+# GitHub user. Branch protection is still the real lock.
 set -euo pipefail
 
 PROTECTED="${PROTECTED_BRANCH:-main}"
@@ -24,6 +25,14 @@ python_classify() {
 import os, sys
 protected = os.environ.get("PROTECTED_BRANCH", "main")
 args = sys.argv[1:]
+# Ref-expanding push modes update refs without naming them; a per-refspec
+# classifier cannot see their destinations. Refuse them outright (hsf_fa8fbb28,
+# hsf_d12a1dd6) — a bot pushes named branches, nothing else.
+if any(a in ("--all", "--mirror", "--branches", "--tags", "--follow-tags") or
+       a.startswith("--all=") or a.startswith("--mirror=") for a in args):
+    print("refexpanding")
+    print("none")
+    raise SystemExit
 force = False
 positionals = []
 for a in args:
@@ -66,6 +75,7 @@ import json, os, re, sys
 
 args = sys.argv[1:]
 hex40 = re.compile(r"[0-9a-fA-F]{40}")
+merge_mutation = re.compile(r"merge[a-z]*pullrequest", re.IGNORECASE)
 try:
     yes_rx = re.compile(os.environ.get("GK_YES_REGEX", r"^yes\b"), re.IGNORECASE)
 except re.error:
@@ -109,14 +119,41 @@ def body_from_comment_args(seq):
     i = 0
     while i < len(seq):
         a = seq[i]
-        if a in ("--body", "-b", "--body-file") and i + 1 < len(seq):
-            return seq[i + 1] if a != "--body-file" else file_body(seq[i + 1])
-        if a.startswith("--body=") or a.startswith("-b="):
-            return a.split("=", 1)[1]
+        # -F / -F= are --body-file spellings on pr|issue comment; a bare '-F'
+        # with value '-' carries the body on stdin (hsf_60388ff5, hsf_8efaed05).
+        if a in ("--body", "-b", "--body-file", "-F") and i + 1 < len(seq):
+            return seq[i + 1] if a in ("--body", "-b") else file_body(seq[i + 1])
+        if a.startswith("--body=") or a.startswith("-b=") or a.startswith("-F="):
+            val = a.split("=", 1)[1]
+            return file_body(val) if (a.startswith(("--body-file=", "-F=")) and val == "-") else val
         if a.startswith("--body-file="):
             return file_body(a.split("=", 1)[1])
         i += 1
     return None
+
+
+def api_merge_call(seq):
+    """hsf_76d114f2, hsf_a56170d4: decide on the parsed operation, not
+    substrings. REST endpoints ending in /merge and graphql documents
+    carrying a merge*PullRequest mutation are merge calls. An `api`
+    invocation whose graphql query mentions no recognized operation is
+    still allowed (read-only use is common), but any merge-shaped
+    mutation text is refused."""
+    if not seq or seq[0] != "api":
+        return False
+    rest = seq[1:]
+    # REST: first non-flag positional is the endpoint path.
+    for a in rest:
+        if a.startswith("-"):
+            continue
+        path = a.split("?")[0].rstrip("/")
+        if path.endswith("/merge") or path.endswith("/merges"):
+            return True
+        break
+    blob = " ".join(rest)
+    if merge_mutation.search(blob) and ("query" in blob or "mutation" in blob):
+        return True
+    return False
 
 
 def body_from_api_args(seq):
@@ -185,15 +222,40 @@ else:
 PY
 }
 
+
+api_merge_call_is_refused() {
+  python3 - "$@" <<'PY'
+import re, sys
+args = sys.argv[1:]
+if not args or args[0] != "api":
+    raise SystemExit(1)
+rest = args[1:]
+for a in rest:
+    if a.startswith("-"):
+        continue
+    path = a.split("?")[0].rstrip("/")
+    if path.endswith("/merge") or path.endswith("/merges"):
+        raise SystemExit(0)
+    break
+blob = " ".join(rest)
+if re.search(r"merge[a-z]*pullrequest", blob, re.IGNORECASE) and ("query" in blob or "mutation" in blob):
+    raise SystemExit(0)
+raise SystemExit(1)
+PY
+}
+
 case "$cmd" in
   check-push|push)
     mapfile -t cls < <(python_classify "$@")
-    force="${cls[0]}"
+    mode="${cls[0]}"
     where="${cls[1]}"
+    if [[ "$mode" == "refexpanding" ]]; then
+      die "refusing ref-expanding push (--all/--mirror/--branches/--tags). Name the branch: git push origin <branch>."
+    fi
     if [[ "$where" == "protected" ]]; then
       die "refusing push to protected branch '$PROTECTED' (or HEAD). Push a feature branch name."
     fi
-    if [[ "$force" == "force" ]]; then
+    if [[ "$mode" == "force" ]]; then
       if [[ "${OWNER_CONFIRMED_OVERWRITE:-}" != "yes" || -z "${OVERWRITE_REASON:-}" ]]; then
         echo "git_guard: force-push refused. Tell the owner exactly what it would overwrite and wait for an explicit yes. Then re-run with OWNER_CONFIRMED_OVERWRITE=yes and OVERWRITE_REASON set." >&2
         exit 3
@@ -211,16 +273,18 @@ case "$cmd" in
       die "refusing gh pr merge. Builder never merges. Gatekeeper merges only through scripts/merge_gate.sh after the owner's yes comment on this head SHA, from a GitHub account that is not the owner."
     fi
     if [[ "${1:-}" == "api" ]]; then
-      blob="$*"
-      if [[ "$blob" == *"/merge"* || "$blob" == *"/merges"* ]]; then
+      # Parsed-operation check: REST /merge endpoints and graphql
+      # merge*PullRequest mutations both refuse (hsf_76d114f2, hsf_a56170d4).
+      if api_merge_call_is_refused "$@"; then
         die "refusing GitHub merge API. Use scripts/merge_gate.sh on the reviewer profile, and only after the owner's yes comment on this SHA from a different GitHub account."
       fi
     fi
     # A comment body can arrive on stdin (--input -, --body-file -,
-    # -F body=@-). Stash it so the guard can inspect it, then re-feed it.
+    # -F -). Stash it so the guard can inspect it, then re-feed it.
     STDIN_SAVED=""
     if [[ "$*" == *"--input -"* || "$*" == *"--input=-"* || "$*" == *"--body-file -"* \
-       || "$*" == *"--body-file=-"* || "$*" == *"body=@-"* ]]; then
+       || "$*" == *"--body-file=-"* || "$*" == *"body=@-"* || "$*" == *"-F -"* \
+       || "$*" == *"-F=-"* ]]; then
       STDIN_SAVED=$(cat 2>/dev/null || true)
     fi
     verdict=$(GK_STDIN_BODY="$STDIN_SAVED" comment_classify "$@")

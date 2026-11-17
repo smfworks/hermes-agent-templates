@@ -22,12 +22,15 @@ REPO=""
 PR=""
 OWNER=""
 DRY=0
+ALLOW_NO_CHECKS=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --repo) REPO="$2"; shift 2 ;;
     --pr) PR="$2"; shift 2 ;;
     --owner-login) OWNER="$2"; shift 2 ;;
     --dry-run) DRY=1; shift ;;
+    # hsf_fbf7f495: the vacuous pass (zero required checks) is opt-in.
+    --allow-no-checks) ALLOW_NO_CHECKS=1; shift ;;
     *) echo "merge_gate: unknown arg $1" >&2; exit 64 ;;
   esac
 done
@@ -51,6 +54,11 @@ SHA=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("headRefOid") 
 # so a `$(...) || echo default` fallback concatenates the default onto the
 # error body and the result is not JSON. Keep the body only on success;
 # any failure falls back to the stated empty value.
+# hsf_674eaaff: a failed rules/protection call must ABORT, not substitute an
+# empty document (the old fallback turned an API error into "no required
+# checks" and merged). Rules and protection are fail-closed; only the
+# per-SHA check-run/status lookups keep a fallback (a PR with no checks on
+# the head SHA is a real state, not an error).
 gh_json() {
   local fallback="$1"; shift
   local out
@@ -60,14 +68,46 @@ gh_json() {
     printf '%s' "$fallback"
   fi
 }
-BRANCH_RULES=$(gh_json "[]" api "repos/$REPO/rules/branches/$PROTECTED")
-PROTECTION=$(gh_json "{}" api "repos/$REPO/branches/$PROTECTED/protection")
+
+# Fail-closed fetch. Prints the body; exit 3 = HTTP 404 (a real "no rules"
+# answer, caller substitutes the empty document); any other failure aborts
+# with an explicit error — the old fallback turned an unreachable API into
+# "no required checks" and merged (hsf_674eaaff).
+gh_json_strict() {
+  local out
+  if ! out=$("$GH_BIN" "$@" 2>&1); then
+    if tail -1 <<<"$out" | grep -q '"status":"404"\|Not Found'; then
+      exit 3
+    fi
+    echo "merge_gate: cannot read branch rules from GitHub API (gh api $* failed); refusing to decide the gate on unknown required checks. Re-run when the API is reachable." >&2
+    exit 1
+  fi
+  printf '%s' "$out"
+}
+
+fetch_rules() { BRANCH_RULES=$(gh_json_strict api "repos/$REPO/rules/branches/$PROTECTED"); }
+fetch_protection() { PROTECTION=$(gh_json_strict api "repos/$REPO/branches/$PROTECTED/protection"); }
+
+BRANCH_RULES=""
+if fetch_rules; then
+  :
+else
+  rc=$?
+  [[ $rc -eq 3 ]] && BRANCH_RULES="[]" || exit 1
+fi
+PROTECTION=""
+if fetch_protection; then
+  :
+else
+  rc=$?
+  [[ $rc -eq 3 ]] && PROTECTION="{}" || exit 1
+fi
 CHECK_RUNS=$(gh_json "[]" api "repos/$REPO/commits/$SHA/check-runs?per_page=100" --jq '.check_runs')
 STATUSES=$(gh_json "[]" api "repos/$REPO/commits/$SHA/status?per_page=100" --jq '.statuses')
 ACTOR=$(gh_json "" api user --jq .login)
 REPO_OWNER="${REPO%%/*}"
 
-export VIEW OWNER BRANCH_RULES PROTECTION CHECK_RUNS STATUSES ACTOR REPO_OWNER HERE
+export VIEW OWNER BRANCH_RULES PROTECTION CHECK_RUNS STATUSES ACTOR REPO_OWNER HERE ALLOW_NO_CHECKS
 decision=$(python3 - <<'PY'
 import json, os, sys
 sys.path.insert(0, os.path.join(os.environ["HERE"], "lib"))
@@ -82,7 +122,6 @@ green, checks_why = checks_green(
 if not green:
     print("\t".join(["no", "checks", checks_why, sha, "", ""]))
     raise SystemExit(0)
-
 ok, why, cid = owner_yes_comment(view, os.environ["OWNER"])
 if not ok:
     print("\t".join(["no", "yes", why, sha, "", ""]))
@@ -93,6 +132,17 @@ distinct, actor_why = actor_may_merge(
 if not distinct:
     print("\t".join(["no", "actor", actor_why, sha, "", ""]))
     raise SystemExit(0)
+
+# The vacuous-gate refusal comes last so identity-fraud attempts are named
+# as themselves, not as a configuration warning (hsf_fbf7f495).
+if green and checks_why.startswith("no required checks configured"):
+    if os.environ.get("ALLOW_NO_CHECKS") != "1":
+        print("\t".join(["no", "checks",
+                         "repository has zero required checks on " + os.environ.get("PROTECTED_BRANCH", "main")
+                         + "; the gate would be vacuous. Re-run with --allow-no-checks to record and accept the vacuous gate, or configure required checks",
+                         sha, "", ""]))
+        raise SystemExit(0)
+    checks_why = checks_why + " [VACUOUS GATE ACCEPTED via --allow-no-checks]"
 
 print("\t".join(["yes", "ready", why, sha, "" if cid is None else str(cid), checks_why]))
 PY
