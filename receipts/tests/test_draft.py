@@ -54,3 +54,44 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def test_draft_service_traversal_contained() -> None:
+    """hsf_c1ee8922: a separator-bearing --service must not escape data/drafts."""
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    here = Path(__file__).resolve().parent
+    with tempfile.TemporaryDirectory() as raw:
+        tmp = Path(raw)
+        data = tmp / "data"
+        data.mkdir()
+        r = subprocess.run(
+            [sys.executable, str(here.parent / "scripts" / "draft.py"),
+             "--service", "../../evil", "--data", str(data)],
+            capture_output=True, text=True, timeout=60, cwd=str(here.parent / "scripts"))
+        assert r.returncode == 0
+        assert (data / "drafts" / "unknown-service-cancel.eml").exists()
+        assert not (tmp / "evil").exists() and not (data / "evil").exists()
+
+
+def test_draft_crlf_header_neutralized() -> None:
+    """hsf_01f59bcf: CR/LF in --service must not inject headers into the .eml."""
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    here = Path(__file__).resolve().parent
+    with tempfile.TemporaryDirectory() as raw:
+        tmp = Path(raw)
+        data = tmp / "data"
+        data.mkdir()
+        r = subprocess.run(
+            [sys.executable, str(here.parent / "scripts" / "draft.py"),
+             "--service", "x\nBcc: a@b", "--data", str(data)],
+            capture_output=True, text=True, timeout=60, cwd=str(here.parent / "scripts"))
+        assert r.returncode == 0
+        eml = (data / "drafts" / "unknown-service-cancel.eml").read_text()
+        assert eml.count("To:") == 1
+        assert "Bcc:" not in eml
