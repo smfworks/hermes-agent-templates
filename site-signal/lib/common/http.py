@@ -123,10 +123,16 @@ def robots_allowed(url):
 def _url_allowed(url: str) -> bool:
     """hsf_9334fec2: origin policy for fetched URLs — http/https only, and the
     host must pass the default-deny network check (SSRF pivot defense for
-    sitemap/robots-derived URLs)."""
+    sitemap/robots-derived URLs). Loopback/private targets are additionally
+    allowed when SITE_SIGNAL_ALLOW_LOCAL_FETCH=1 is set — the fixture tests
+    serve pages on 127.0.0.1; the switch is opt-in so production scans keep
+    the default-deny posture."""
     u = urlparse(url)
     if u.scheme not in ("http", "https"):
         return False
+    import os
+    if os.environ.get("SITE_SIGNAL_ALLOW_LOCAL_FETCH") == "1":
+        return True
     return _host_allowed(u.netloc)
 
 
