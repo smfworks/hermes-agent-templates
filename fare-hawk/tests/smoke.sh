@@ -25,6 +25,7 @@ for test in \
   test_watch.py \
   test_cron.py \
   test_card.py \
+  test_alert_provenance.py \
   test_redteam_contract.py \
   test_static.py
 do
