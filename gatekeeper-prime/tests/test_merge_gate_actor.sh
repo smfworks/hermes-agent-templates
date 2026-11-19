@@ -48,8 +48,15 @@ set -e
 grep -qi "could not read" <<< "$out" || fail "missing actor did not fail closed: $out"
 
 # A different account may pass the dry run. It does not call pr merge.
+# hsf_fbf7f495: the repo under test has zero required checks, so the vacuous
+# gate must be explicitly accepted (--allow-no-checks); without the flag the
+# dry run refuses with the vacuous-gate message.
 set +e
 out=$(GH_BIN="$TMP/gh" FAKE_ACTOR=merge-bot "$G" --repo ownerlogin/demo --pr 7 --owner-login ownerlogin --dry-run 2>&1)
+vac_rc=$?
+[[ "$vac_rc" -ne 0 ]] || fail "vacuous gate merged without --allow-no-checks: $out"
+grep -q "vacuous" <<< "$out" || fail "vacuous refusal not named: $out"
+out=$(GH_BIN="$TMP/gh" FAKE_ACTOR=merge-bot "$G" --repo ownerlogin/demo --pr 7 --owner-login ownerlogin --dry-run --allow-no-checks 2>&1)
 rc=$?
 set -e
 [[ "$rc" -eq 0 ]] || fail "distinct merge account was refused: $out"
