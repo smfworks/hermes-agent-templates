@@ -16,5 +16,9 @@ jobs:
           python-version: "3.12"
       - name: Test dependencies
         run: python3 -m pip install --disable-pip-version-check -r site-signal/requirements.txt
+      # The fixture tests serve pages on 127.0.0.1; the SSRF origin policy
+      # (hsf_9334fec2) default-denies loopback, so tests opt in explicitly.
       - name: Offline tests
+        env:
+          SITE_SIGNAL_ALLOW_LOCAL_FETCH: "1"
         run: bash site-signal/tests/smoke.sh

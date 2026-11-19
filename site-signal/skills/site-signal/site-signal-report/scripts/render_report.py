@@ -35,10 +35,31 @@ CAVEATS = [
 ]
 
 
+import re as _re
+
+_FENCE = chr(96) * 3
+
+
+def _md_safe(value):
+    """hsf_45ef67e193f03278e5d9efe0: scraped text rendered into markdown must not
+    forge report structure. Neutralize fence runs and line-leading markdown
+    markers so the value stays inline data; the html env already escapes."""
+    s = " ".join(str(value).split())
+    s = s.replace(_FENCE, "'" * 3)
+    s = _re.sub(r"^[#>\\-]{1,}\\s*", "", s)
+    # '|' inside a markdown table cell forges columns; escape it so the value
+    # stays one cell. Harmless outside tables (rare char in prose).
+    s = s.replace("|", "\\|")
+    return s
+
+
 def md_env():
-    # Markdown holds raw selector/HTML snippets in backticks: no escaping.
-    return Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=False,
-                       keep_trailing_newline=True, trim_blocks=True, lstrip_blocks=True)
+    # Markdown holds raw selector/HTML snippets in backticks: no HTML escaping,
+    # but fence/structure neutralization via the md_safe filter (hsf_45ef67e1).
+    env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=False,
+                      keep_trailing_newline=True, trim_blocks=True, lstrip_blocks=True)
+    env.filters["md_safe"] = _md_safe
+    return env
 
 
 def html_env():

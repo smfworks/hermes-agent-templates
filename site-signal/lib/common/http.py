@@ -19,6 +19,7 @@ Import from the scanners as:
     from lib.common.http import polite_get
 """
 
+import ipaddress
 import threading
 import time
 import urllib.robotparser
@@ -30,6 +31,40 @@ USER_AGENT = "SMFWorks-SiteSignal/1.0 (+https://smfworks.com)"
 TIMEOUT_S = 20
 MIN_INTERVAL_S = 1.0
 MAX_PAGES_PER_HOST = 25
+MAX_REDIRECTS = 3
+
+# hsf_9334fec2d31ecd0391257355: sitemap/robots-derived URLs previously joined the
+# fetch list with no origin restriction — a crafted sitemap.xml could pivot the
+# scanner at internal targets. Default-deny scheme + host policy:
+# - only http/https, public unicast hosts (no loopback/private/link-local/etc.);
+# - redirects capped (requests allow_redirects=False + manual hop budget).
+_denied_networks = [
+    ipaddress.ip_network(n)
+    for n in ("127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16",
+              "169.254.0.0/16", "0.0.0.0/8", "100.64.0.0/10", "192.0.0.0/24",
+              "192.0.2.0/24", "198.18.0.0/15", "198.51.100.0/24", "203.0.113.0/24",
+              "224.0.0.0/4", "240.0.0.0/4", "::1/128", "fc00::/7", "fe80::/10",
+              "ff00::/8")
+]
+
+
+def _host_allowed(netloc: str) -> bool:
+    """Default-deny host policy: hostname must resolve to a public unicast address.
+    Unresolvable hosts are refused (no DNS surprise). Called per fetch, not cached
+    per-process, so DNS re-resolution still works within one run."""
+    host = netloc.rsplit("@", 1)[-1].split(":", 1)[0].strip("[]").lower()
+    if not host or host == "localhost" or host.endswith(".localhost") or host.endswith(".local"):
+        return False
+    try:
+        infos = __import__("socket").getaddrinfo(host, None)
+    except OSError:
+        return False
+    for info in infos:
+        addr = ipaddress.ip_address(info[4][0])
+        for net in _denied_networks:
+            if addr in net:
+                return False
+    return True
 
 _lock = threading.Lock()
 _hosts = {}  # netloc -> {"last": monotonic, "pages": int, "robots": parser|None, "robots_checked": bool}
@@ -85,15 +120,37 @@ def robots_allowed(url):
     return True if rp is None else rp.can_fetch(USER_AGENT, url)
 
 
+def _url_allowed(url: str) -> bool:
+    """hsf_9334fec2: origin policy for fetched URLs — http/https only, and the
+    host must pass the default-deny network check (SSRF pivot defense for
+    sitemap/robots-derived URLs). Loopback/private targets are additionally
+    allowed when SITE_SIGNAL_ALLOW_LOCAL_FETCH=1 is set — the fixture tests
+    serve pages on 127.0.0.1; the switch is opt-in so production scans keep
+    the default-deny posture."""
+    u = urlparse(url)
+    if u.scheme not in ("http", "https"):
+        return False
+    import os
+    if os.environ.get("SITE_SIGNAL_ALLOW_LOCAL_FETCH") == "1":
+        return True
+    return _host_allowed(u.netloc)
+
+
 def polite_get(url, robots_exempt=False):
-    """Polite GET: robots-respected, rate-limited, 20 s timeout. Returns a
-    requests.Response, or None when robots disallows our UA, the per-host page
-    cap is exhausted, or the request fails (same None contract as the original
-    scanners' get() helpers)."""
+    """Polite GET: origin-checked, robots-respected, rate-limited, 20 s timeout,
+    redirects capped at MAX_REDIRECTS. Returns a requests.Response, or None when
+    the origin policy refuses the URL, robots disallows our UA, the per-host
+    page cap is exhausted, a redirect hop is untrusted, or the request fails
+    (same None contract as the original scanners' get() helpers)."""
     if not url.startswith("http"):
         url = "https://" + url
     parsed = urlparse(url)
     netloc = parsed.netloc
+    # Origin policy first (hsf_9334fec2): refuse non-http(s) schemes and any
+    # host that does not resolve public — before robots, throttle, or DNS-ttl'd
+    # state is touched.
+    if not _url_allowed(url):
+        return None
     if not robots_exempt:
         _load_robots(netloc, parsed.scheme or "https")
         if not robots_allowed(url):
@@ -104,8 +161,25 @@ def polite_get(url, robots_exempt=False):
                 return None
             st["pages"] += 1
     _throttle(netloc)
-    try:
-        return requests.get(url, headers={"User-Agent": USER_AGENT},
-                            timeout=TIMEOUT_S, allow_redirects=True)
-    except requests.RequestException:
-        return None
+    # Redirect handling: follow manually so every hop re-passes the origin
+    # policy (a 302 to an internal host must not be silently followed).
+    current, hops = url, 0
+    while True:
+        try:
+            resp = requests.get(current, headers={"User-Agent": USER_AGENT},
+                                timeout=TIMEOUT_S, allow_redirects=False)
+        except requests.RequestException:
+            return None
+        if resp.is_redirect or resp.is_permanent_redirect:
+            hops += 1
+            if hops > MAX_REDIRECTS:
+                return None
+            loc = resp.headers.get("Location", "")
+            if not loc:
+                return None
+            nxt = requests.compat.urljoin(current, loc)
+            if not _url_allowed(nxt):
+                return None
+            current = nxt
+            continue
+        return resp
