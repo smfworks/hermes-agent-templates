@@ -7,7 +7,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from store import FOOTER, read_jsonl, strip_handle
+from store import FOOTER, contained_handle, read_jsonl, strip_handle
 
 ARCHETYPES = {
     "link_only": "Link Drop Machine",
@@ -63,7 +63,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    handle = strip_handle(args.handle)
+    try:
+        handle = contained_handle(strip_handle(args.handle))
+    except ValueError as e:
+        sys.stderr.write(f"card: {e}\n")
+        return 2
     data = Path(args.data)
     history = read_jsonl(data / "history.jsonl")
     summary = history[-1] if history else None
