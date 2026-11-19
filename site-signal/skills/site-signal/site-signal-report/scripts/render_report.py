@@ -46,7 +46,7 @@ def _md_safe(value):
     markers so the value stays inline data; the html env already escapes."""
     s = " ".join(str(value).split())
     s = s.replace(_FENCE, "'" * 3)
-    s = _re.sub(r"^[#>\\-]{1,}\\s*", "", s)
+    s = _re.sub(r"^[#>\-]{1,}\s*", "", s)
     # '|' inside a markdown table cell forges columns; escape it so the value
     # stays one cell. Harmless outside tables (rare char in prose).
     s = s.replace("|", "\\|")
