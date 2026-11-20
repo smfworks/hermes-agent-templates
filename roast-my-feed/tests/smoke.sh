@@ -24,6 +24,7 @@ for test in \
   test_audit_window.py \
   test_rerun_history.py \
   test_card.py \
+  test_handle_containment.py \
   test_redteam_contract.py \
   test_static.py
 do
